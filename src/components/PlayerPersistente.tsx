@@ -22,12 +22,12 @@ function Slot({ pedido }: Readonly<{ pedido: reproducao.Pedido }>) {
   return <div ref={ref} className="reproducao-slot" />;
 }
 
-export function VideoPersistente(props: VideoPlayerProps) {
+export function VideoPersistente(props: Readonly<VideoPlayerProps>) {
   if (!props.channel) return <Suspense fallback={<CarregamentoMarca />}><Video {...props} /></Suspense>;
   return <Slot pedido={{ tipo: 'canal', props }} />;
 }
 
-export function FilmePersistente(props: MoviePlayerProps) {
+export function FilmePersistente(props: Readonly<MoviePlayerProps>) {
   return <Slot pedido={{ tipo: 'filme', props }} />;
 }
 
