@@ -50,7 +50,7 @@ export function Favoritos() {
         <h1 className="tela-titulo">Favoritos</h1>
         <p className="tela-sub">{favCanais.length} canais · {vod.length} filmes e séries · {favRadios.length} rádios</p>
         <div className="pilulas">
-          {([['tudo', 'Tudo'], ['canais', 'Canais'], ['vod', 'Filmes e séries'], ['radios', 'Rádios']] as const).map(([k, r]) => (
+          {([['tudo', 'Todos'], ['canais', 'Ao Vivo (Canais)'], ['radios', 'Rádio'], ['vod', 'On Demand (Filmes e Séries)']] as const).map(([k, r]) => (
             <button key={k} className={filtro === k ? 'on' : ''} onClick={() => setFiltro(k)}>{r}</button>
           ))}
         </div>

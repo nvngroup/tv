@@ -61,6 +61,25 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
   const trilho = useRef<HTMLElement>(null);
   const [capsula, setCapsula] = useState<{ x: number; w: number } | null>(null);
 
+  useEffect(() => {
+    if (pedePin) return;
+    const aoAtalho = (e: KeyboardEvent) => {
+      if (!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.repeat || e.isComposing || e.defaultPrevented) return;
+      const alvo = e.target;
+      if (alvo instanceof HTMLElement && (alvo.isContentEditable || alvo.closest('input, textarea, select, [role="textbox"]'))) return;
+      // O código físico também funciona quando Alt altera o caractere digitado.
+      const digito = /^(?:Digit|Numpad)([1-8])$/.exec(e.code)?.[1] ?? (/^[1-8]$/.test(e.key) ? e.key : null);
+      if (!digito) return;
+      const indice = Number(digito) - 1;
+      const rota = indice === ABAS.length ? '/ajustes' : ABAS[indice]?.rota;
+      if (!rota) return;
+      e.preventDefault();
+      navigate(rota);
+    };
+    window.addEventListener('keydown', aoAtalho);
+    return () => window.removeEventListener('keydown', aoAtalho);
+  }, [navigate, pedePin]);
+
   // O nav bar só auto-esconde quando um player estiver sendo usado (/ao-vivo ou autoHide=true).
   // Fora isso (catálogos, início, busca, eventos, favoritos, rádios, etc.), ele fica fixo e visível na tela.
   const deveAutoEsconder = autoHide ?? pathname.startsWith('/ao-vivo');
@@ -233,6 +252,7 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
                 (e.currentTarget as HTMLElement)?.blur();
               }}
               title={`${a.rotulo} (Alt+${i + 1})`}
+              aria-keyshortcuts={`Alt+${i + 1}`}
               aria-label={a.rotulo}
             >
               {a.icone}
@@ -265,6 +285,7 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
               navigate('/ajustes');
             }}
             title="Ajustes (Alt+8)"
+            aria-keyshortcuts="Alt+8"
             aria-label="Ajustes"
           >
             <svg viewBox="0 0 24 24" {...tr}>
