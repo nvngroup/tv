@@ -21,7 +21,7 @@ async function buscar(url: string, prazoMs: number): Promise<string | null> {
   }
 }
 
-export const onRequest: PagesFunction = async () => {
+export async function respostaEventos(): Promise<Response> {
   const cabecalhos = {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
@@ -35,4 +35,6 @@ export const onRequest: PagesFunction = async () => {
     status: 502,
     headers: { ...cabecalhos, 'Cache-Control': 'no-store' },
   });
-};
+}
+
+export const onRequest = async (): Promise<Response> => respostaEventos();

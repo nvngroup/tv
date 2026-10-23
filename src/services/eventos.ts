@@ -147,14 +147,14 @@ function lerAgenda(arr: unknown, canais: Channel[]): Jogo[] {
             const canal = canalDo(player, canais);
             if (!canal) continue;
             const inicio = new Date(o.time_start ?? '').getTime();
-            if (isNaN(inicio)) continue;
+            if (Number.isNaN(inicio)) continue;
             const fimLido = o.time_end ? new Date(o.time_end).getTime() : NaN;
             const j: Jogo = {
                 casa: o.teams?.home?.name ?? '', fora: o.teams?.away?.name ?? '',
                 casaLogo: emAltaResolucao(o.teams?.home?.image ?? ''),
                 foraLogo: emAltaResolucao(o.teams?.away?.image ?? ''),
                 liga: o.league?.name ?? '', ligaLogo: emAltaResolucao(o.league?.image ?? ''),
-                inicio, fim: isNaN(fimLido) ? inicio + 2 * HORA : fimLido,
+                inicio, fim: Number.isNaN(fimLido) ? inicio + 2 * HORA : fimLido,
                 canal,
                 // Só a agenda do monitor manda o placar; a ESPN, quando acha o jogo, vale mais.
                 estado: o.estado ?? '', placar: o.placar ?? '', tempo: o.tempo ?? '',
@@ -212,28 +212,19 @@ export async function buscarJogos(canais: Channel[]): Promise<Jogo[] | null> {
         doMonitor(),
         ...ESPN.map(l => json(`https://site.api.espn.com/apis/site/v2/sports/${l}/scoreboard`)),
     ]);
-    // A função do site devolve {error} quando a embedtv falha; aí a tela segue só
-    // com os jogos do monitor, e some apenas se as duas caírem.
     if (!Array.isArray(agenda) && !Array.isArray(streaming)) return null;
     const espn = placares.filter(Boolean).flatMap(lerEspn);
     const daEmbed = Array.isArray(agenda) ? lerAgenda(agenda, canais) : [];
-    // Jogo do monitor que a embedtv já tem (mesmos times, começo a menos de
-    // meia hora) não entra de novo.
     const extras = lerAgenda(streaming, canais).filter(x => !daEmbed.some(e =>
         Math.abs(e.inicio - x.inicio) < HORA / 2 &&
         ((mesmoTime(e.casa, x.casa) && mesmoTime(e.fora, x.fora)) ||
             (mesmoTime(e.casa, x.fora) && mesmoTime(e.fora, x.casa)))));
     return [...daEmbed, ...extras].map(jogo => {
-        // O mesmo jogo na ESPN: mesmos times (em qualquer ordem) e começo
-        // a menos de quatro horas um do outro.
         const par = espn.find(e =>
             Math.abs(e.inicio - jogo.inicio) < 4 * HORA &&
             ((mesmoTime(e.casa, jogo.casa) && mesmoTime(e.fora, jogo.fora)) ||
                 (mesmoTime(e.casa, jogo.fora) && mesmoTime(e.fora, jogo.casa))));
         if (!par) return jogo;
-        // A ESPN pode listar os times na ordem inversa da agenda: aí o escudo
-        // e os gols dela vão para o outro lado, senão o time mostrado ganha o
-        // escudo do adversário e o placar sai invertido.
         const invertido = !(mesmoTime(par.casa, jogo.casa) && mesmoTime(par.fora, jogo.fora));
         const [logoCasa, logoFora] = invertido ? [par.foraLogo, par.casaLogo] : [par.casaLogo, par.foraLogo];
         const [golsCasa, golsFora] = invertido ? [par.golsFora, par.golsCasa] : [par.golsCasa, par.golsFora];
