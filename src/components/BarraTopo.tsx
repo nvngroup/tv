@@ -148,15 +148,31 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
     return () => window.clearInterval(id);
   }, []);
 
-  // A cápsula acompanha a aba aberta, inclusive quando a janela muda de tamanho.
+  // Fontes carregadas depois da primeira renderização também alteram a posição das abas.
   useLayoutEffect(() => {
+    const nav = trilho.current;
+    if (!nav) return;
+    let ativo = true;
     const medir = () => {
-      const botao = trilho.current?.querySelector<HTMLElement>('[data-ativa="1"]');
-      setCapsula(botao ? { x: botao.offsetLeft, w: botao.offsetWidth } : null);
+      if (!ativo) return;
+      const botao = nav.querySelector<HTMLElement>('[data-ativa="1"]');
+      const caixa = botao?.getBoundingClientRect();
+      const nova = caixa ? { x: caixa.left - nav.getBoundingClientRect().left, w: caixa.width } : null;
+      setCapsula((anterior) => anterior?.x === nova?.x && anterior?.w === nova?.w ? anterior : nova);
     };
     medir();
+    const observador = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(medir);
+    observador?.observe(nav);
+    nav.querySelectorAll('button').forEach((botao) => observador?.observe(botao));
+    void document.fonts?.ready.then(medir);
+    document.fonts?.addEventListener('loadingdone', medir);
     window.addEventListener('resize', medir);
-    return () => window.removeEventListener('resize', medir);
+    return () => {
+      ativo = false;
+      observador?.disconnect();
+      document.fonts?.removeEventListener('loadingdone', medir);
+      window.removeEventListener('resize', medir);
+    };
   }, [pathname]);
 
   const aoClicarLogo = (e: React.MouseEvent<HTMLButtonElement>) => {
