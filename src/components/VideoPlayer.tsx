@@ -71,7 +71,7 @@ export const VideoPlayer = memo(function VideoPlayer({
   const [pendingUnmute, setPendingUnmute] = useState(false); // Aguardando primeira interação para desmutar
   const [volume, setVolume] = useState(() => {
     const saved = localStorage.getItem('tv-volume');
-    return saved ? parseFloat(saved) : 1;
+    return saved ? Number.parseFloat(saved) : 1;
   });
 
   // Refs para manter valores atuais acessíveis nos callbacks
@@ -871,7 +871,7 @@ export const VideoPlayer = memo(function VideoPlayer({
   }, []);
 
   const handleVolumeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const newVolume = parseFloat(e.target.value);
+    const newVolume = Number.parseFloat(e.target.value);
     setVolume(newVolume);
     if (newVolume > 0) {
       setIsMuted(false);

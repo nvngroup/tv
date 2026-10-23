@@ -46,7 +46,7 @@ flowchart TB
         MG["meuguia.tv"]
         GDT["guiadetv.com"]
     end
-    
+
     subgraph Proxies["🔄 Proxies CORS"]
         P1["AllOrigins"]
         P2["CorsProxy.io"]
@@ -54,19 +54,19 @@ flowchart TB
         P4["Cors.sh"]
         P5["ThingProxy"]
     end
-    
+
     subgraph Service["⚙️ EPG Service"]
         FETCH["fetchChannelEPGAsync()"]
         PARSE["parseHTMLPrograms()"]
         CACHE["Cache (Map + localStorage)"]
         NOTIFY["notifyListeners()"]
     end
-    
+
     subgraph App["📱 Aplicação"]
         COMP["Componentes React"]
         UI["Interface do Usuário"]
     end
-    
+
     MG --> P1 --> FETCH
     GDT --> P2 --> FETCH
     FETCH --> PARSE --> CACHE --> NOTIFY --> COMP --> UI
@@ -316,7 +316,7 @@ async function fetchWithProxyFallback(
 ): Promise<string | null> {
   const MAX_RETRIES = 3;
   const INITIAL_RETRY_DELAY = 1000;
-  
+
   for (let retry = 0; retry < MAX_RETRIES; retry++) {
     const retryDelay = INITIAL_RETRY_DELAY * Math.pow(2, retry);
 
@@ -329,14 +329,14 @@ async function fetchWithProxyFallback(
 
         if (response.ok) {
           const html = await response.text();
-          
+
           // Validação específica por fonte
           let isValidHtml = false;
           if (source === 'guiadetv') {
-            isValidHtml = html.length > 1000 && 
+            isValidHtml = html.length > 1000 &&
               (html.includes('data-dt=') || html.includes('/programa/'));
           } else {
-            isValidHtml = html.length > 1000 && 
+            isValidHtml = html.length > 1000 &&
               (html.includes('lileft time') || html.includes('<h2>'));
           }
 
@@ -446,39 +446,39 @@ function parseHTMLPrograms(html: string, channelId: string): Program[] {
 
   // 1. Limpa templates ERB não processados
   const cleanHtml = html.replace(
-    /<li class="subheader[^"]*"><%=[^>]+%><\/li>/gi, 
+    /<li class="subheader[^"]*"><%=[^>]+%><\/li>/gi,
     ''
   );
 
   // 2. Extrai cabeçalhos de data
   const dateHeaders: { index: number; date: Date }[] = [];
   const headerRegex = /<li class="subheader[^"]*">[^<]*?(\d{1,2})\/(\d{1,2})[^<]*<\/li>/gi;
-  
+
   let headerMatch;
   while ((headerMatch = headerRegex.exec(cleanHtml)) !== null) {
-    const day = parseInt(headerMatch[1]);
-    const month = parseInt(headerMatch[2]) - 1;
+    const day = Number.parseInt(headerMatch[1]);
+    const month = Number.parseInt(headerMatch[2]) - 1;
     let date = new Date(currentYear, month, day, 0, 0, 0, 0);
-    
+
     // Se mês muito anterior, provavelmente próximo ano
     if (month < today.getMonth() - 6) {
       date = new Date(currentYear + 1, month, day, 0, 0, 0, 0);
     }
-    
+
     dateHeaders.push({ index: headerMatch.index, date });
   }
 
   // 3. Fallback: usa data de hoje se não encontrou cabeçalhos
   if (dateHeaders.length === 0) {
-    dateHeaders.push({ 
-      index: 0, 
-      date: new Date(today.getFullYear(), today.getMonth(), today.getDate()) 
+    dateHeaders.push({
+      index: 0,
+      date: new Date(today.getFullYear(), today.getMonth(), today.getDate())
     });
   }
 
   // 4. Extrai programas
   const programRegex = /<div class=['"]lileft time['"]>\s*(\d{1,2}:\d{2})\s*<\/div>[\s\S]*?<h2>([^<]+)<\/h2>[\s\S]*?<h3>([^<]*)<\/h3>/gi;
-  
+
   let programMatch;
   let lastHour = -1;
   let currentDateIndex = 0;
@@ -489,7 +489,7 @@ function parseHTMLPrograms(html: string, channelId: string): Program[] {
     const category = programMatch[3].trim();
 
     // Encontra data apropriada
-    while (currentDateIndex < dateHeaders.length - 1 && 
+    while (currentDateIndex < dateHeaders.length - 1 &&
            programMatch.index > dateHeaders[currentDateIndex + 1].index) {
       currentDateIndex++;
       lastHour = -1;
@@ -614,7 +614,7 @@ async function fetchEPG(channelId: string): Promise<Program[]> {
     const response = await fetch(proxyUrl);
     const html = await response.text();
     const programs = parsePrograms(html, channelId);
-    
+
     cache.set(channelId, programs);
     return programs;
   } catch (error) {
@@ -626,7 +626,7 @@ async function fetchEPG(channelId: string): Promise<Program[]> {
 function parsePrograms(html: string, channelId: string): Program[] {
   const programs: Program[] = [];
   const regex = /<div class=['"]lileft time['"]>\s*(\d{1,2}:\d{2})\s*<\/div>[\s\S]*?<h2>([^<]+)<\/h2>[\s\S]*?<h3>([^<]*)<\/h3>/gi;
-  
+
   const today = new Date();
   let match;
   let lastHour = -1;

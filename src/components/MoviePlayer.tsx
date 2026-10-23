@@ -54,7 +54,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(() => {
     const saved = localStorage.getItem('movie-volume');
-    return saved ? parseFloat(saved) : 1;
+    return saved ? Number.parseFloat(saved) : 1;
   });
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -102,7 +102,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   const [showSettingsMenu, setShowSettingsMenu] = useState(false);
   const [skipTime, setSkipTime] = useState(() => {
     const saved = localStorage.getItem('movie-skip-time');
-    return saved ? parseInt(saved) : 10;
+    return saved ? Number.parseInt(saved) : 10;
   });
   const [brightness, setBrightness] = useState(100);
   const [upscaling, setUpscaling] = useLocalStorage<ModoUpscaling>(CHAVE_UPSCALING, 'off');
@@ -1490,7 +1490,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                   step="0.05"
                   value={isMuted ? 0 : volume}
                   onChange={(e) => {
-                    setVolume(parseFloat(e.target.value));
+                    setVolume(Number.parseFloat(e.target.value));
                     setIsMuted(false);
                   }}
                   className="volume-slider"
@@ -1689,7 +1689,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                       <label>Velocidade</label>
                       <select
                         value={playbackRate}
-                        onChange={(e) => setPlaybackRate(parseFloat(e.target.value))}
+                        onChange={(e) => setPlaybackRate(Number.parseFloat(e.target.value))}
                         data-focusable="true"
                         data-nav-group="settings-menu"
                       >
@@ -1709,7 +1709,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                       <label>Pular (segundos)</label>
                       <select
                         value={skipTime}
-                        onChange={(e) => setSkipTime(parseInt(e.target.value))}
+                        onChange={(e) => setSkipTime(Number.parseInt(e.target.value))}
                         data-focusable="true"
                         data-nav-group="settings-menu"
                       >
@@ -1754,7 +1754,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                         min="50"
                         max="150"
                         value={brightness}
-                        onChange={(e) => setBrightness(parseInt(e.target.value))}
+                        onChange={(e) => setBrightness(Number.parseInt(e.target.value))}
                         className="settings-slider"
                         data-focusable="true"
                         data-nav-group="settings-menu"

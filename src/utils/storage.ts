@@ -19,13 +19,13 @@ export const storage = {
   toggleFavorite: (channelId: string): string[] => {
     const favorites = storage.getFavorites();
     const index = favorites.indexOf(channelId);
-    
+
     if (index === -1) {
       favorites.push(channelId);
     } else {
       favorites.splice(index, 1);
     }
-    
+
     storage.setFavorites(favorites);
     return favorites;
   },
@@ -44,7 +44,7 @@ export const storage = {
 
   getVolume: (): number => {
     const volume = localStorage.getItem(VOLUME_KEY);
-    return volume ? parseFloat(volume) : 1;
+    return volume ? Number.parseFloat(volume) : 1;
   },
 
   setVolume: (volume: number): void => {

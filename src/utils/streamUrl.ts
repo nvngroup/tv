@@ -237,7 +237,7 @@ export function hexToBase64Url(hex: string): string {
   const clean = hex.replace(/-/g, '').trim();
   const bytes = new Uint8Array(clean.length / 2);
   for (let i = 0; i < bytes.length; i++) {
-    bytes[i] = parseInt(clean.substring(i * 2, i * 2 + 2), 16);
+    bytes[i] = Number.parseInt(clean.substring(i * 2, i * 2 + 2), 16);
   }
   let binary = '';
   bytes.forEach((b) => { binary += String.fromCharCode(b); });

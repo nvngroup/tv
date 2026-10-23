@@ -314,8 +314,8 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
       url: escolhido,
       tipo,
       id: cleanId,
-      temporada: isSerie ? parseInt(season, 10) : undefined,
-      episodio: isSerie ? parseInt(episode, 10) : undefined,
+      temporada: isSerie ? Number.parseInt(season, 10) : undefined,
+      episodio: isSerie ? Number.parseInt(episode, 10) : undefined,
       versao,
     }), { status: 200, headers });
   }

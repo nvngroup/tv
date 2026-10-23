@@ -99,7 +99,7 @@ const channelToMeuGuiaCode: Record<string, string> = {
   'globo-sp': 'GRD',
   'globo-rj': 'GRD',
   'globo-news': 'GLN',
-  
+
   // === HBO ===
   'hbo': 'HBO',
   'hbo2': 'HB2',
@@ -108,7 +108,7 @@ const channelToMeuGuiaCode: Record<string, string> = {
   'hbo-mundi': 'HMU',
   'hbo-pop': 'HPO',
   'hbo-xtreme': 'HXT',
-  
+
   // === TELECINE ===
   'telecine-action': 'TC2',
   'telecine-premium': 'TC1',
@@ -116,19 +116,19 @@ const channelToMeuGuiaCode: Record<string, string> = {
   'telecine-cult': 'TC5',
   'telecine-fun': 'TC6',
   'telecine-touch': 'TC3',
-  
+
   // === SPORTV ===
   'sportv': 'SPO',
   'sportv2': 'SP2',
   'sportv3': 'SP3',
-  
+
   // === ESPN ===
   'espn': 'ESP',
   'espn2': 'ES2',
   'espn3': 'ES3',
   'espn4': 'ES4',
   'espn5': 'ES5',
-  
+
   // === TV ABERTA ===
   'sbt': 'SBT',
   'band': 'BAN',
@@ -136,19 +136,19 @@ const channelToMeuGuiaCode: Record<string, string> = {
   'rede-tv': 'RTV',
   'tv-brasil': 'TED',
   'cultura': 'CUL',
-  
+
   // === NOTÍCIAS ===
   'cnn-brasil': 'CNB',
   'band-news': 'NEW',
   'record-news': 'RCN',
-  
+
   // === INFANTIL ===
   'cartoon-network': 'CAR',
   'cartoonito': 'CTO',
   'discovery-kids': 'DIK',
   'gloob': 'GOB',
   'gloobinho': 'GBI',
-  
+
   // === SÉRIES ===
   'warner': 'WBT',
   'tnt': 'TNT',
@@ -156,7 +156,7 @@ const channelToMeuGuiaCode: Record<string, string> = {
   'axn': 'AXN',
   'sony': 'SET',
   'universal-tv': 'USA',
-  
+
   // === DOCUMENTÁRIOS ===
   'discovery': 'DIS',
   'discovery-turbo': 'DTU',
@@ -164,12 +164,12 @@ const channelToMeuGuiaCode: Record<string, string> = {
   'animal-planet': 'APL',
   'history': 'HIS',
   'history2': 'H2H',
-  
+
   // === ENTRETENIMENTO ===
   'multishow': 'MSW',
   'bis': 'MSH',
   'gnt': 'GNT',
-  
+
   // === ESPORTES ===
   'premiere': '121',
   'combate': '135',
@@ -200,7 +200,7 @@ async function fetchChannelEPGAsync(channelId: string): Promise<Program[]> {
   // Verifica cache válido
   const lastTime = lastFetch.get(channelId) || 0;
   const now = Date.now();
-  
+
   if (epgCache.has(channelId) && now - lastTime < CACHE_DURATION) {
     console.log(`[EPG] ${channelId}: usando cache`);
     return epgCache.get(channelId) || [];
@@ -251,27 +251,27 @@ async function fetchChannelEPGAsync(channelId: string): Promise<Program[]> {
     try {
       const url = `https://meuguia.tv/programacao/canal/${meuguiaCode}`;
       const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-      
+
       console.log(`[EPG] Buscando ${channelId} de ${url}`);
-      
+
       const response = await fetch(proxyUrl);
-      
+
       if (!response.ok) {
         console.log(`[EPG] ${channelId}: HTTP ${response.status}`);
         return [];
       }
-      
+
       const html = await response.text();
       console.log(`[EPG] ${channelId}: HTML recebido (${html.length} bytes)`);
-      
+
       const programs = parseHTMLPrograms(html, channelId);
-      
+
       if (programs.length > 0) {
         epgCache.set(channelId, programs);
         lastFetch.set(channelId, Date.now());
         notifyListeners(channelId, programs);
       }
-      
+
       return programs;
     } catch (e) {
       console.error(`[EPG] ${channelId}: erro`, e);
@@ -308,78 +308,78 @@ async function fetchChannelEPGAsync(channelId: string): Promise<Program[]> {
 ```typescript
 function parseHTMLPrograms(html: string, channelId: string): Program[] {
   const programs: Program[] = [];
-  
+
   try {
     const today = new Date();
     const currentYear = today.getFullYear();
-    
+
     // Remove templates ERB não processados
     const cleanHtml = html.replace(/<li class="subheader[^"]*"><%=[^>]+%><\/li>/gi, '');
-    
+
     // Regex para capturar cada programa
     const programRegex = /<div class=['"]lileft time['"]>\s*(\d{1,2}:\d{2})\s*<\/div>[\s\S]*?<h2>([^<]+)<\/h2>[\s\S]*?<h3>([^<]*)<\/h3>/gi;
-    
+
     // Extrai datas dos cabeçalhos
     const dateHeaders: { index: number; date: Date }[] = [];
     const headerRegex = /<li class="subheader[^"]*">[^<]*?(\d{1,2})\/(\d{1,2})[^<]*<\/li>/gi;
-    
+
     let headerMatch;
     while ((headerMatch = headerRegex.exec(cleanHtml)) !== null) {
-      const day = parseInt(headerMatch[1]);
-      const month = parseInt(headerMatch[2]) - 1;  // JS meses são 0-indexed
+      const day = Number.parseInt(headerMatch[1]);
+      const month = Number.parseInt(headerMatch[2]) - 1;  // JS meses são 0-indexed
       let date = new Date(currentYear, month, day, 0, 0, 0, 0);
-      
+
       // Se mês muito anterior, provavelmente próximo ano
       if (month < today.getMonth() - 6) {
         date = new Date(currentYear + 1, month, day, 0, 0, 0, 0);
       }
-      
+
       dateHeaders.push({ index: headerMatch.index, date });
     }
-    
+
     // Fallback: se não encontrou cabeçalhos, usa hoje
     if (dateHeaders.length === 0) {
-      dateHeaders.push({ 
-        index: 0, 
-        date: new Date(today.getFullYear(), today.getMonth(), today.getDate()) 
+      dateHeaders.push({
+        index: 0,
+        date: new Date(today.getFullYear(), today.getMonth(), today.getDate())
       });
     }
-    
+
     // Processa cada programa
     let programMatch;
     let lastHour = -1;
     let currentDateIndex = 0;
-    
+
     while ((programMatch = programRegex.exec(cleanHtml)) !== null) {
       const timeStr = programMatch[1];  // "20:00"
       const title = programMatch[2].trim();
       const category = programMatch[3].trim();
-      
+
       // Encontra a data apropriada
-      while (currentDateIndex < dateHeaders.length - 1 && 
+      while (currentDateIndex < dateHeaders.length - 1 &&
              programMatch.index > dateHeaders[currentDateIndex + 1].index) {
         currentDateIndex++;
         lastHour = -1;  // Reset ao mudar de bloco
       }
-      
+
       let programDate = new Date(dateHeaders[currentDateIndex].date);
-      
+
       const timeParts = timeStr.split(':');
-      const hours = parseInt(timeParts[0]);
-      const minutes = parseInt(timeParts[1]);
-      
+      const hours = Number.parseInt(timeParts[0]);
+      const minutes = Number.parseInt(timeParts[1]);
+
       // Detecta virada de meia-noite (ex: 23h → 01h)
       if (lastHour !== -1 && hours < lastHour - 6) {
         programDate = new Date(programDate.getTime() + 24 * 60 * 60 * 1000);
       }
       lastHour = hours;
-      
+
       const startTime = new Date(programDate);
       startTime.setHours(hours, minutes, 0, 0);
-      
+
       // Duração padrão de 1 hora (será ajustada depois)
       const endTime = new Date(startTime.getTime() + 60 * 60 * 1000);
-      
+
       programs.push({
         id: `${channelId}-${startTime.getTime()}`,
         title: decodeHTMLEntities(title),
@@ -389,19 +389,19 @@ function parseHTMLPrograms(html: string, channelId: string): Program[] {
         endTime,
       });
     }
-    
+
     // Ordena por horário
     programs.sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
-    
+
     // Ajusta horários de término baseado no próximo programa
     for (let i = 0; i < programs.length - 1; i++) {
       programs[i].endTime = programs[i + 1].startTime;
     }
-    
+
   } catch (e) {
     console.error('[EPG] Erro parsing:', e);
   }
-  
+
   return programs;
 }
 ```
@@ -444,13 +444,13 @@ let backgroundLoadStarted = false;
 
 export async function fetchRealEPG(): Promise<boolean> {
   console.log('[EPG] Service inicializado - meuguia.tv scraping');
-  
+
   // Inicia carregamento em segundo plano apenas uma vez
   if (!backgroundLoadStarted) {
     backgroundLoadStarted = true;
     loadAllEPGInBackground();
   }
-  
+
   return true;
 }
 ```
@@ -461,26 +461,26 @@ export async function fetchRealEPG(): Promise<boolean> {
 async function loadAllEPGInBackground(): Promise<void> {
   const allChannelIds = Object.keys(channelToMeuGuiaCode);
   console.log(`[EPG] Iniciando carregamento de ${allChannelIds.length} canais...`);
-  
+
   const batchSize = 3;  // 3 canais por vez
   const delayBetweenBatches = 1000;  // 1 segundo entre lotes
-  
+
   for (let i = 0; i < allChannelIds.length; i += batchSize) {
     const batch = allChannelIds.slice(i, i + batchSize);
-    
+
     // Carrega o lote em paralelo
     await Promise.all(
       batch.map(channelId => fetchChannelEPGAsync(channelId))
     );
-    
+
     console.log(`[EPG] Carregados ${Math.min(i + batchSize, allChannelIds.length)}/${allChannelIds.length}`);
-    
+
     // Delay para não sobrecarregar
     if (i + batchSize < allChannelIds.length) {
       await new Promise(resolve => setTimeout(resolve, delayBetweenBatches));
     }
   }
-  
+
   console.log('[EPG] Carregamento completo!');
 }
 ```
@@ -522,7 +522,7 @@ function notifyListeners(channelId: string, programs: Program[]): void {
 
 useEffect(() => {
   fetchRealEPG();
-  
+
   const unsubscribe = onEPGUpdate((channelId: string) => {
     if (channel && channelId === channel.id) {
       console.log(`[ProgramInfo] EPG atualizado para ${channelId}`);
@@ -530,7 +530,7 @@ useEffect(() => {
       setIsLoading(false);
     }
   });
-  
+
   return () => unsubscribe();  // Cleanup
 }, [channel]);
 ```
@@ -545,7 +545,7 @@ useEffect(() => {
 export function getChannelEPG(channelId: string): ChannelEPG {
   // Inicia busca em background se necessário
   fetchChannelEPGAsync(channelId);
-  
+
   return {
     channelId,
     programs: epgCache.get(channelId) || [],
@@ -562,24 +562,24 @@ export function getCurrentProgram(channelId: string): CurrentProgram | null {
     fetchChannelEPGAsync(channelId);
     return null;
   }
-  
+
   const programs = epgCache.get(channelId) || [];
   if (programs.length === 0) return null;
-  
+
   const now = new Date();
-  
+
   // Encontra programa atual
   const current = programs.find(p => p.startTime <= now && p.endTime > now);
   if (!current) return null;
-  
+
   // Encontra próximo programa
   const next = programs.find(p => p.startTime > now);
-  
+
   // Calcula progresso
   const total = current.endTime.getTime() - current.startTime.getTime();
   const elapsed = now.getTime() - current.startTime.getTime();
   const progress = Math.min(100, Math.max(0, (elapsed / total) * 100));
-  
+
   return { current, next: next || null, progress };
 }
 ```
@@ -618,10 +618,10 @@ export function hasEPG(channelId: string): boolean {
 export function getEPGStats() {
   let totalPrograms = 0;
   let latestUpdate = 0;
-  
+
   epgCache.forEach(programs => totalPrograms += programs.length);
   lastFetch.forEach(time => { if (time > latestUpdate) latestUpdate = time; });
-  
+
   return {
     channelsWithEPG: epgCache.size,
     totalPrograms,
@@ -656,10 +656,10 @@ interface ProgramInfoProps {
   onOpenGuide: () => void;
 }
 
-export const ProgramInfo = memo(function ProgramInfo({ 
-  channel, 
+export const ProgramInfo = memo(function ProgramInfo({
+  channel,
   isVisible,
-  onOpenGuide 
+  onOpenGuide
 }: ProgramInfoProps) {
   const [currentProgram, setCurrentProgram] = useState<CurrentProgram | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -675,16 +675,16 @@ export const ProgramInfo = memo(function ProgramInfo({
 ```typescript
 useEffect(() => {
   if (!channel) return;
-  
+
   // Busca inicial
   getCurrentProgramAsync(channel.id).then(setCurrentProgram);
-  
+
   // Atualiza a cada 30 segundos
   const interval = setInterval(() => {
     const program = getCurrentProgram(channel.id);
     setCurrentProgram(program);
   }, 30000);
-  
+
   return () => clearInterval(interval);
 }, [channel]);
 ```
@@ -761,19 +761,19 @@ Para apps nativos, crie uma API backend:
 
 app.get('/api/epg/:channelId', async (req, res) => {
   const { channelId } = req.params;
-  
+
   // Verifica cache Redis
   const cached = await redis.get(`epg:${channelId}`);
   if (cached) {
     return res.json(JSON.parse(cached));
   }
-  
+
   // Busca do meuguia.tv
   const programs = await fetchFromMeuGuia(channelId);
-  
+
   // Salva no cache (30 minutos)
   await redis.setex(`epg:${channelId}`, 1800, JSON.stringify(programs));
-  
+
   res.json(programs);
 });
 
@@ -798,7 +798,7 @@ CREATE TABLE programs (
   start_time TIMESTAMP NOT NULL,
   end_time TIMESTAMP NOT NULL,
   created_at TIMESTAMP DEFAULT NOW(),
-  
+
   INDEX idx_channel_time (channel_id, start_time)
 );
 ```

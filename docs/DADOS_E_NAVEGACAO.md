@@ -73,11 +73,11 @@ for (const line of lines) {
     const groupMatch = trimmed.match(/group-title="([^"]+)"/);
     const logoMatch = trimmed.match(/tvg-logo="([^"]+)"/);
     const nameMatch = trimmed.match(/,(.+)$/);
-    
+
     // Determina se é série ou filme
-    const isSeries = isSeriesCategory(category) || 
+    const isSeries = isSeriesCategory(category) ||
       /S\d+\s*E\d+|T\d+\s*E\d+|\d+\s*x\s*\d+/i.test(name);
-  } 
+  }
   else if (trimmed.startsWith('http')) {
     // Salva o item com a URL
   }
@@ -138,7 +138,7 @@ const ADULT_KEYWORDS = [
 ```typescript
 // Indicadores de série na categoria
 const SERIES_CATEGORY_KEYWORDS = [
-  'series |', 'series|', 'séries', 'novelas', 
+  'series |', 'series|', 'séries', 'novelas',
   'doramas', 'dorama', '24h animes', '24h desenhos',
   '24h series', 'programas de tv', 'stand up'
 ];
@@ -333,13 +333,13 @@ function AppHeader({ currentMode, onModeChange }) {
   return (
     <header>
       <nav>
-        <button 
+        <button
           className={currentMode === 'tv' ? 'active' : ''}
           onClick={() => navigate('/tv')}
         >
           📺 TV
         </button>
-        <button 
+        <button
           className={currentMode === 'movies' ? 'active' : ''}
           onClick={() => navigate('/movies')}
         >
@@ -404,11 +404,11 @@ export async function loadCategory(categoryName: string) {
   if (loadedCategories.has(categoryName)) {
     return loadedCategories.get(categoryName);
   }
-  
+
   // Busca do JSON
   const response = await fetch(`/data/${fileName}.json`);
   const movies = await response.json();
-  
+
   // Armazena em cache
   loadedCategories.set(categoryName, movies);
   return movies;
@@ -472,7 +472,7 @@ const seriesPatterns = [
 ### Função de Parse
 
 ```typescript
-function parseSeriesInfo(name: string): { 
+function parseSeriesInfo(name: string): {
   baseName: string;   // "Breaking Bad"
   season: number;     // 1
   episode: number;    // 5
@@ -481,21 +481,21 @@ function parseSeriesInfo(name: string): {
   if (seriesCache.has(name)) {
     return seriesCache.get(name);
   }
-  
+
   // Testa cada padrão
   for (const pattern of seriesPatterns) {
     const match = name.match(pattern);
     if (match) {
       const result = {
         baseName: match[1].trim(),  // Nome da série
-        season: parseInt(match[2]),  // Número da temporada
-        episode: parseInt(match[3])  // Número do episódio
+        season: Number.parseInt(match[2]),  // Número da temporada
+        episode: Number.parseInt(match[3])  // Número do episódio
       };
       seriesCache.set(name, result);
       return result;
     }
   }
-  
+
   seriesCache.set(name, null);
   return null;
 }
@@ -519,33 +519,33 @@ interface GroupedSeries {
 ### Função de Agrupamento
 
 ```typescript
-function groupSeriesEpisodes(movies: Movie[]): { 
-  series: GroupedSeries[]; 
+function groupSeriesEpisodes(movies: Movie[]): {
+  series: GroupedSeries[];
   standalone: Movie[];  // Filmes e séries não detectadas
 } {
   const seriesMap = new Map<string, GroupedSeries>();
   const standalone: Movie[] = [];
-  
+
   for (const movie of movies) {
     // Se não é série, vai para standalone
     if (movie.type !== 'series') {
       standalone.push(movie);
       continue;
     }
-    
+
     // Tenta extrair info de série
     const info = parseSeriesInfo(movie.name);
     if (!info) {
       standalone.push(movie);
       continue;
     }
-    
+
     // Cria chave normalizada (lowercase, sem acentos)
     const seriesKey = info.baseName
       .toLowerCase()
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '');
-    
+
     // Obtém ou cria a série
     let series = seriesMap.get(seriesKey);
     if (!series) {
@@ -561,17 +561,17 @@ function groupSeriesEpisodes(movies: Movie[]): {
       };
       seriesMap.set(seriesKey, series);
     }
-    
+
     // Adiciona episódio à temporada
     if (!series.seasons.has(info.season)) {
       series.seasons.set(info.season, []);
       series.seasonCount++;
     }
-    
+
     series.seasons.get(info.season)!.push(movie);
     series.episodeCount++;
   }
-  
+
   return {
     series: Array.from(seriesMap.values()),
     standalone
@@ -586,10 +586,10 @@ Quando o usuário clica em uma série agrupada:
 ```tsx
 function SeriesModal({ series, onSelectEpisode }) {
   const [selectedSeason, setSelectedSeason] = useState(1);
-  
+
   const sortedSeasons = Array.from(series.seasons.keys()).sort();
   const episodes = series.seasons.get(selectedSeason) || [];
-  
+
   return (
     <div className="series-modal">
       {/* Header com poster e info */}
@@ -601,7 +601,7 @@ function SeriesModal({ series, onSelectEpisode }) {
           <span>{series.episodeCount} Episódios</span>
         </div>
       </div>
-      
+
       {/* Tabs de temporadas */}
       <div className="season-tabs">
         {sortedSeasons.map(season => (
@@ -614,11 +614,11 @@ function SeriesModal({ series, onSelectEpisode }) {
           </button>
         ))}
       </div>
-      
+
       {/* Lista de episódios */}
       <div className="episodes-list">
         {episodes.map(episode => (
-          <button 
+          <button
             key={episode.id}
             onClick={() => onSelectEpisode(episode)}
           >

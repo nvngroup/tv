@@ -99,7 +99,7 @@ useEffect(() => {
       setIsLoading(false);
       video.volume = volumeRef.current;
       video.muted = false;
-      
+
       // Tenta autoplay com som
       video.play().catch(() => {
         // Se falhar, tenta mutado (política de autoplay)
@@ -117,7 +117,7 @@ useEffect(() => {
     });
 
     hlsRef.current = hls;
-    
+
   } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
     // Safari - suporte nativo HLS
     video.src = channel.url;
@@ -185,13 +185,13 @@ hls.on(Hls.Events.ERROR, (_, data) => {
         console.log('Network error, attempting recovery...');
         hls.startLoad();
         break;
-        
+
       case Hls.ErrorTypes.MEDIA_ERROR:
         // Erro de mídia - tentar recuperar
         console.log('Media error, attempting recovery...');
         hls.recoverMediaError();
         break;
-        
+
       default:
         // Erro irrecuperável
         console.log('Fatal error, destroying HLS');
@@ -225,7 +225,7 @@ const retryLoad = useCallback(() => {
 const togglePlay = useCallback(() => {
   const video = videoRef.current;
   if (!video) return;
-  
+
   if (video.paused) {
     intentionalPauseRef.current = false;
     video.play();
@@ -242,11 +242,11 @@ const togglePlay = useCallback(() => {
 const [volume, setVolume] = useState(() => {
   // Recupera volume salvo
   const saved = localStorage.getItem('tv-volume');
-  return saved ? parseFloat(saved) : 1;
+  return saved ? Number.parseFloat(saved) : 1;
 });
 
 const handleVolumeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-  const newVolume = parseFloat(e.target.value);
+  const newVolume = Number.parseFloat(e.target.value);
   setVolume(newVolume);
   if (newVolume > 0) {
     setIsMuted(false);
@@ -376,7 +376,7 @@ useEffect(() => {
     if (video.videoWidth && video.videoHeight) {
       const height = video.videoHeight;
       let label = '';
-      
+
       if (height >= 2160) label = '4K';
       else if (height >= 1440) label = '2K';
       else if (height >= 1080) label = '1080p';
@@ -384,14 +384,14 @@ useEffect(() => {
       else if (height >= 480) label = '480p';
       else if (height >= 360) label = '360p';
       else label = `${height}p`;
-      
+
       setVideoResolution(label);
     }
   };
 
   video.addEventListener('loadedmetadata', updateResolution);
   video.addEventListener('resize', updateResolution);
-  
+
   // Atualiza periodicamente (resolução pode mudar durante stream)
   const interval = setInterval(updateResolution, 2000);
 
@@ -426,7 +426,7 @@ video.play().catch(() => {
 // Auto-unmute na primeira interação do usuário
 useEffect(() => {
   if (!pendingUnmute) return;
-  
+
   const handleUserInteraction = () => {
     const video = videoRef.current;
     if (video && pendingUnmuteRef.current) {
@@ -435,11 +435,11 @@ useEffect(() => {
       setPendingUnmute(false);
     }
   };
-  
+
   document.addEventListener('click', handleUserInteraction, { once: true });
   document.addEventListener('keydown', handleUserInteraction, { once: true });
   document.addEventListener('touchstart', handleUserInteraction, { once: true });
-  
+
   return () => {
     document.removeEventListener('click', handleUserInteraction);
     document.removeEventListener('keydown', handleUserInteraction);
@@ -457,11 +457,11 @@ const controlsTimeoutRef = useRef<number | null>(null);
 
 const resetControlsTimeout = useCallback(() => {
   setShowControls(true);
-  
+
   if (controlsTimeoutRef.current) {
     clearTimeout(controlsTimeoutRef.current);
   }
-  
+
   controlsTimeoutRef.current = window.setTimeout(() => {
     if (isPlayingRef.current) {
       setShowControls(false);
@@ -490,7 +490,7 @@ useEffect(() => {
     setIsPlaying(true);
     intentionalPauseRef.current = false;
   };
-  
+
   const handlePause = () => {
     setIsPlaying(false);
     // Auto-resume se não foi pausa intencional
@@ -498,9 +498,9 @@ useEffect(() => {
       video.play().catch(() => {});
     }
   };
-  
+
   const handleWaiting = () => setIsLoading(true);
-  
+
   const handleCanPlay = () => {
     setIsLoading(false);
     // Garante que está reproduzindo
@@ -557,7 +557,7 @@ import Video from 'react-native-video';
 
 const VideoPlayer = ({ channel }) => {
   const videoRef = useRef(null);
-  
+
   return (
     <Video
       ref={videoRef}
@@ -588,14 +588,14 @@ import 'package:video_player/video_player.dart';
 
 class VideoPlayerWidget extends StatefulWidget {
   final String url;
-  
+
   @override
   _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();
 }
 
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late VideoPlayerController _controller;
-  
+
   @override
   void initState() {
     super.initState();
@@ -608,7 +608,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
         _controller.play();
       });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
@@ -616,7 +616,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       child: VideoPlayer(_controller),
     );
   }
-  
+
   @override
   void dispose() {
     _controller.dispose();
