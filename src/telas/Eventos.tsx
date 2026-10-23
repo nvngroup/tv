@@ -125,7 +125,7 @@ export function Eventos() {
   const total = grupos.reduce((n, g) => n + g.length, 0);
 
   return (
-    <div className="tela tela-com-barra">
+    <div className="tela tela-com-barra tela-eventos">
       <BarraTopo />
       <Heroi item={destaque} />
       {!link && <SemLista tipo="eventos" />}
