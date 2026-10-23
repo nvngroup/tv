@@ -6,6 +6,7 @@
 import Hls from 'hls.js';
 import { needsProxy, proxyUrl } from '../utils/streamUrl';
 import { ouviu, type Radio } from './radios';
+import * as reproducao from './reproducao';
 
 export type EstadoRadio = 'parado' | 'carregando' | 'tocando' | 'erro';
 
@@ -37,6 +38,7 @@ function elemento(): HTMLAudioElement {
 }
 
 export const atual = (): SituacaoRadio => situacao;
+export function elementoAudio(): HTMLAudioElement { return elemento(); }
 export const volumeAtual = (): number => elemento().volume;
 export function definirVolume(volume: number): void {
   const nivel = Math.max(0, Math.min(1, volume));
@@ -58,8 +60,10 @@ export function parar(): void {
 }
 
 export function tocar(radio: Radio): void {
-  window.dispatchEvent(new Event('nvnplus-radio-iniciada'));
+  const slot = reproducao.elementoPlayer();
   const a = elemento();
+  slot.replaceChildren(a);
+  reproducao.montarRadio(radio);
   hls?.destroy();
   hls = null;
   mudar({ radio, estado: 'carregando' });

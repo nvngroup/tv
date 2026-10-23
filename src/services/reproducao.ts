@@ -2,6 +2,7 @@ import type { VideoPlayerProps } from '../components/VideoPlayer';
 import type { MoviePlayerProps } from '../components/MoviePlayer';
 import type { Channel } from '../types/channel';
 import type { Movie, SeriesEpisodeInfo } from '../types/movie';
+import type { Radio } from './radios';
 import { elementoEmTelaCheia, sairDaTelaCheia } from '../utils/telaCheia';
 
 export const CHAVE_REPRODUCAO = 'nvnplus-reproducao';
@@ -10,7 +11,7 @@ export type Lembranca = Progresso & (
   { tipo: 'canal'; canal: Channel } |
   { tipo: 'filme'; filme: Movie; serie: SeriesEpisodeInfo | null }
 );
-export type Pedido = { tipo: 'canal'; props: VideoPlayerProps } | { tipo: 'filme'; props: MoviePlayerProps };
+export type Pedido = { tipo: 'canal'; props: VideoPlayerProps } | { tipo: 'filme'; props: MoviePlayerProps } | { tipo: 'radio'; radio: Radio };
 
 export function restrita(lembranca: Lembranca | null): boolean {
   const item = lembranca?.tipo === 'canal' ? lembranca.canal : lembranca?.filme;
@@ -40,6 +41,13 @@ let ultimoRegistro = 0;
 let aguardandoMidia = true;
 
 export function confirmarMidia() { aguardandoMidia = false; }
+export function limparRadio() {
+  if (sessao.pedido?.tipo === 'radio') publicar({ lembranca: null, pedido: null, slot: null });
+}
+export function montarRadio(radio: Radio) {
+  publicar({ lembranca: null, pedido: { tipo: 'radio', radio }, slot: null });
+  if (miniSlot) mover(miniSlot);
+}
 
 export const atual = () => sessao;
 export function assinar(fn: () => void) { ouvintes.add(fn); return () => { ouvintes.delete(fn); }; }
