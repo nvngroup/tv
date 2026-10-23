@@ -45,6 +45,10 @@ const ESPN = [
     'soccer/arg.1', 'soccer/ksa.1', 'soccer/fifa.world', 'soccer/fifa.worldq.conmebol',
     'basketball/nba', 'football/nfl', 'baseball/mlb', 'hockey/nhl', 'mma/ufc',
 ];
+// Jogos já consultados durante a navegação são compartilhados pelo painel e
+// pela tela de Eventos. Evita dois lotes simultâneos ao abrir o MiniPlayer.
+let jogosGuardados: { em: number; jogos: Jogo[] } | null = null;
+let buscaEmAndamento: Promise<Jogo[] | null> | null = null;
 const SIGLAS = new Set(['fc', 'ec', 'sc', 'ac', 'afc', 'cf', 'cd', 'club', 'clube', 'esporte', 'sport',
     'futebol', 'de', 'do', 'da', 'sp', 'rj', 'mg', 'rs', 'pr', 'ba', 'pe', 'ce', 'go', 'sad']);
 const HORA = 3_600_000;
@@ -207,6 +211,14 @@ function mesmoTime(a: string, b: string): boolean {
 
 /** null quando a agenda não veio. */
 export async function buscarJogos(canais: Channel[]): Promise<Jogo[] | null> {
+    if (jogosGuardados && Date.now() - jogosGuardados.em < 180_000) return jogosGuardados.jogos;
+    if (buscaEmAndamento) return buscaEmAndamento;
+    buscaEmAndamento = buscarJogosAtualizados(canais);
+    try { return await buscaEmAndamento; }
+    finally { buscaEmAndamento = null; }
+}
+
+async function buscarJogosAtualizados(canais: Channel[]): Promise<Jogo[] | null> {
     const [agenda, streaming, ...placares] = await Promise.all([
         json(embed()),
         doMonitor(),
@@ -219,7 +231,7 @@ export async function buscarJogos(canais: Channel[]): Promise<Jogo[] | null> {
         Math.abs(e.inicio - x.inicio) < HORA / 2 &&
         ((mesmoTime(e.casa, x.casa) && mesmoTime(e.fora, x.fora)) ||
             (mesmoTime(e.casa, x.fora) && mesmoTime(e.fora, x.casa)))));
-    return [...daEmbed, ...extras].map(jogo => {
+    const jogos = [...daEmbed, ...extras].map(jogo => {
         const par = espn.find(e =>
             Math.abs(e.inicio - jogo.inicio) < 4 * HORA &&
             ((mesmoTime(e.casa, jogo.casa) && mesmoTime(e.fora, jogo.fora)) ||
@@ -238,4 +250,6 @@ export async function buscarJogos(canais: Channel[]): Promise<Jogo[] | null> {
             tempo: par.tempo,
         };
     });
+    jogosGuardados = { em: Date.now(), jogos };
+    return jogos;
 }
