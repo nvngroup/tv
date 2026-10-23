@@ -43,7 +43,13 @@ function mudarEpisodio(filme: Parameters<NonNullable<MoviePlayerProps['onEpisode
   else reproducao.trocarEpisodio(filme);
 }
 
-const tempo = (segundos: number) => `${Math.floor(segundos / 60)}:${String(Math.floor(segundos % 60)).padStart(2, '0')}`;
+const tempo = (segundos: number) => {
+  const total = Math.max(0, Math.floor(segundos));
+  const horas = Math.floor(total / 3600);
+  const minutos = Math.floor((total % 3600) / 60);
+  const resto = String(total % 60).padStart(2, '0');
+  return horas ? `${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}:${resto}` : `${minutos}:${resto}`;
+};
 
 export function MiniPlayer() {
   const sessao = useSyncExternalStore(reproducao.assinar, reproducao.atual);
@@ -99,8 +105,8 @@ export function MiniPlayer() {
   const expandir = () => {
     const atual = reproducao.atual().lembranca;
     if (!atual) return;
-    if (atual.tipo === 'canal') navigate(`/ao-vivo/${encodeURIComponent(atual.canal.id)}`);
-    else navigate('/movies', { state: { retomarFilme: atual.filme, retomarSerie: atual.serie, retomarQuando: Date.now() } });
+    if (atual.tipo === 'canal') void navigate(`/ao-vivo/${encodeURIComponent(atual.canal.id)}`);
+    else void navigate('/movies', { state: { retomarFilme: atual.filme, retomarSerie: atual.serie, retomarQuando: Date.now() } });
   };
 
   const titulo = lembranca?.tipo === 'canal' ? lembranca.canal.name : lembranca?.filme.name;
