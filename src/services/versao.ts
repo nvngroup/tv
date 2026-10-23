@@ -2,7 +2,7 @@
  * A versão publicada e os links de download dos apps.
  *
  * Os links não são escritos à mão: saem da última release do repositório
- * `SaimoTV/saimo-downloads`, pela lista de anexos que o GitHub devolve. Assim a
+ * `SaimoTV/nvnplus-downloads`, pela lista de anexos que o GitHub devolve. Assim a
  * página /app e os atalhos (/tvbox, /celular, /mac…) acertam sozinhos quando o
  * release sobe outra versão ou muda de repositório — basta publicar os arquivos
  * com os nomes de sempre.
@@ -27,11 +27,11 @@ export interface Versao {
 }
 
 /** O repositório dos downloads — o único nome escrito no site. */
-export const REPO_DOWNLOADS = 'SaimoTV/saimo-downloads';
+export const REPO_DOWNLOADS = 'SaimoTV/nvnplus-downloads';
 
 /** versao.json publicado, com a versão e as notas do release. */
 export const URL_VERSAO =
-  'https://canais-saimo.pages.dev/versao.json';
+  'https://canais-nvnplus.pages.dev/versao.json';
 
 /** Última release do repositório, com o nome e o endereço de cada anexo. */
 export const URL_RELEASE = `https://api.github.com/repos/${REPO_DOWNLOADS}/releases/latest`;

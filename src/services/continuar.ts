@@ -7,7 +7,7 @@
  */
 import type { ItemDestaque } from './vodService';
 
-const CHAVE = 'saimo-continuar';
+const CHAVE = 'nvnplus-continuar';
 
 export interface Andamento {
   origem: ItemDestaque;

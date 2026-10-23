@@ -13,7 +13,7 @@ import './AppDownload.css';
  * moram. Sem o arquivo, o botão vira "Tentar novamente" em vez de ficar morto.
  */
 
-/** Código do Saimo TV no app Downloader (AFTVnews): digitar no lugar do endereço. */
+/** Código do NvN.Plus TV no app Downloader (AFTVnews): digitar no lugar do endereço. */
 const CODIGO_DOWNLOADER = '3630056';
 
 type AppId = 'tvbox' | 'cell' | 'mac' | 'windows' | 'samsung' | 'lg';
@@ -35,7 +35,7 @@ const APPS: App[] = [
   {
     id: 'tvbox',
     aba: 'TV Box',
-    titulo: 'Saimo TV para TV Box',
+    titulo: 'NvN.Plus TV para TV Box',
     subtitulo: 'Android TV, Fire TV Stick, Mi Box, Chromecast com Google TV e TV Box Android',
     arquivo: 'SaimoTV.apk',
     atalho: '/tvbox',
@@ -45,13 +45,13 @@ const APPS: App[] = [
       { titulo: 'Instale o Downloader', texto: 'Na loja do aparelho (Play Store ou Amazon Appstore), procure por “Downloader” e instale.' },
       { titulo: 'Digite o código ou o endereço', texto: 'Abra o Downloader e digite o código 3630056 (ou o endereço curto mostrado acima). O download começa sozinho.' },
       { titulo: 'Permita a instalação', texto: 'Se o aparelho pedir, ative “Instalar apps desconhecidos” para o Downloader.' },
-      { titulo: 'Pronto', texto: 'Instale e abra o Saimo TV. As próximas versões são oferecidas dentro do próprio app.' },
+      { titulo: 'Pronto', texto: 'Instale e abra o NvN.Plus TV. As próximas versões são oferecidas dentro do próprio app.' },
     ],
   },
   {
     id: 'cell',
     aba: 'Celular',
-    titulo: 'Saimo TV para celular',
+    titulo: 'NvN.Plus TV para celular',
     subtitulo: 'Celulares e tablets Android',
     arquivo: 'SaimoCell.apk',
     atalho: '/celular',
@@ -61,13 +61,13 @@ const APPS: App[] = [
       { titulo: 'Baixe o APK', texto: 'Toque no botão acima. O navegador pode avisar que o arquivo é um app: confirme o download.' },
       { titulo: 'Abra o arquivo', texto: 'Toque na notificação de download concluído, ou abra o arquivo pela pasta Downloads.' },
       { titulo: 'Permita a instalação', texto: 'Se o Android pedir, ative “Permitir desta fonte” para o navegador e volte.' },
-      { titulo: 'Pronto', texto: 'Instale e abra o Saimo TV. As próximas versões são oferecidas dentro do próprio app.' },
+      { titulo: 'Pronto', texto: 'Instale e abra o NvN.Plus TV. As próximas versões são oferecidas dentro do próprio app.' },
     ],
   },
   {
     id: 'windows',
     aba: 'Windows',
-    titulo: 'Saimo TV para Windows',
+    titulo: 'NvN.Plus TV para Windows',
     subtitulo: 'PC e notebook com Windows 10 ou 11 (64 bits)',
     arquivo: 'SaimoTV-Windows.zip',
     atalho: '/windows',
@@ -76,14 +76,14 @@ const APPS: App[] = [
     passos: [
       { titulo: 'Baixe o arquivo', texto: 'Clique no botão acima. O navegador pode avisar que o arquivo é pouco baixado: mande manter.' },
       { titulo: 'Extraia o arquivo', texto: 'Clique com o botão direito no “SaimoTV-Windows.zip” baixado e escolha "Extrair Tudo..." para descompactar a pasta.' },
-      { titulo: 'Rode o aplicativo', texto: 'Abra a pasta extraída e dê um duplo clique em “Saimo TV.exe”. Mantenha os arquivos .dll na mesma pasta do executável.' },
+      { titulo: 'Rode o aplicativo', texto: 'Abra a pasta extraída e dê um duplo clique em “NvN.Plus TV.exe”. Mantenha os arquivos .dll na mesma pasta do executável.' },
       { titulo: 'Se o Windows avisar', texto: 'Na tela do Windows Defender, clique em “Mais informações” e depois em “Executar assim mesmo”. Se pedir DLL, clique com o botão direito na DLL > Propriedades > marque "Desbloquear".' },
     ],
   },
   {
     id: 'mac',
     aba: 'Mac',
-    titulo: 'Saimo TV para Mac',
+    titulo: 'NvN.Plus TV para Mac',
     subtitulo: 'Macs com chip Apple (M1, M2, M3, M4…)',
     arquivo: 'SaimoTV.dmg',
     atalho: '/mac',
@@ -91,7 +91,7 @@ const APPS: App[] = [
     requisitos: ['macOS 15 Sequoia ou mais novo', 'Mac com chip Apple (não roda em Mac Intel)', 'Conexão com a internet'],
     passos: [
       { titulo: 'Baixe o DMG', texto: 'Clique no botão acima. O arquivo vai para a pasta Downloads.' },
-      { titulo: 'Arraste para Aplicativos', texto: 'Abra o SaimoTV.dmg e arraste o Saimo TV para a pasta Aplicativos, substituindo o antigo se houver.' },
+      { titulo: 'Arraste para Aplicativos', texto: 'Abra o SaimoTV.dmg e arraste o NvN.Plus TV para a pasta Aplicativos, substituindo o antigo se houver.' },
       { titulo: 'Libere na primeira abertura', texto: 'Se o macOS disser que não pode verificar o app, vá em Ajustes do Sistema › Privacidade e Segurança e clique em “Abrir Mesmo Assim”.' },
       { titulo: 'Pronto', texto: 'O app avisa quando sair versão nova e abre o download no navegador.' },
     ],
@@ -99,7 +99,7 @@ const APPS: App[] = [
   {
     id: 'samsung',
     aba: 'Samsung',
-    titulo: 'Saimo TV para TV Samsung',
+    titulo: 'NvN.Plus TV para TV Samsung',
     subtitulo: 'Smart TVs Samsung (Tizen) de 2020 em diante',
     arquivo: 'SaimoTV-Samsung.wgt',
     atalho: '/samsung',
@@ -109,13 +109,13 @@ const APPS: App[] = [
       { titulo: 'Ligue o modo desenvolvedor', texto: 'Na TV, abra Apps, digite 12345 no controle, ligue “Developer mode” e informe o IP do seu computador. Reinicie a TV.' },
       { titulo: 'Baixe o arquivo', texto: 'Baixe o SaimoTV-Samsung.wgt no computador pelo botão acima.' },
       { titulo: 'Assine e instale', texto: 'No Tizen Studio (ou em um instalador de .wgt), gere o certificado Samsung com o ID da sua TV, assine o pacote e instale pelo sdb: sdb connect IP-DA-TV e tizen install -n SaimoTV-Samsung.wgt -t NOME-DA-TV.' },
-      { titulo: 'Pronto', texto: 'Abra o Saimo TV em Apps. O conteúdo do app atualiza sozinho: só é preciso reinstalar quando o aviso pedir.' },
+      { titulo: 'Pronto', texto: 'Abra o NvN.Plus TV em Apps. O conteúdo do app atualiza sozinho: só é preciso reinstalar quando o aviso pedir.' },
     ],
   },
   {
     id: 'lg',
     aba: 'LG',
-    titulo: 'Saimo TV para TV LG',
+    titulo: 'NvN.Plus TV para TV LG',
     subtitulo: 'Smart TVs LG (webOS) de 2020 em diante',
     arquivo: 'SaimoTV-LG.ipk',
     atalho: '/lg',
@@ -125,7 +125,7 @@ const APPS: App[] = [
       { titulo: 'Ligue o modo desenvolvedor', texto: 'Na TV, instale o app “Developer Mode” pela LG Content Store, entre com a conta LG e ligue “Dev Mode Status” e “Key Server”.' },
       { titulo: 'Baixe o arquivo', texto: 'Baixe o SaimoTV-LG.ipk no computador pelo botão acima.' },
       { titulo: 'Instale', texto: 'Com o ares-cli: ares-setup-device (cadastre a TV), ares-novacom --device TV --getkey e ares-install --device TV SaimoTV-LG.ipk.' },
-      { titulo: 'Renove de tempos em tempos', texto: 'O modo desenvolvedor da LG expira em cerca de 50 horas. Abra o app “Developer Mode” e toque em “Extend” para manter o Saimo TV instalado.' },
+      { titulo: 'Renove de tempos em tempos', texto: 'O modo desenvolvedor da LG expira em cerca de 50 horas. Abra o app “Developer Mode” e toque em “Extend” para manter o NvN.Plus TV instalado.' },
     ],
   },
 ];

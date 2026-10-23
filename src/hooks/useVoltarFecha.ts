@@ -40,13 +40,13 @@ export function useVoltarFecha(aberta: boolean, fechar: () => void): void {
     // O estado do roteador vai junto: ele lê o próprio índice do histórico,
     // e uma entrada sem ele o confundiria no voltar.
     const atual = (window.history.state ?? {}) as Record<string, unknown>;
-    window.history.pushState({ ...atual, saimoCamada: marca }, '');
+    window.history.pushState({ ...atual, nvnplusCamada: marca }, '');
     let fechouPeloVoltar = false;
 
     const aoVoltar = () => {
-      const estado = window.history.state as { saimoCamada?: number } | null;
+      const estado = window.history.state as { nvnplusCamada?: number } | null;
       // Voltou para antes desta camada: ela fecha.
-      if (!estado || estado.saimoCamada === undefined || estado.saimoCamada < marca) {
+      if (!estado || estado.nvnplusCamada === undefined || estado.nvnplusCamada < marca) {
         fechouPeloVoltar = true;
         fecharRef.current();
       }

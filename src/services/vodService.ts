@@ -8,7 +8,7 @@
  * navega por letra, o download acompanha o dedo em vez de contrariá-lo.
  *
  * As capas não existem na origem e vêm do TMDB, buscadas e pontuadas com o
- * mesmo algoritmo do `api-saimo-tv` — o gerador que alimenta o catálogo do
+ * mesmo algoritmo do `api-nvnplus-tv` — o gerador que alimenta o catálogo do
  * Supabase. Pegar só o primeiro resultado (como este site fazia antes, via
  * Cinemeta) errava a capa com frequência; pontuar por título e ano é o que
  * torna a busca confiável o bastante para usar sem checagem manual.

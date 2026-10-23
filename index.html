@@ -2,21 +2,21 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <!-- Redirecionamento automático de saimo-tv.pages.dev para saimo-tv-f2w.pages.dev com migração de dados -->
+    <!-- Redirecionamento automático de nvnplus-tv.pages.dev para nvnplus-tv-f2w.pages.dev com migração de dados -->
     <script>
       (function () {
         var host = (location.hostname || '').toLowerCase();
         var CHAVES = [
           'tv-favorites', 'tv-last-channel', 'tv-volume', 'movie-volume', 'movie-skip-time',
-          'current-movie-id', 'saimo-vod-favoritos', 'saimo-continuar', 'saimo-canais-personalizados',
-          'saimo-ao-iniciar', 'saimo-upscaling', 'saimo-upscale-4k', 'saimo-upscale-hd',
-          'saimo-zero-delay', 'saimo-audio-inteligente', 'saimo-buscas-recentes',
-          'saimo-radios-recentes', 'saimo-entrada', 'saimo-telemetria-id', 'adult-mode-global'
+          'current-movie-id', 'nvnplus-vod-favoritos', 'nvnplus-continuar', 'nvnplus-canais-personalizados',
+          'nvnplus-ao-iniciar', 'nvnplus-upscaling', 'nvnplus-upscale-4k', 'nvnplus-upscale-hd',
+          'nvnplus-zero-delay', 'nvnplus-audio-inteligente', 'nvnplus-buscas-recentes',
+          'nvnplus-radios-recentes', 'nvnplus-entrada', 'nvnplus-telemetria-id', 'adult-mode-global'
         ];
         var PREFIXO = 'movie-progress-';
 
-        // 1. ORIGEM: No saimo-tv.pages.dev, exporta dados do localStorage e redireciona
-        if (host === 'saimo-tv.pages.dev' || host === 'www.saimo-tv.pages.dev') {
+        // 1. ORIGEM: No nvnplus-tv.pages.dev, exporta dados do localStorage e redireciona
+        if (host === 'nvnplus-tv.pages.dev' || host === 'www.nvnplus-tv.pages.dev') {
           var dados = {};
           var temDados = false;
           try {
@@ -52,7 +52,7 @@
             } catch (e) {}
           }
 
-          var destino = 'https://saimo-tv-f2w.pages.dev' + location.pathname + location.search + hash;
+          var destino = 'https://nvnplus-tv-f2w.pages.dev' + location.pathname + location.search + hash;
           location.replace(destino);
           return;
         }
@@ -112,21 +112,21 @@
     <link rel="apple-touch-icon" href="%BASE_URL%icons/apple-touch-icon.png" />
     <link rel="manifest" href="%BASE_URL%manifest.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Saimo TV: canais ao vivo, filmes e séries — no navegador, na TV, no celular e no computador." />
+    <meta name="description" content="NvN.Plus TV: canais ao vivo, filmes e séries — no navegador, na TV, no celular e no computador." />
     <!-- Prévia do link no WhatsApp e redes sociais. -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Saimo TV" />
-    <meta property="og:title" content="Saimo TV" />
+    <meta property="og:site_name" content="NvN.Plus TV" />
+    <meta property="og:title" content="NvN.Plus TV" />
     <meta property="og:description" content="Canais ao vivo, filmes e séries — no navegador, na TV, no celular e no computador." />
-    <meta property="og:url" content="https://saimo-tv-f2w.pages.dev/" />
+    <meta property="og:url" content="https://nvnplus-tv-f2w.pages.dev/" />
     <!-- Absoluto: WhatsApp e redes sociais não resolvem caminho relativo. -->
-    <meta property="og:image" content="https://saimo-tv-f2w.pages.dev/icons/icon-512.png" />
+    <meta property="og:image" content="https://nvnplus-tv-f2w.pages.dev/icons/icon-512.png" />
     <meta property="og:image:width" content="512" />
     <meta property="og:image:height" content="512" />
     <meta property="og:locale" content="pt_BR" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:image" content="https://saimo-tv-f2w.pages.dev/icons/icon-512.png" />
-    <link rel="canonical" href="https://saimo-tv-f2w.pages.dev/" />
+    <meta name="twitter:image" content="https://nvnplus-tv-f2w.pages.dev/icons/icon-512.png" />
+    <link rel="canonical" href="https://nvnplus-tv-f2w.pages.dev/" />
     <meta name="theme-color" content="#0a0a0a" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -134,7 +134,7 @@
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <!-- O SDK do Chromecast só é baixado quando alguém usa o player (castService). -->
-    <title>Saimo TV</title>
+    <title>NvN.Plus TV</title>
   </head>
   <body>
     <div id="root"></div>

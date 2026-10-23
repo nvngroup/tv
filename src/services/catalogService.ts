@@ -20,8 +20,8 @@ import { peneirarCanais } from './fontesDesativadas';
 
 export { normalise };
 
-const CACHE_KEY = 'saimo-catalogo-v2';
-const CACHE_RESTRITOS = 'saimo-restritos-v1';
+const CACHE_KEY = 'nvnplus-catalogo-v2';
+const CACHE_RESTRITOS = 'nvnplus-restritos-v1';
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
 
 interface ParsedChannel {

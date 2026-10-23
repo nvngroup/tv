@@ -22,7 +22,7 @@ export function useMediaSession(opcoes: {
     const ms = navigator.mediaSession;
     ms.metadata = new MediaMetadata({
       title: titulo,
-      artist: subtitulo ?? 'Saimo TV',
+      artist: subtitulo ?? 'NvN.Plus TV',
       artwork: capa ? [{ src: capa, sizes: '512x512' }] : [{ src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' }],
     });
     const acoes: [MediaSessionAction, (() => void) | undefined][] = [

@@ -2,7 +2,7 @@
  * Contagem de quem está online, por dispositivo (substitui o monitor antigo, desligado).
  *
  * Os apps só chamam aqui se estiverem na amostra (FNV-1a do id; percentual em /telemetria.json),
- * com uma batida a cada 10 minutos. Quem conta é o Worker `saimo-online` (Durable Object só em
+ * com uma batida a cada 10 minutos. Quem conta é o Worker `nvnplus-online` (Durable Object só em
  * memória, sem banco), ligado a este projeto pela binding ONLINE. Sem a binding, responde do mesmo
  * jeito para os apps seguirem normais, e nada é contado.
  */

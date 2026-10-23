@@ -44,10 +44,10 @@ const Novidades = lazy(() => import('./components/Novidades').then(m => ({ defau
 
 // Loading fallback
 const LoadingFallback = () => (
-  <div style={{ 
-    display: 'flex', 
-    justifyContent: 'center', 
-    alignItems: 'center', 
+  <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     height: '100vh',
     background: 'var(--bg-primary, #0a0a0a)',
     color: 'var(--text-primary, #fff)'
@@ -592,9 +592,9 @@ function MoviesPage() {
         <div className="movie-player-overlay">
           <Suspense fallback={<LoadingFallback />}>
             <div className="movie-player-container">
-              <MoviePlayer 
+              <MoviePlayer
                 key={selectedMovie.id}
-                movie={selectedMovie} 
+                movie={selectedMovie}
                 onBack={handleBackFromMovie}
                 seriesInfo={seriesInfo}
                 onEpisodeChange={handleEpisodeChange}
@@ -614,7 +614,7 @@ function MoviesPage() {
 // Layout principal que gerencia scroll
 function AppLayout() {
   const location = useLocation();
-  
+
   // Reset scroll on route change
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -649,7 +649,7 @@ function AppLayout() {
         </Suspense>
       } />
       {/* Ferramenta interna: só para quem ligou o modo de testes no navegador. */}
-      {localStorage.getItem('saimo-dev') === '1' && (
+      {localStorage.getItem('nvnplus-dev') === '1' && (
         <Route path="/teste" element={
           <Suspense fallback={<LoadingFallback />}>
             <StreamTester />
@@ -704,7 +704,7 @@ function App() {
   useEffect(() => {
     const syncUpscaling = () => {
       try {
-        const raw = localStorage.getItem('saimo-upscaling');
+        const raw = localStorage.getItem('nvnplus-upscaling');
         const val = raw ? JSON.parse(raw) : 'off';
         document.documentElement.dataset.upscaling = (val === 'hd' || val === '4k') ? val : 'off';
       } catch {
@@ -712,7 +712,7 @@ function App() {
       }
     };
     syncUpscaling();
-    window.addEventListener('saimo-upscaling-mudou', syncUpscaling);
+    window.addEventListener('nvnplus-upscaling-mudou', syncUpscaling);
 
     // Vídeo que já tem a resolução do alvo não recebe o filtro de nitidez (data-nativo="1").
     // Alvo: a altura real da tela no modo 4K; até 1080 no modo HD.
@@ -730,14 +730,14 @@ function App() {
     // Eventos de mídia não sobem: na fase de captura o documento recebe todos.
     document.addEventListener('loadedmetadata', aoMudarVideo, true);
     document.addEventListener('resize', aoMudarVideo, true);
-    window.addEventListener('saimo-upscaling-mudou', reavaliarTodos);
+    window.addEventListener('nvnplus-upscaling-mudou', reavaliarTodos);
     window.addEventListener('storage', syncUpscaling);
     return () => {
-      window.removeEventListener('saimo-upscaling-mudou', syncUpscaling);
+      window.removeEventListener('nvnplus-upscaling-mudou', syncUpscaling);
       window.removeEventListener('storage', syncUpscaling);
       document.removeEventListener('loadedmetadata', aoMudarVideo, true);
       document.removeEventListener('resize', aoMudarVideo, true);
-      window.removeEventListener('saimo-upscaling-mudou', reavaliarTodos);
+      window.removeEventListener('nvnplus-upscaling-mudou', reavaliarTodos);
     };
   }, []);
 
@@ -747,14 +747,14 @@ function App() {
         <AdultModeProvider>
           <svg width="0" height="0" style={{ position: 'absolute', pointerEvents: 'none' }} aria-hidden="true">
             <defs>
-              <filter id="saimo-upscale-hd" colorInterpolationFilters="sRGB">
+              <filter id="nvnplus-upscale-hd" colorInterpolationFilters="sRGB">
                 <feConvolveMatrix
                   order="3"
                   kernelMatrix="0 -0.45 0 -0.45 2.8 -0.45 0 -0.45 0"
                   preserveAlpha="true"
                 />
               </filter>
-              <filter id="saimo-upscale-4k" colorInterpolationFilters="sRGB">
+              <filter id="nvnplus-upscale-4k" colorInterpolationFilters="sRGB">
                 <feConvolveMatrix
                   order="3"
                   kernelMatrix="-0.15 -0.55 -0.15 -0.55 3.8 -0.55 -0.15 -0.55 -0.15"

@@ -77,8 +77,8 @@ export function proxyBase(): string {
   return principal;
 }
 
-const PROXY_PRINCIPAL = 'https://saimo-tv.pages.dev';
-const PROXY_RESERVA = 'https://saimo-tv2.pages.dev';
+const PROXY_PRINCIPAL = 'https://nvnplus-tv.pages.dev';
+const PROXY_RESERVA = 'https://nvnplus-tv2.pages.dev';
 let proxyPrincipalCaido = false;
 
 /**
@@ -131,7 +131,7 @@ export interface Attempt {
  * ir direto ao proxy, e a lista mora no próprio navegador porque a resposta
  * depende da origem de quem assiste, não do catálogo.
  */
-const CHAVE_SEM_CORS = 'saimo-sem-cors';
+const CHAVE_SEM_CORS = 'nvnplus-sem-cors';
 
 function hostsSemCors(): string[] {
   try {

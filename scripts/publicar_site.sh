@@ -2,8 +2,8 @@
 #
 # Publica o site no Cloudflare Pages sem passar pelo GitHub (upload direto).
 #
-# ATENÇÃO: o site de verdade (saimo-tv.pages.dev) é um projeto ligado ao Git e publica sozinho
-# a cada push na `main` de gabrielsaimo/Saimo-TV. Este script serve para publicar noutro
+# ATENÇÃO: o site de verdade (nvnplus-tv.pages.dev) é um projeto ligado ao Git e publica sozinho
+# a cada push na `main` de gabrielnvnplus/Saimo-TV. Este script serve para publicar noutro
 # projeto por upload (SAIMO_PROJETO_SITE) quando o Git não puder ser usado.
 #
 #   ./scripts/publicar_site.sh
@@ -16,7 +16,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 export CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID:-e0f6d97a9f8f4bb1b7a8ce6a7a470b3f}"
-PROJETO="${SAIMO_PROJETO_SITE:-saimo-tv}"
+PROJETO="${SAIMO_PROJETO_SITE:-nvnplus-tv}"
 
 achar_wrangler() {
   if command -v wrangler >/dev/null 2>&1; then command -v wrangler; return; fi

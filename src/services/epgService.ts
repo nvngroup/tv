@@ -19,10 +19,10 @@ import { proxyBase } from '../utils/streamUrl';
 import { lerGuia, TABELAS_VAZIAS, type TabelasGuia } from '../utils/guiaTabelas';
 import { linkCanais } from './listas';
 
-const CACHE_KEY = 'saimo-epg-v6';
-const CACHE_TABELAS = 'saimo-guia-tabelas';
+const CACHE_KEY = 'nvnplus-epg-v6';
+const CACHE_TABELAS = 'nvnplus-guia-tabelas';
 /** Chaves de versões antigas, invalidadas a cada mudança de arquitetura do guia. */
-const CACHES_VELHOS = ['saimo-epg-v5', 'saimo-epg-v4', 'saimo-epg-v3'];
+const CACHES_VELHOS = ['nvnplus-epg-v5', 'nvnplus-epg-v4', 'nvnplus-epg-v3'];
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
 /** Programa que acabou há mais que isto não interessa a tela nenhuma. */
 const PASSADO_UTIL_MS = 3 * 60 * 60 * 1000;

@@ -136,7 +136,7 @@ Exemplos:
 
 ### Modo Adulto (Secreto)
 
-Para desbloquear canais adultos, o usuário deve clicar **15 vezes** no logo "Saimo TV":
+Para desbloquear canais adultos, o usuário deve clicar **15 vezes** no logo "NvN.Plus TV":
 
 ```typescript
 const SECRET_CLICK_COUNT = 15;
@@ -300,24 +300,24 @@ const channelToMeuGuiaCode: Record<string, string> = {
   // Globo
   'globo-sp': 'GRD',
   'globo-news': 'GLN',
-  
+
   // HBO
   'hbo': 'HBO',
   'hbo2': 'HB2',
-  
+
   // SporTV
   'sportv': 'SPO',
   'sportv2': 'SP2',
-  
+
   // ESPN
   'espn': 'ESP',
   'espn2': 'ES2',
-  
+
   // TV Aberta
   'sbt': 'SBT',
   'band': 'BAN',
   'record': 'REC',
-  
+
   // E muitos outros...
 };
 ```
@@ -331,16 +331,16 @@ async function fetchChannelEPGAsync(channelId: string): Promise<Program[]> {
 
   // URL do meuguia.tv
   const url = `https://meuguia.tv/programacao/canal/${meuguiaCode}`;
-  
+
   // Proxy para evitar CORS
   const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-  
+
   const response = await fetch(proxyUrl);
   const html = await response.text();
-  
+
   // Parse do HTML
   const programs = parseHTMLPrograms(html, channelId);
-  
+
   return programs;
 }
 ```
@@ -352,7 +352,7 @@ O parser extrai programas do HTML usando regex:
 ```typescript
 function parseHTMLPrograms(html: string, channelId: string): Program[] {
   const programs: Program[] = [];
-  
+
   // Regex para capturar cada programa
   // Estrutura: <div class='lileft time'>HH:MM</div> ... <h2>Título</h2> ... <h3>Categoria</h3>
   const programRegex = /<div class=['"]lileft time['"]>\s*(\d{1,2}:\d{2})\s*<\/div>[\s\S]*?<h2>([^<]+)<\/h2>[\s\S]*?<h3>([^<]*)<\/h3>/gi;
@@ -362,7 +362,7 @@ function parseHTMLPrograms(html: string, channelId: string): Program[] {
     const timeStr = match[1];     // "20:00"
     const title = match[2].trim(); // "Jornal Nacional"
     const category = match[3].trim(); // "Jornalístico"
-    
+
     // Processa e adiciona ao array
     programs.push({
       id: `${channelId}-${Date.now()}`,
@@ -372,7 +372,7 @@ function parseHTMLPrograms(html: string, channelId: string): Program[] {
       endTime: /* próximo programa */,
     });
   }
-  
+
   return programs;
 }
 ```
@@ -397,7 +397,7 @@ async function loadAllEPGInBackground(): Promise<void> {
   const allChannelIds = Object.keys(channelToMeuGuiaCode);
   const batchSize = 3;  // Carrega 3 por vez
   const delayBetweenBatches = 1000; // 1 segundo entre lotes
-  
+
   for (let i = 0; i < allChannelIds.length; i += batchSize) {
     const batch = allChannelIds.slice(i, i + batchSize);
     await Promise.all(batch.map(id => fetchChannelEPGAsync(id)));
@@ -431,7 +431,7 @@ function notifyListeners(channelId: string, programs: Program[]): void {
 ### Métodos Suportados
 
 ```typescript
-type CastMethod = 
+type CastMethod =
   | 'chromecast'      // Google Cast (Chromecast, TVs com Cast)
   | 'airplay'         // AirPlay (Apple TV, Mac)
   | 'remotePlayback'  // Remote Playback API
@@ -446,7 +446,7 @@ type CastMethod =
 ```typescript
 getCapabilities(): CastCapabilities {
   const video = document.createElement('video');
-  
+
   return {
     chromecast: !!window.cast?.framework,
     airplay: 'webkitShowPlaybackTargetPicker' in video,
@@ -471,14 +471,14 @@ async castToChromecast(mediaUrl: string, title: string): Promise<boolean> {
 
   const mediaInfo = new window.chrome.cast.media.MediaInfo(mediaUrl, 'application/x-mpegurl');
   mediaInfo.streamType = window.chrome.cast.media.StreamType.LIVE;
-  
+
   const metadata = new window.chrome.cast.media.GenericMediaMetadata();
   metadata.title = title;
   mediaInfo.metadata = metadata;
 
   const request = new window.chrome.cast.media.LoadRequest(mediaInfo);
   await session.loadMedia(request);
-  
+
   return true;
 }
 ```
@@ -538,7 +538,7 @@ function App() {
   const [favorites, setFavorites] = useLocalStorage<string[]>('tv-favorites', []);
   const [isTheaterMode, setIsTheaterMode] = useState(false);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
-  
+
   // ... lógica de navegação, favoritos, etc
 }
 ```

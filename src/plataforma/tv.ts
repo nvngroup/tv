@@ -1,5 +1,5 @@
 /**
- * Saimo TV dentro de uma TV Samsung (Tizen) ou LG (webOS).
+ * NvN.Plus TV dentro de uma TV Samsung (Tizen) ou LG (webOS).
  *
  * As duas rodam o app como página web num Chromium da própria TV. Aqui ficam só as
  * diferenças que importam: saber em que TV estamos, traduzir as teclas do controle
@@ -133,7 +133,7 @@ function pedirParaSair(): void {
   if (agora - ultimoVoltar < 2500) { sairDoApp(); return; }
   ultimoVoltar = agora;
   const aviso = document.createElement('div');
-  aviso.textContent = 'Aperte Voltar de novo para sair do Saimo TV';
+  aviso.textContent = 'Aperte Voltar de novo para sair do NvN.Plus TV';
   aviso.style.cssText = 'position:fixed;left:50%;bottom:8%;transform:translateX(-50%);z-index:2147483647;' +
     'background:#18181bee;color:#fff;font:600 28px system-ui,sans-serif;padding:18px 32px;border-radius:16px;' +
     'border:1px solid #ffffff33';

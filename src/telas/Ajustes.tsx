@@ -22,17 +22,17 @@ import type { Channel } from '../types/channel';
 import './Ajustes.css';
 
 export type AoIniciar = 'inicio' | 'ultimo';
-export const CHAVE_AO_INICIAR = 'saimo-ao-iniciar';
+export const CHAVE_AO_INICIAR = 'nvnplus-ao-iniciar';
 
 export type ModoUpscaling = 'off' | 'hd' | '4k';
-export const CHAVE_UPSCALING = 'saimo-upscaling';
+export const CHAVE_UPSCALING = 'nvnplus-upscaling';
 
 
 const LIMPAR: { rotulo: string; chaves: string[]; aviso: string }[] = [
-  { rotulo: 'Limpar “Continue assistindo”', chaves: ['saimo-continuar'], aviso: 'Histórico limpo' },
-  { rotulo: 'Limpar buscas recentes', chaves: ['saimo-buscas-recentes'], aviso: 'Buscas limpas' },
-  { rotulo: 'Limpar rádios ouvidas', chaves: ['saimo-radios-recentes'], aviso: 'Rádios limpas' },
-  { rotulo: 'Limpar favoritos', chaves: ['tv-favorites', 'saimo-vod-favoritos'], aviso: 'Favoritos limpos' },
+  { rotulo: 'Limpar “Continue assistindo”', chaves: ['nvnplus-continuar'], aviso: 'Histórico limpo' },
+  { rotulo: 'Limpar buscas recentes', chaves: ['nvnplus-buscas-recentes'], aviso: 'Buscas limpas' },
+  { rotulo: 'Limpar rádios ouvidas', chaves: ['nvnplus-radios-recentes'], aviso: 'Rádios limpas' },
+  { rotulo: 'Limpar favoritos', chaves: ['tv-favorites', 'nvnplus-vod-favoritos'], aviso: 'Favoritos limpos' },
 ];
 
 export function Ajustes() {
@@ -61,7 +61,7 @@ export function Ajustes() {
   const alterarUpscaling = (modo: ModoUpscaling) => {
     setUpscaling(modo);
     document.documentElement.dataset.upscaling = modo;
-    window.dispatchEvent(new Event('saimo-upscaling-mudou'));
+    window.dispatchEvent(new Event('nvnplus-upscaling-mudou'));
   };
 
   useEffect(() => aoMudarPersonalizados(() => setPersonalizados(canaisLocais())), []);
@@ -73,12 +73,12 @@ export function Ajustes() {
 
   const limparDados = (chaves: string[], texto: string) => {
     chaves.forEach((c) => localStorage.removeItem(c));
-    window.dispatchEvent(new Event('saimo-vod-favoritos-mudou'));
+    window.dispatchEvent(new Event('nvnplus-vod-favoritos-mudou'));
     notificar(texto);
   };
 
   const handleExportarTodos = () => {
-    exportarM3U(canais, 'saimo-tv-todos-canais.m3u');
+    exportarM3U(canais, 'nvnplus-tv-todos-canais.m3u');
     notificar('Lista de canais exportada!');
   };
 
@@ -88,7 +88,7 @@ export function Ajustes() {
       notificar('Você não tem canais favoritos para exportar');
       return;
     }
-    exportarM3U(favs, 'saimo-tv-favoritos.m3u');
+    exportarM3U(favs, 'nvnplus-tv-favoritos.m3u');
     notificar('Canais favoritos exportados!');
   };
 

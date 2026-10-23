@@ -1,4 +1,4 @@
-# Saimo TV para Samsung (Tizen) e LG (webOS) — plano
+# NvN.Plus TV para Samsung (Tizen) e LG (webOS) — plano
 
 Escrito em 19/10/2026. **Status (19/10/2026): as fases 1, 2 e 5 estão feitas; a fase 3 foi feita
 sem o AVPlay; a fase 0 (prova nas TVs reais) e a fase 4 (desempenho) dependem de uma TV de
@@ -28,18 +28,18 @@ Existem três jeitos de colocar um app web numa TV. A escolha:
 | Formato | Como é | Prós | Contras |
 |---|---|---|---|
 | Empacotado puro | Todo o JS dentro do `.wgt`/`.ipk` | Funciona offline; origem local, sem CORS/mixed content | Cada correção = reinstalar na TV (e instalar na TV é a parte difícil, ver §6) |
-| Hospedado puro | O app só redireciona para `https://saimo-tv.pages.dev/tv/` | Atualiza na hora | Página https: vídeo `http://` vira conteúdo misto; CORS igual ao navegador → precisa do `/api/proxy` (custa pedidos de Worker no plano de US$ 10) |
+| Hospedado puro | O app só redireciona para `https://nvnplus-tv.pages.dev/tv/` | Atualiza na hora | Página https: vídeo `http://` vira conteúdo misto; CORS igual ao navegador → precisa do `/api/proxy` (custa pedidos de Worker no plano de US$ 10) |
 | **Casca + código remoto (escolhido)** | O pacote tem um `index.html` pequeno (o "carregador") que baixa o JS/CSS da versão atual do Pages como `<script>` comum e roda **dentro da origem local do pacote** | Atualiza sem reinstalar **e** mantém os privilégios do pacote (vídeo http, AVPlay da Samsung, teclas do controle) | Precisa do carregador e de um manifesto de versão; tem que validar cedo (Fase 0) que as duas TVs deixam `<script src="https://…">` rodar a partir do pacote |
 
 Fluxo do carregador:
 
 1. Abre instantâneo com a tela de abertura que já vem no pacote.
-2. Lê `https://saimo-tv.pages.dev/tv/manifesto.json` (`{versao, js:[…], css:[…], minimoCasca}`).
+2. Lê `https://nvnplus-tv.pages.dev/tv/manifesto.json` (`{versao, js:[…], css:[…], minimoCasca}`).
 3. Injeta os arquivos como `<script>`/`<link>` clássicos (sem `type="module"`: no webOS,
    módulo a partir de `file://` é bloqueado).
 4. Sem rede ou manifesto quebrado: usa a cópia do código que veio no próprio pacote.
 5. `minimoCasca` maior que a casca instalada → mostra "Instale a versão nova do app" com
-   o link curto (`saimo-tv.pages.dev/samsung` ou `/lg`).
+   o link curto (`nvnplus-tv.pages.dev/samsung` ou `/lg`).
 
 Assim a casca quase nunca muda; o app em si atualiza junto com o site, na hora.
 
@@ -83,7 +83,7 @@ src/services/players/        adaptador de player (§4.3)
   para números 0–9 (o código 1010 do parental precisa delas), Play/Pausa, CH+/CH−,
   cores, Info. Mapear **Voltar**: `10009` (Samsung) e `461` (LG) para a ação `back` que o
   `DpadContext` já entende. CH+/CH− trocam de canal no player ao vivo.
-- **Sair**: voltar na tela inicial pergunta "Sair do Saimo TV?" e chama
+- **Sair**: voltar na tela inicial pergunta "Sair do NvN.Plus TV?" e chama
   `tizen.application.getCurrentApplication().exit()` / `window.close()` no webOS.
 - **Tela**: viewport fixo 1920×1080 (`<meta name="viewport" content="width=1920">`), modo
   TV forçado (sem hover, foco grande, sem layout de celular).
@@ -129,7 +129,7 @@ src/services/players/        adaptador de player (§4.3)
 | Loja oficial | Samsung Seller Office: revisão de semanas, regras de conteúdo | LG Seller Lounge: idem |
 | Modo desenvolvedor | Ligar o modo desenvolvedor, gerar certificado Samsung com o ID da TV (DUID), instalar por `sdb`/`tizen install` | Conta LG + app "Developer Mode"; a sessão **expira a cada ~50 h** e os apps instalados param |
 | Comunidade | Instaladores prontos (estilo Jellyfin2Samsung) fazem certificado + instalação sozinhos | Homebrew Channel (só em firmwares vulneráveis, via root) |
-| Sem instalar nada | Navegador da TV abrindo `saimo-tv.pages.dev` | Idem |
+| Sem instalar nada | Navegador da TV abrindo `nvnplus-tv.pages.dev` | Idem |
 
 Recomendação, em ordem:
 1. **Navegador da TV (já, sem instalar)**: o site detecta TV pelo user agent e liga o modo TV.
@@ -194,7 +194,7 @@ empacotado puro (atualização reinstalando) naquela marca.
 | Detecção Samsung/LG, teclas do controle (Voltar 10009/461, Play/Pausa, números), sair do app | `src/plataforma/tv.ts` | feito, ligado em `src/main.tsx` |
 | HTTP e CORS: na TV nada começa pelo proxy; `http://` abre direto; proxy do site fica como última tentativa | `src/utils/streamUrl.ts`, `VideoPlayer.tsx`, `MoviePlayer.tsx` | feito e coberto por `tests/modoTv.test.mjs` |
 | HLS nativo da TV como primeira tentativa (sem CORS, com aceleração) e hls.js depois | `streamUrl.ts` (`Attempt.nativo`), `VideoPlayer.tsx` | feito |
-| Build de TV: um `saimo.js` clássico (IIFE), alvo Chrome 68 e polyfills (core-js), worker do guia embutido | `vite build --mode tv`, `src/entrada-tv.ts`, `vite.config.ts` | feito |
+| Build de TV: um `nvnplus.js` clássico (IIFE), alvo Chrome 68 e polyfills (core-js), worker do guia embutido | `vite build --mode tv`, `src/entrada-tv.ts`, `vite.config.ts` | feito |
 | Carregador (código novo do site ao abrir, cópia de reserva no pacote) | `tv/comum/carregador.js` | feito e testado contra o site publicado |
 | Pacotes `.wgt` (Samsung) e `.ipk` (LG) | `scripts/montar_tv.sh` | feito; o `.wgt` sai sem assinatura |
 | Código das TVs publicado em `/tv/` + manifesto | `scripts/publicar_site.sh`, `scripts/tv_codigo.sh` | feito |

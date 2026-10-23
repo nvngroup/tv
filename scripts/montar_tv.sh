@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Monta os pacotes do Saimo TV para TV Samsung (Tizen) e LG (webOS).
+# Monta os pacotes do NvN.Plus TV para TV Samsung (Tizen) e LG (webOS).
 #
 #   ./scripts/montar_tv.sh            gera build/tv/SaimoTV-Samsung.wgt, build/tv/SaimoTV-LG.ipk
 #                                     e dist-tv/ (o código que o site publica em /tv/)
@@ -26,7 +26,7 @@ preparar() { # preparar marca pasta
   mkdir -p "$pasta/app"
   sed "s/%MARCA%/$marca/" tv/comum/index.html > "$pasta/index.html"
   cp tv/comum/carregador.js "$pasta/"
-  cp dist-tv/saimo.js dist-tv/saimo.css "$pasta/app/"
+  cp dist-tv/nvnplus.js dist-tv/nvnplus.css "$pasta/app/"
   cp -R public/abertura public/icons public/favicon.png "$pasta/"
 }
 
@@ -48,7 +48,7 @@ W="$SAIDA/webos"; preparar webos "$W"
 sed "s/%VERSAO%/$VERSAO/" tv/webos/appinfo.json > "$W/appinfo.json"
 cp tv/webos/icon.png tv/webos/largeIcon.png "$W/"
 npx --yes -p @webosose/ares-cli ares-package "$W" -o "$SAIDA" --no-minify >/dev/null
-mv "$SAIDA"/br.com.saimo.tv_*_all.ipk "$SAIDA/SaimoTV-LG.ipk"
+mv "$SAIDA"/br.com.nvnplus.tv_*_all.ipk "$SAIDA/SaimoTV-LG.ipk"
 
 echo "pronto:"
 ls -la "$SAIDA"/*.wgt "$SAIDA"/*.ipk | awk '{print "  " $5 " " $9}'

@@ -17,14 +17,14 @@ export { normalizarEndereco };
 
 /** Endereços padrão: as únicas listas conhecidas do site. */
 export const PADRAO: Record<'canais' | 'filmes', string> = {
-  canais: 'https://canais-saimo.pages.dev/',
-  filmes: 'https://filmes-saimo.pages.dev/',
+  canais: 'https://canais-nvnplus.pages.dev/',
+  filmes: 'https://filmes-nvnplus.pages.dev/',
 };
 
-const CHAVE_CANAIS = 'saimo-link-canais';
-const CHAVE_FILMES = 'saimo-link-filmes';
-const CHAVE_MIGRADO = 'saimo-sem-listas-v1';
-const EVENTO = 'saimo-listas-mudaram';
+const CHAVE_CANAIS = 'nvnplus-link-canais';
+const CHAVE_FILMES = 'nvnplus-link-filmes';
+const CHAVE_MIGRADO = 'nvnplus-sem-listas-v1';
+const EVENTO = 'nvnplus-listas-mudaram';
 
 export type Lista = 'canais' | 'filmes';
 
@@ -103,10 +103,10 @@ export async function testarEndereco(lista: Lista, base: string): Promise<boolea
 
 /** Chaves do localStorage que guardam conteúdo de lista, por qual endereço. */
 const CACHES_DE_CANAIS = [
-  'saimo-catalogo-v2', 'saimo-guia-tabelas', 'saimo-restritos-v1',
-  'saimo-epg-v3', 'saimo-epg-v4', 'saimo-epg-v5', 'saimo-epg-v6',
+  'nvnplus-catalogo-v2', 'nvnplus-guia-tabelas', 'nvnplus-restritos-v1',
+  'nvnplus-epg-v3', 'nvnplus-epg-v4', 'nvnplus-epg-v5', 'nvnplus-epg-v6',
 ];
-const CACHES_DE_RADIOS = ['saimo-radios-lista'];
+const CACHES_DE_RADIOS = ['nvnplus-radios-lista'];
 
 function apagarChaves(chaves: string[]): void {
   for (const c of chaves) { try { localStorage.removeItem(c); } catch { /* nada a apagar */ } }
@@ -131,7 +131,7 @@ export function migrarUmaVez(): void {
     // O site não usa IndexedDB para listas; só a casca do app fica no Cache Storage.
     if ('caches' in window) {
       void caches.keys().then((nomes) => Promise.all(
-        nomes.filter((n) => !n.startsWith('saimo-casca')).map((n) => caches.delete(n)),
+        nomes.filter((n) => !n.startsWith('nvnplus-casca')).map((n) => caches.delete(n)),
       ));
     }
   } catch { /* sem Cache Storage */ }

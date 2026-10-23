@@ -12,7 +12,7 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
   const [hoveredCard, setHoveredCard] = useState<'tv' | 'movies' | null>(null);
   const { focusFirst, isUsingDpad } = useDpad();
   const navigate = useNavigate();
-  
+
   const tvCardRef = useRef<HTMLButtonElement>(null);
   const moviesCardRef = useRef<HTMLButtonElement>(null);
 
@@ -104,10 +104,10 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
       {/* Seletor de modo */}
       <main className="home-main">
         <h2 className="select-title">O que você quer assistir?</h2>
-        
+
         <div className="mode-cards">
           {/* Card TV ao Vivo */}
-          <button 
+          <button
             ref={tvCardRef}
             className={`mode-card tv-card ${hoveredCard === 'tv' ? 'hovered' : ''}`}
             onClick={() => onSelect('tv')}
@@ -122,7 +122,7 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
               <div className="card-gradient" />
               <div className="card-pattern" />
             </div>
-            
+
             <div className="card-content">
               <div className="card-icon">
                 <svg viewBox="0 0 64 64" fill="none">
@@ -137,7 +137,7 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
                   <path d="M52 12C52 12 58 16 58 26C58 36 52 40 52 40" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.3" />
                 </svg>
               </div>
-              
+
               <div className="card-info">
                 <h3>TV ao Vivo</h3>
                 <p>Canais de TV em tempo real</p>
@@ -147,7 +147,7 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
                   <li><Marca />Troca de fonte sozinho</li>
                 </ul>
               </div>
-              
+
               <div className="card-action">
                 <span>Assistir agora</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -155,7 +155,7 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
                 </svg>
               </div>
             </div>
-            
+
             <div className="card-glow" />
           </button>
 
@@ -165,7 +165,7 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
           </div>
 
           {/* Card Filmes e Séries */}
-          <button 
+          <button
             ref={moviesCardRef}
             className={`mode-card movies-card ${hoveredCard === 'movies' ? 'hovered' : ''}`}
             onClick={() => onSelect('movies')}
@@ -180,7 +180,7 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
               <div className="card-gradient" />
               <div className="card-pattern" />
             </div>
-            
+
             <div className="card-content">
               <div className="card-icon">
                 <svg viewBox="0 0 64 64" fill="none">
@@ -201,7 +201,7 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
                   <path d="M60 8L62 12L58 12L60 8Z" fill="currentColor" opacity="0.5" />
                 </svg>
               </div>
-              
+
               <div className="card-info">
                 <h3>Filmes e Séries</h3>
                 <p>Catálogo completo sob demanda</p>
@@ -211,7 +211,7 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
                   <li><Marca />Pula abertura sozinho</li>
                 </ul>
               </div>
-              
+
               <div className="card-action">
                 <span>Explorar catálogo</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -219,7 +219,7 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
                 </svg>
               </div>
             </div>
-            
+
             <div className="card-glow" />
           </button>
         </div>
@@ -227,7 +227,7 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
 
       {/* Footer */}
       <footer className="home-footer">
-        <p>© {new Date().getFullYear()} Saimo TV</p>
+        <p>© {new Date().getFullYear()} NvN.Plus TV</p>
       </footer>
     </div>
   );

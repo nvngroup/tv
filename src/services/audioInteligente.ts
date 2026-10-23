@@ -5,7 +5,7 @@
  * amplificando canais com transmissão baixa e aplicando compressão suave em picos.
  */
 
-export const CHAVE_AUDIO_INTELIGENTE = 'saimo-audio-inteligente';
+export const CHAVE_AUDIO_INTELIGENTE = 'nvnplus-audio-inteligente';
 
 class AudioInteligenteService {
   private audioCtx: AudioContext | null = null;
@@ -21,7 +21,7 @@ class AudioInteligenteService {
   public setAtivo(ativo: boolean): void {
     localStorage.setItem(CHAVE_AUDIO_INTELIGENTE, ativo ? 'true' : 'false');
     this.aplicarParametros();
-    window.dispatchEvent(new Event('saimo-audio-inteligente-mudou'));
+    window.dispatchEvent(new Event('nvnplus-audio-inteligente-mudou'));
   }
 
   private obterAudioContext(): AudioContext | null {

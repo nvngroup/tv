@@ -539,7 +539,7 @@ html[data-upscaling="hd"] video.movie-video:not([data-nativo="1"]),
 html[data-upscaling="hd"] .movie-video:not([data-nativo="1"]),
 html[data-upscaling="hd"] :fullscreen video:not([data-nativo="1"]),
 html[data-upscaling="hd"] video:fullscreen:not([data-nativo="1"]) {
-  filter: url(#saimo-upscale-hd) contrast(1.02) saturate(1.03);
+  filter: url(#nvnplus-upscale-hd) contrast(1.02) saturate(1.03);
 }
 
 html[data-upscaling="4k"] .video-element:not([data-nativo="1"]),
@@ -548,6 +548,5 @@ html[data-upscaling="4k"] video.movie-video:not([data-nativo="1"]),
 html[data-upscaling="4k"] .movie-video:not([data-nativo="1"]),
 html[data-upscaling="4k"] :fullscreen video:not([data-nativo="1"]),
 html[data-upscaling="4k"] video:fullscreen:not([data-nativo="1"]) {
-  filter: url(#saimo-upscale-4k) contrast(1.04) saturate(1.05);
+  filter: url(#nvnplus-upscale-4k) contrast(1.04) saturate(1.05);
 }
-

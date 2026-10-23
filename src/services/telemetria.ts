@@ -12,7 +12,7 @@
 
 import { marcaTv } from '../plataforma/tv';
 
-const BASE = 'https://saimo-tv.pages.dev/api/online/v1';
+const BASE = 'https://nvnplus-tv.pages.dev/api/online/v1';
 const PLATAFORMA = marcaTv() ?? 'site';
 const VERSAO = 'web';
 /** Zapeando, cada canal que passa não vira batida: só quem ficou. */
@@ -52,7 +52,7 @@ function limparVideo() {
 let errosEnviados = 0;
 
 function idDoAparelho(): string {
-  const chave = 'saimo-telemetria-id';
+  const chave = 'nvnplus-telemetria-id';
   try {
     const salvo = localStorage.getItem(chave);
     if (salvo) return salvo;
@@ -81,7 +81,7 @@ const id = idDoAparelho();
  * vem de `telemetria.json`, arquivo estático do monitor (não conta pedido),
  * relido no máximo uma vez por dia; vale na próxima abertura.
  */
-const CHAVE_PCT = 'saimo-telemetria-amostra';
+const CHAVE_PCT = 'nvnplus-telemetria-amostra';
 const PCT_PADRAO = 5;
 
 function fnv1a(texto: string): number {

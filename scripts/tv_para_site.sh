@@ -7,7 +7,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 bash scripts/tv_codigo.sh
 mkdir -p dist/tv
-cp dist-tv/saimo.js dist-tv/saimo.css dist-tv/manifesto.json dist/tv/
+cp dist-tv/nvnplus.js dist-tv/nvnplus.css dist-tv/manifesto.json dist/tv/
 # O carregador lê o manifesto por XHR de outra origem (file://): precisa de CORS.
 printf '/tv/*\n  Access-Control-Allow-Origin: *\n  Cache-Control: public, max-age=60\n' > dist/_headers
 # Arquivos que os apps leem (inclusive o das TVs, de outra origem): amostra da contagem de online,

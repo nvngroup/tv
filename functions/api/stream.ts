@@ -1,5 +1,5 @@
 /**
- * Endpoint central de streaming para filmes e séries do Saimo TV.
+ * Endpoint central de streaming para filmes e séries do NvN.Plus TV.
  *
  * Resolve o stream sob demanda nos provedores (FenixFlix / Magnetflix)
  * e redireciona (HTTP 302) para a URL direta do vídeo com token fresco.
@@ -58,7 +58,7 @@ async function buscarAddon(url: string, timeoutMs: number = 5000): Promise<Addon
 }
 
 async function buscarNoCatalogo(id: string, isSerie: boolean, season: string, episode: string, versao: string): Promise<string | null> {
-  const CATALOG_BASE = 'https://filmes-saimo.pages.dev';
+  const CATALOG_BASE = 'https://filmes-nvnplus.pages.dev';
   try {
     const fichasRes = await fetch(`${CATALOG_BASE}/fichas.txt`);
     if (!fichasRes.ok) return null;

@@ -211,7 +211,7 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
           }, 300);
         }}
       >
-        <button className="barra-logo" onClick={aoClicarLogo} aria-label="Saimo TV — início">
+        <button className="barra-logo" onClick={aoClicarLogo} aria-label="NvN.Plus TV — início">
           <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
             <defs>
               <linearGradient id="barraLogoGrad" x1="5" y1="5" x2="27" y2="24" gradientUnits="userSpaceOnUse">

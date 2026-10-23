@@ -72,7 +72,7 @@ export function Novidades() {
   const { filmes } = useListas();
 
   useEffect(() => {
-    document.title = 'Novidades · Saimo TV';
+    document.title = 'Novidades · NvN.Plus TV';
     const robo = document.createElement('meta');
     robo.name = 'robots';
     robo.content = 'noindex';

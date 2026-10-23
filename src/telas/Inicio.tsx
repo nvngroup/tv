@@ -39,8 +39,8 @@ export function Inicio() {
   // Ajustes > Ao iniciar > último canal: só na entrada da visita, para o botão
   // Início continuar levando ao Início.
   useEffect(() => {
-    if (sessionStorage.getItem('saimo-entrada')) return;
-    sessionStorage.setItem('saimo-entrada', '1');
+    if (sessionStorage.getItem('nvnplus-entrada')) return;
+    sessionStorage.setItem('nvnplus-entrada', '1');
     try {
       const ao = JSON.parse(localStorage.getItem(CHAVE_AO_INICIAR) || '"inicio"');
       if (ao === 'ultimo' && localStorage.getItem('tv-last-channel')) navigate('/tv', { replace: true });

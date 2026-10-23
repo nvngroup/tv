@@ -165,7 +165,7 @@ export function Abertura() {
     <div ref={raiz} className={`abertura ${saindo ? 'saindo' : ''}`} onClick={() => setSaindo(true)}
       onTransitionEnd={() => saindo && setFim(true)} role="presentation">
       <canvas ref={luz} className="abertura-luz" />
-      <svg className="abertura-logo" viewBox="129 130 766 765" aria-label="Saimo TV">
+      <svg className="abertura-logo" viewBox="129 130 766 765" aria-label="NvN.Plus TV">
         <defs>
           <filter id="ab-brilho" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18" /></filter>
           <filter id="ab-brilhoFino" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5" /></filter>

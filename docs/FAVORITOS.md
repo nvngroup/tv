@@ -29,7 +29,7 @@ Novo serviço que gerencia os favoritos do usuário com persistência no localSt
 #### Estrutura de Dados no localStorage
 
 ```typescript
-// Chave: 'tv-saimo-favorites'
+// Chave: 'tv-nvnplus-favorites'
 interface FavoriteItem {
   id: string;      // ID do item no catálogo
   addedAt: number; // Timestamp de quando foi adicionado
@@ -41,8 +41,8 @@ interface FavoriteItem {
 O serviço dispara eventos customizados quando há mudanças:
 
 ```typescript
-window.dispatchEvent(new CustomEvent('favorites-changed', { 
-  detail: { action: 'add' | 'remove' | 'clear' | 'import', itemId?: string } 
+window.dispatchEvent(new CustomEvent('favorites-changed', {
+  detail: { action: 'add' | 'remove' | 'clear' | 'import', itemId?: string }
 }));
 ```
 
@@ -81,7 +81,7 @@ useEffect(() => {
   const handleFavoritesChange = () => {
     refreshFavorites();
   };
-  
+
   window.addEventListener('favorites-changed', handleFavoritesChange);
   return () => window.removeEventListener('favorites-changed', handleFavoritesChange);
 }, [refreshFavorites]);
@@ -98,16 +98,16 @@ const MovieDetailsModal = memo(function MovieDetailsModal({
   onFavoriteChange?: () => void;
 }) {
   const [isFav, setIsFav] = useState(() => isFavorite(item.id));
-  
+
   const handleToggleFavorite = () => {
     const newState = toggleFavorite(item.id);
     setIsFav(newState);
     onFavoriteChange?.();
   };
-  
+
   // Botão no JSX
-  <button 
-    className={`modal-favorite ${isFav ? 'active' : ''}`} 
+  <button
+    className={`modal-favorite ${isFav ? 'active' : ''}`}
     onClick={handleToggleFavorite}
   >
     <svg viewBox="0 0 24 24" fill={isFav ? 'currentColor' : 'none'}>
@@ -230,7 +230,7 @@ const MovieDetailsModal = memo(function MovieDetailsModal({
 
 | Recurso | Implementação |
 |---------|--------------|
-| **Persistência** | localStorage com chave `tv-saimo-favorites` |
+| **Persistência** | localStorage com chave `tv-nvnplus-favorites` |
 | **Sincronização** | Eventos customizados para atualização em tempo real |
 | **Ordenação** | Mais recentes primeiro (LIFO) |
 | **Performance** | Usa `findById()` para recuperar dados completos |

@@ -12,7 +12,7 @@ import { onRequestGet as onResolveVod } from './functions/api/resolve-vod'
  */
 function proxyDev(): Plugin {
   return {
-    name: 'saimo-proxy-dev',
+    name: 'nvnplus-proxy-dev',
     configureServer(server) {
       server.middlewares.use('/api/resolve-vod', async (req, res) => {
         const url = `http://${req.headers.host ?? 'localhost'}${req.originalUrl ?? req.url ?? ''}`
@@ -73,7 +73,7 @@ const configTv = defineConfig({
     target: 'chrome68',
     cssTarget: 'chrome61',
     minify: 'oxc',
-    lib: { entry: 'src/entrada-tv.ts', name: 'SaimoTV', formats: ['iife'], fileName: () => 'saimo.js', cssFileName: 'saimo' },
+    lib: { entry: 'src/entrada-tv.ts', name: 'SaimoTV', formats: ['iife'], fileName: () => 'nvnplus.js', cssFileName: 'nvnplus' },
     chunkSizeWarningLimit: 4000,
     copyPublicDir: false,
   },

@@ -1,5 +1,5 @@
 /*
- * Carregador do Saimo TV nas TVs Samsung (Tizen) e LG (webOS).
+ * Carregador do NvN.Plus TV nas TVs Samsung (Tizen) e LG (webOS).
  *
  * O pacote instalado na TV guarda uma cópia do app em app/ e este carregador. Ao abrir:
  *   1. pergunta ao site qual é a versão atual (manifesto.json);
@@ -12,7 +12,7 @@
  * Os scripts são clássicos (nada de type="module"): o webOS bloqueia módulo em file://.
  */
 (function () {
-  var SITE = 'https://saimo-tv.pages.dev/tv/';
+  var SITE = 'https://nvnplus-tv.pages.dev/tv/';
   var CASCA = 1; // sobe só quando o pacote instalado muda (permissões, ícones, este arquivo)
   var LIMITE_MS = 6000;
   var info = document.getElementById('carregando');
@@ -35,7 +35,7 @@
   function relatar() {
     try {
       var id = '';
-      try { id = localStorage.getItem('saimo-telemetria-id') || ''; } catch (e) {}
+      try { id = localStorage.getItem('nvnplus-telemetria-id') || ''; } catch (e) {}
       if (!id) {
         id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
           var r = Math.random() * 16 | 0;
@@ -43,7 +43,7 @@
         });
       }
       var x = new XMLHttpRequest();
-      x.open('POST', 'https://saimo-monitor.gabrielsaimo68.workers.dev/v1/event');
+      x.open('POST', 'https://nvnplus-monitor.gabrielnvnplus68.workers.dev/v1/event');
       x.setRequestHeader('Content-Type', 'text/plain');
       x.send(JSON.stringify({
         deviceId: id, platform: window.__SAIMO_TV__ || 'webos', version: 'casca-' + CASCA, type: 'crash',
@@ -60,7 +60,7 @@
     var s = Math.round((new Date().getTime() - inicio) / 1000);
     if (s >= 60) {
       clearInterval(vigia);
-      aviso('O Saimo TV não conseguiu abrir nesta TV.' + (erros.length ? ' Detalhe: ' + erros[0] : ' Tente desligar e ligar a TV.'));
+      aviso('O NvN.Plus TV não conseguiu abrir nesta TV.' + (erros.length ? ' Detalhe: ' + erros[0] : ' Tente desligar e ligar a TV.'));
       relatar();
     } else if (s >= 10) {
       aviso('Ainda abrindo… TVs mais simples podem levar até um minuto (' + s + ' s)');
@@ -83,8 +83,8 @@
   }
 
   function local() {
-    carregarCss('app/saimo.css');
-    carregarJs('app/saimo.js', function () {}, function () { aviso('Não foi possível abrir o Saimo TV.'); });
+    carregarCss('app/nvnplus.css');
+    carregarJs('app/nvnplus.js', function () {}, function () { aviso('Não foi possível abrir o NvN.Plus TV.'); });
   }
 
   function remoto(m) {
@@ -103,7 +103,7 @@
     if (feito) return;
     feito = true;
     if (m && m.minimoCasca && m.minimoCasca > CASCA) {
-      aviso('Esta versão do aplicativo ficou antiga. Instale a nova em saimo-tv.pages.dev' + (window.__SAIMO_TV__ === 'webos' ? '/lg' : '/samsung'));
+      aviso('Esta versão do aplicativo ficou antiga. Instale a nova em nvnplus-tv.pages.dev' + (window.__SAIMO_TV__ === 'webos' ? '/lg' : '/samsung'));
       return local();
     }
     if (m && m.js && m.css && m.versao) return remoto(m);

@@ -48,7 +48,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   const progressRef = useRef<HTMLDivElement>(null);
   /** Geração da reprodução: qualquer callback antigo vira no-op ao trocar rápido de episódio/fonte. */
   const loadGenerationRef = useRef(0);
-  
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [showNextEpisodeButton, setShowNextEpisodeButton] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -118,16 +118,16 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
         setUpscaling('off');
       }
     };
-    window.addEventListener('saimo-upscaling-mudou', sync);
+    window.addEventListener('nvnplus-upscaling-mudou', sync);
     return () => {
-      window.removeEventListener('saimo-upscaling-mudou', sync);
+      window.removeEventListener('nvnplus-upscaling-mudou', sync);
     };
   }, [setUpscaling]);
 
   const alterarUpscaling = (modo: ModoUpscaling) => {
     setUpscaling(modo);
     document.documentElement.dataset.upscaling = modo;
-    window.dispatchEvent(new Event('saimo-upscaling-mudou'));
+    window.dispatchEvent(new Event('nvnplus-upscaling-mudou'));
   };
 
   const [trechos, setTrechos] = useState<Trecho[]>([]);
@@ -150,13 +150,13 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   const faixaExtRef = useRef<TextTrack | null>(null);
   const falasRef = useRef<Fala[]>([]);
   const legendaEscolhidaRef = useRef<string | null>(null);
-  
+
   // Cast states
   const [castState, setCastState] = useState<CastState>({ isConnected: false, deviceName: null, method: null });
   const [showCastModal, setShowCastModal] = useState(false);
   const [castMessage, setCastMessage] = useState<string | null>(null);
   const [showExternalCastPlayers, setShowExternalCastPlayers] = useState(false);
-  
+
   const controlsTimeoutRef = useRef<number | null>(null);
 
   // Formatar tempo (segundos -> HH:MM:SS ou MM:SS)
@@ -165,7 +165,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
     const secs = Math.floor(seconds % 60);
-    
+
     if (hrs > 0) {
       return `${hrs}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
@@ -610,7 +610,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   // Mostra botão de próximo episódio quando faltam 30 segundos
   useEffect(() => {
     if (!nextEpisode || !duration) return;
-    
+
     // Sobe quando os créditos começam (TheIntroDB); sem marca, 30 s antes do fim.
     const creditos = inicioDosCreditos(trechos, duration) ?? (duration - 30);
     if (currentTime >= creditos && currentTime < duration) {
@@ -653,7 +653,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
         clearTimeout(controlsTimeoutRef.current);
       }
       setShowControls(true);
-      
+
       if (isPlaying) {
         controlsTimeoutRef.current = window.setTimeout(() => {
           setShowControls(false);
@@ -827,10 +827,10 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     // Update on loadedmetadata and resize events
     video.addEventListener('loadedmetadata', updateResolution);
     video.addEventListener('resize', updateResolution);
-    
+
     // Also update periodically in case resolution changes during stream
     const interval = setInterval(updateResolution, 2000);
-    
+
     // Initial check
     updateResolution();
 
@@ -868,7 +868,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   const seek = useCallback((seconds: number) => {
     const video = videoRef.current;
     if (!video) return;
-    
+
     posicionar(video, Math.max(0, Math.min(video.duration, video.currentTime + seconds)));
   }, []);
 
@@ -929,7 +929,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
     setCastMessage(result.message);
     setTimeout(() => setCastMessage(null), 4000);
-    
+
     if (result.success || method === 'copyLink' || method === 'share') {
       setShowCastModal(false);
     }
@@ -953,7 +953,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
   useMediaSession({
     titulo: movie?.name,
-    subtitulo: seriesInfo?.seriesName ?? 'Saimo TV',
+    subtitulo: seriesInfo?.seriesName ?? 'NvN.Plus TV',
     capa: movie?.origem?.capa || undefined,
     aoTocar: () => { void videoRef.current?.play(); },
     aoPausar: () => videoRef.current?.pause(),
@@ -1037,7 +1037,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   // Abrir em player externo
   const openInExternalPlayer = useCallback((player: string) => {
     if (!movie) return;
-    
+
     let url = '';
     switch (player) {
       case 'vlc':
@@ -1061,7 +1061,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
         window.open(urlExterna, '_blank');
         return;
     }
-    
+
     if (url) {
       window.location.href = url;
     }
@@ -1082,7 +1082,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   }
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className={`movie-player ${isFullscreen ? 'fullscreen' : ''} ${showControls || isLoading || error ? '' : 'hide-cursor'}`}
       onClick={togglePlay}
@@ -1100,8 +1100,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
       {/* Skip Intro Button */}
       {showSkipIntro && (
-        <button 
-          className="skip-intro-btn" 
+        <button
+          className="skip-intro-btn"
           onClick={(e) => { e.stopPropagation(); skipIntro(); }}
           data-focusable="true"
           data-nav-group="player-actions"
@@ -1125,7 +1125,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
         <div className="player-overlay loading" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <div className="spinner" />
           <span style={{ marginBottom: fontes.length > 1 ? '20px' : '0' }}>Carregando...</span>
-          
+
           {fontes.length > 1 && (
             <button
               onClick={(e) => {
@@ -1188,7 +1188,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                 <div>
                   <strong>No aplicativo, isso nem aparece.</strong>
                   <span>
-                    No Saimo TV para Windows, Mac, Android e TV Box o vídeo abre direto, em
+                    No NvN.Plus TV para Windows, Mac, Android e TV Box o vídeo abre direto, em
                     qualquer fonte, sem essa volta — e os filmes em 4K tocam na maior resolução.
                   </span>
                 </div>
@@ -1427,8 +1427,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                 T{nextEpisode.seasonNumber ?? '?'} · E{nextEpisode.episodeNumber ?? '?'}
               </span>
             </div>
-            <button 
-              className="next-episode-btn" 
+            <button
+              className="next-episode-btn"
               onClick={handleNextEpisode}
               data-focusable="true"
               data-nav-group="next-episode"
@@ -1445,8 +1445,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
               </svg>
               <span>Reproduzir</span>
             </button>
-            <button 
-              className="next-dismiss-btn" 
+            <button
+              className="next-dismiss-btn"
               onClick={() => setShowNextEpisodeButton(false)}
               data-focusable="true"
               data-nav-group="next-episode"
@@ -1470,9 +1470,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       <div className={`player-controls ${showControls || isLoading || error ? 'visible' : ''}${error ? ' com-erro' : ''}`} onClick={(e) => e.stopPropagation()}>
         {/* Top bar */}
         <div className="controls-top">
-          <button 
-            className="control-btn back-btn" 
-            onClick={onBack} 
+          <button
+            className="control-btn back-btn"
+            onClick={onBack}
             title="Voltar (Esc)"
             data-focusable="true"
             data-nav-group="player-top"
@@ -1511,8 +1511,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
               </button>
             )}
             <div className="external-menu-wrapper">
-              <button 
-                className="control-btn" 
+              <button
+                className="control-btn"
                 onClick={() => setShowExternalMenu(!showExternalMenu)}
                 title="Abrir em player externo"
                 data-focusable="true"
@@ -1534,7 +1534,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
               </button>
               {showExternalMenu && (
                 <div className="external-dropdown">
-                  <button 
+                  <button
                     onClick={() => { openInExternalPlayer('vlc'); setShowExternalMenu(false); }}
                     data-focusable="true"
                     data-nav-group="external-menu"
@@ -1551,7 +1551,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                   >
                     🎬 VLC Player
                   </button>
-                  <button 
+                  <button
                     onClick={() => { openInExternalPlayer('iina'); setShowExternalMenu(false); }}
                     data-focusable="true"
                     data-nav-group="external-menu"
@@ -1568,7 +1568,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                   >
                     🎥 IINA (macOS)
                   </button>
-                  <button 
+                  <button
                     onClick={() => { openInExternalPlayer('potplayer'); setShowExternalMenu(false); }}
                     data-focusable="true"
                     data-nav-group="external-menu"
@@ -1585,7 +1585,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                   >
                     ▶️ PotPlayer
                   </button>
-                  <button 
+                  <button
                     onClick={() => { openInExternalPlayer('newtab'); setShowExternalMenu(false); }}
                     data-focusable="true"
                     data-nav-group="external-menu"
@@ -1603,7 +1603,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                     🌐 Nova aba
                   </button>
                   <hr />
-                  <button 
+                  <button
                     onClick={() => { openInExternalPlayer('copy'); setShowExternalMenu(false); }}
                     data-focusable="true"
                     data-nav-group="external-menu"
@@ -1628,8 +1628,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
         {/* Center play button */}
         {!isPlaying && !isLoading && !error && (
-          <button 
-            className="center-play" 
+          <button
+            className="center-play"
             onClick={togglePlay}
             data-focusable="true"
             data-nav-group="player-center"
@@ -1665,9 +1665,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
           >
             <div className="progress-buffered" style={{ width: `${buffered}%` }} />
             <div className="progress-played" style={{ width: `${duration ? (currentTime / duration) * 100 : 0}%` }} />
-            <div 
-              className="progress-thumb" 
-              style={{ left: `${duration ? (currentTime / duration) * 100 : 0}%` }} 
+            <div
+              className="progress-thumb"
+              style={{ left: `${duration ? (currentTime / duration) * 100 : 0}%` }}
             />
           </div>
 
@@ -1675,9 +1675,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
           <div className="controls-row">
             <div className="controls-left">
               {/* Play/Pause */}
-              <button 
-                className="control-btn" 
-                onClick={togglePlay} 
+              <button
+                className="control-btn"
+                onClick={togglePlay}
                 title={isPlaying ? 'Pausar (K)' : 'Reproduzir (K)'}
                 data-focusable="true"
                 data-nav-group="player-controls"
@@ -1700,9 +1700,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
               </button>
 
               {/* Rewind */}
-              <button 
-                className="control-btn" 
-                onClick={() => seek(-skipTime)} 
+              <button
+                className="control-btn"
+                onClick={() => seek(-skipTime)}
                 title={`Voltar ${skipTime}s (←)`}
                 data-focusable="true"
                 data-nav-group="player-controls"
@@ -1720,9 +1720,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
               </button>
 
               {/* Forward */}
-              <button 
-                className="control-btn" 
-                onClick={() => seek(skipTime)} 
+              <button
+                className="control-btn"
+                onClick={() => seek(skipTime)}
                 title={`Avançar ${skipTime}s (→)`}
                 data-focusable="true"
                 data-nav-group="player-controls"
@@ -1741,9 +1741,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
               {/* Volume */}
               <div className="volume-control">
-                <button 
-                  className="control-btn" 
-                  onClick={() => setIsMuted(m => !m)} 
+                <button
+                  className="control-btn"
+                  onClick={() => setIsMuted(m => !m)}
                   title="Mudo (M)"
                   data-focusable="true"
                   data-nav-group="player-controls"
@@ -1834,9 +1834,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
               {/* Next Episode Button */}
               {nextEpisode && (
-                <button 
-                  className="control-btn next-ep-btn" 
-                  onClick={handleNextEpisode} 
+                <button
+                  className="control-btn next-ep-btn"
+                  onClick={handleNextEpisode}
                   title="Próximo episódio (N)"
                   data-focusable="true"
                   data-nav-group="player-controls"
@@ -1855,8 +1855,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
               {/* Settings Menu */}
               <div className="settings-menu-wrapper">
-                <button 
-                  className="control-btn" 
+                <button
+                  className="control-btn"
                   onClick={() => setShowSettingsMenu(!showSettingsMenu)}
                   title="Configurações"
                   data-focusable="true"
@@ -1970,7 +1970,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                     )}
                     <div className="settings-section">
                       <label>Velocidade</label>
-                      <select 
+                      <select
                         value={playbackRate}
                         onChange={(e) => setPlaybackRate(parseFloat(e.target.value))}
                         data-focusable="true"
@@ -1990,7 +1990,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                     </div>
                     <div className="settings-section">
                       <label>Pular (segundos)</label>
-                      <select 
+                      <select
                         value={skipTime}
                         onChange={(e) => setSkipTime(parseInt(e.target.value))}
                         data-focusable="true"
@@ -2005,7 +2005,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                     </div>
                     <div className="settings-section">
                       <label>Proporção</label>
-                      <select 
+                      <select
                         value={aspectRatio}
                         onChange={(e) => setAspectRatio(e.target.value as typeof aspectRatio)}
                         data-focusable="true"
@@ -2049,9 +2049,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
               {/* Picture-in-Picture */}
               {document.pictureInPictureEnabled && (
-                <button 
-                  className="control-btn" 
-                  onClick={togglePiP} 
+                <button
+                  className="control-btn"
+                  onClick={togglePiP}
                   title="Picture-in-Picture"
                   data-focusable="true"
                   data-nav-group="player-controls"
@@ -2082,9 +2082,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
               )}
 
               {/* Fullscreen */}
-              <button 
-                className="control-btn" 
-                onClick={toggleFullscreen} 
+              <button
+                className="control-btn"
+                onClick={toggleFullscreen}
                 title="Tela cheia (F)"
                 data-focusable="true"
                 data-nav-group="player-controls"
@@ -2141,12 +2141,12 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
               <>
                 <h3>Transmitir para dispositivo</h3>
                 <p>Escolha como deseja transmitir "{movie?.name}"</p>
-                
+
                 <div className="cast-options">
                   {castService.getAvailableMethods().map((method) => (
-                    <button 
+                    <button
                       key={method.method}
-                      className="cast-option" 
+                      className="cast-option"
                       onClick={() => handleCastOption(method.method)}
                     >
                       {method.icon === 'chromecast' && (
@@ -2199,12 +2199,12 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
               <>
                 <h3>Abrir em player externo</h3>
                 <p>Escolha um player para abrir o vídeo</p>
-                
+
                 <div className="cast-options external-players">
                   {movie && castService.getExternalPlayerLinks(urlAtiva).map((player) => (
-                    <button 
+                    <button
                       key={player.name}
-                      className="cast-option" 
+                      className="cast-option"
                       onClick={() => handleCastExternalPlayer(player.url)}
                     >
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -2214,8 +2214,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                       <small>{player.platforms.join(', ')}</small>
                     </button>
                   ))}
-                  
-                  <button 
+
+                  <button
                     className="cast-option copy-url"
                     onClick={() => handleCastOption('copyLink')}
                   >

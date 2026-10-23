@@ -65,7 +65,7 @@ export const VideoPlayer = memo(function VideoPlayer({
   /** Para o monitor: qual abertura é esta e se ela já avisou que tocou. */
   const aberturaRef = useRef('');
   const tentativaRef = useRef<{ titulo: string; url: string; fonte: number; desde: number; avisado: boolean } | null>(null);
-  
+
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
   const [pendingUnmute, setPendingUnmute] = useState(false); // Aguardando primeira interação para desmutar
@@ -73,13 +73,13 @@ export const VideoPlayer = memo(function VideoPlayer({
     const saved = localStorage.getItem('tv-volume');
     return saved ? parseFloat(saved) : 1;
   });
-  
+
   // Refs para manter valores atuais acessíveis nos callbacks
   const volumeRef = useRef(volume);
   const isMutedRef = useRef(isMuted);
   const pendingUnmuteRef = useRef(false);
   const forceMutedRef = useRef(forceMuted);
-  
+
   // Atualiza refs quando states mudam
   useEffect(() => {
     volumeRef.current = volume;
@@ -88,15 +88,15 @@ export const VideoPlayer = memo(function VideoPlayer({
   useEffect(() => {
     forceMutedRef.current = forceMuted;
   }, [forceMuted]);
-  
+
   useEffect(() => {
     isMutedRef.current = isMuted;
   }, [isMuted]);
-  
+
   useEffect(() => {
     pendingUnmuteRef.current = pendingUnmute;
   }, [pendingUnmute]);
-  
+
   const isMirrored = false;
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isPiP, setIsPiP] = useState(false);
@@ -637,7 +637,7 @@ export const VideoPlayer = memo(function VideoPlayer({
         });
       }
     };
-    
+
     // Evento quando o vídeo está reproduzindo dados (frames)
     const handlePlaying = () => {
       const t = tentativaRef.current;
@@ -649,7 +649,7 @@ export const VideoPlayer = memo(function VideoPlayer({
       setError(null); // Limpa erro - vídeo está definitivamente funcionando
       recoveryAttemptsRef.current = 0;
     };
-    
+
     // Evento timeupdate indica que o vídeo está progredindo
     // Usamos um throttle simples para evitar muitas chamadas
     let lastTimeUpdate = 0;
@@ -657,7 +657,7 @@ export const VideoPlayer = memo(function VideoPlayer({
       const now = Date.now();
       if (now - lastTimeUpdate < 1000) return; // Throttle a cada 1 segundo
       lastTimeUpdate = now;
-      
+
       // Se o vídeo está avançando, não há erro real
       setError((currentError) => currentError ? null : currentError);
       recoveryAttemptsRef.current = 0;
@@ -683,7 +683,7 @@ export const VideoPlayer = memo(function VideoPlayer({
   // Auto-unmute na primeira interação do usuário (quando autoplay precisou de mute)
   useEffect(() => {
     if (!pendingUnmute) return;
-    
+
     const handleUserInteraction = () => {
       const video = videoRef.current;
       if (video && pendingUnmuteRef.current && !forceMutedRef.current) {
@@ -692,12 +692,12 @@ export const VideoPlayer = memo(function VideoPlayer({
         setPendingUnmute(false);
       }
     };
-    
+
     // Escuta qualquer interação do usuário
     document.addEventListener('click', handleUserInteraction, { once: true });
     document.addEventListener('keydown', handleUserInteraction, { once: true });
     document.addEventListener('touchstart', handleUserInteraction, { once: true });
-    
+
     return () => {
       document.removeEventListener('click', handleUserInteraction);
       document.removeEventListener('keydown', handleUserInteraction);
@@ -759,10 +759,10 @@ export const VideoPlayer = memo(function VideoPlayer({
     // Update on loadedmetadata and resize events
     video.addEventListener('loadedmetadata', updateResolution);
     video.addEventListener('resize', updateResolution);
-    
+
     // Also update periodically in case resolution changes during stream
     const interval = setInterval(updateResolution, 2000);
-    
+
     // Initial check
     updateResolution();
 
@@ -794,7 +794,7 @@ export const VideoPlayer = memo(function VideoPlayer({
 
   useMediaSession({
     titulo: channel?.name,
-    subtitulo: 'Ao vivo · Saimo TV',
+    subtitulo: 'Ao vivo · NvN.Plus TV',
     capa: channel?.logo,
     aoTocar: retomar,
     // Pausar pelos fones ou pela tela de bloqueio também não para o ao vivo.
@@ -865,7 +865,7 @@ export const VideoPlayer = memo(function VideoPlayer({
 
     setCastMessage(result.message);
     setTimeout(() => setCastMessage(null), 4000);
-    
+
     if (result.success || method === 'copyLink' || method === 'share') {
       setShowCastModal(false);
     }
@@ -1019,8 +1019,8 @@ export const VideoPlayer = memo(function VideoPlayer({
       ) : (
         <>
           {/* Informações do programa atual */}
-          <ProgramInfo 
-            channel={channel} 
+          <ProgramInfo
+            channel={channel}
             isVisible={showControls}
             onOpenGuide={onOpenGuide}
           />
@@ -1093,7 +1093,7 @@ export const VideoPlayer = memo(function VideoPlayer({
                 <div>
                   <strong>No aplicativo, este canal abre normalmente.</strong>
                   <span>
-                    O Saimo TV para Windows, Mac, Android e TV Box fala direto com o servidor do
+                    O NvN.Plus TV para Windows, Mac, Android e TV Box fala direto com o servidor do
                     canal, então não esbarra no bloqueio que existe aqui dentro do navegador.
                   </span>
                 </div>
@@ -1547,12 +1547,12 @@ export const VideoPlayer = memo(function VideoPlayer({
                   <>
                     <h3>Transmitir para dispositivo</h3>
                     <p>Escolha como deseja transmitir "{channel.name}"</p>
-                    
+
                     <div className="cast-options">
                       {castService.getAvailableMethods().map((method) => (
-                        <button 
+                        <button
                           key={method.method}
-                          className="cast-option" 
+                          className="cast-option"
                           onClick={() => handleCastOption(method.method)}
                         >
                           {method.icon === 'chromecast' && (
@@ -1605,12 +1605,12 @@ export const VideoPlayer = memo(function VideoPlayer({
                   <>
                     <h3>Abrir em player externo</h3>
                     <p>Escolha um player para abrir o stream</p>
-                    
+
                     <div className="cast-options external-players">
                       {castService.getExternalPlayerLinks(channel.url).map((player) => (
-                        <button 
+                        <button
                           key={player.name}
-                          className="cast-option" 
+                          className="cast-option"
                           onClick={() => handleExternalPlayer(player.url)}
                         >
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -1620,8 +1620,8 @@ export const VideoPlayer = memo(function VideoPlayer({
                           <small>{player.platforms.join(', ')}</small>
                         </button>
                       ))}
-                      
-                      <button 
+
+                      <button
                         className="cast-option copy-url"
                         onClick={() => handleCastOption('copyLink')}
                       >

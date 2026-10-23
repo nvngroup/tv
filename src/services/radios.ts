@@ -13,8 +13,8 @@ export interface Radio {
   logo?: string;
 }
 
-const GUARDADA = 'saimo-radios-lista';
-const RECENTES = 'saimo-radios-recentes';
+const GUARDADA = 'nvnplus-radios-lista';
+const RECENTES = 'nvnplus-radios-recentes';
 
 /** Nome sem acento e em minúsculas, para a busca. */
 export const chave = (nome: string) =>

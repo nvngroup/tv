@@ -14,8 +14,8 @@ import type mpegts from 'mpegts.js';
 
 export type ModoZeroDelay = 'off' | 'equilibrado' | 'agressivo';
 
-export const CHAVE_ZERO_DELAY = 'saimo-zero-delay';
-export const EVENTO_ZERO_DELAY = 'saimo-zero-delay-mudou';
+export const CHAVE_ZERO_DELAY = 'nvnplus-zero-delay';
+export const EVENTO_ZERO_DELAY = 'nvnplus-zero-delay-mudou';
 
 class ZeroDelayService {
   public getModo(): ModoZeroDelay {

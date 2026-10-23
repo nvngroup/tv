@@ -47,8 +47,8 @@ test('na TV cada fonte é tentada direto primeiro e o proxy fica de reserva', ()
 });
 
 test('o proxy de reserva é o do site, não a origem local do pacote', () => {
-  assert.equal(proxyBase(), 'https://saimo-tv.pages.dev');
-  assert.ok(buildAttempts([http])[1].url.startsWith('https://saimo-tv.pages.dev/api/proxy?url='));
+  assert.equal(proxyBase(), 'https://nvnplus-tv.pages.dev');
+  assert.ok(buildAttempts([http])[1].url.startsWith('https://nvnplus-tv.pages.dev/api/proxy?url='));
 });
 
 test('com HLS nativo na TV, o decodificador da TV vem logo depois do hls.js direto', () => {
@@ -65,7 +65,7 @@ test('TV sem HLS nativo não inventa a tentativa nativa', () => {
 
 test('site aberto no navegador da TV (sem o pacote) segue as regras de página https', () => {
   delete globalThis.__SAIMO_TV__;
-  globalThis.location = { origin: 'https://saimo-tv.pages.dev' };
+  globalThis.location = { origin: 'https://nvnplus-tv.pages.dev' };
   assert.equal(needsProxy(http), true);
   assert.ok(buildAttempts([http]).every((a) => a.viaProxy));
   globalThis.__SAIMO_TV__ = 'tizen';
@@ -73,13 +73,13 @@ test('site aberto no navegador da TV (sem o pacote) segue as regras de página h
 
 test('proxy do site cortado pela cota do dia: usa o de reserva; de pé: usa o próprio', async () => {
   delete globalThis.__SAIMO_TV__;
-  globalThis.location = { origin: 'https://saimo-tv.pages.dev' };
+  globalThis.location = { origin: 'https://nvnplus-tv.pages.dev' };
   const { sondarProxy: sondar, proxyBase: base } = await import(saida);
   globalThis.fetch = async () => ({ headers: { get: () => 'text/html; charset=utf-8' } });
   await sondar();
-  assert.equal(base(), 'https://saimo-tv2.pages.dev');
+  assert.equal(base(), 'https://nvnplus-tv2.pages.dev');
   globalThis.fetch = async () => ({ headers: { get: () => 'application/json' } });
   await sondar();
-  assert.equal(base(), 'https://saimo-tv.pages.dev');
+  assert.equal(base(), 'https://nvnplus-tv.pages.dev');
   globalThis.__SAIMO_TV__ = 'tizen';
 });

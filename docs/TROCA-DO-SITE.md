@@ -1,29 +1,29 @@
-> **Atualização (19/10/2026):** o endereço do site é `saimo-tv.pages.dev`, o projeto antigo da
+> **Atualização (19/10/2026):** o endereço do site é `nvnplus-tv.pages.dev`, o projeto antigo da
 > Cloudflare (conta antiga), ligado ao GitHub antigo: publicar é dar push na `main` de
-> `gabrielsaimo/Saimo-TV`. O `saimo-tv2` foi abandonado; o texto abaixo é histórico.
+> `gabrielnvnplus/Saimo-TV`. O `nvnplus-tv2` foi abandonado; o texto abaixo é histórico.
 
 # Trocar o site de GitHub (ou largar o GitHub)
 
 O site não embute lista nenhuma. Os endereços de canais
-(`https://canais-saimo.pages.dev/`) e de filmes e séries
-(`https://filmes-saimo.pages.dev/`) são as constantes `PADRAO` de
+(`https://canais-nvnplus.pages.dev/`) e de filmes e séries
+(`https://filmes-nvnplus.pages.dev/`) são as constantes `PADRAO` de
 `src/services/listas.ts`; em Ajustes > Listas a pessoa troca, desliga (campo vazio)
 ou restaura o padrão, e isso fica no `localStorage`. Fora isso, o único nome fixo é o do
-repositório de downloads, `SaimoTV/saimo-downloads` (`src/services/versao.ts` e
+repositório de downloads, `SaimoTV/nvnplus-downloads` (`src/services/versao.ts` e
 `functions/_lib/baixar.ts`): os botões e os atalhos `/tvbox`, `/celular`, `/mac`,
 `/windows`, `/samsung` e `/lg` leem os anexos da última release pela API do GitHub e
 casam pelo nome do arquivo (`SaimoTV.apk`, `SaimoCell.apk`, `SaimoTV.dmg`,
 `SaimoTV-Windows.zip`, `SaimoTV-Samsung.wgt`, `SaimoTV-LG.ipk`), então subir outra
 versão ou trocar o repositório é só mudar a constante. O `versao.json` de
-`canais-saimo.pages.dev` continua sendo lido para a versão e como reserva, e só
+`canais-nvnplus.pages.dev` continua sendo lido para a versão e como reserva, e só
 aceitam `https://github.com/<dono>/<repo>/releases/download/…`.
 
-O projeto final do Cloudflare Pages é `saimo-tv2` (`saimo-tv.pages.dev`), o padrão de
+O projeto final do Cloudflare Pages é `nvnplus-tv2` (`nvnplus-tv.pages.dev`), o padrão de
 `scripts/publicar_site.sh`.
 
-Falta só o deploy. O projeto antigo `saimo-tv` do Cloudflare Pages é conectado ao
+Falta só o deploy. O projeto antigo `nvnplus-tv` do Cloudflare Pages é conectado ao
 Git (publica a cada push). Esse tipo de projeto não pode virar upload direto, então o site novo é um projeto
-novo, `saimo-tv2`, criado por upload direto.
+novo, `nvnplus-tv2`, criado por upload direto.
 
 ## Passo a passo
 
@@ -32,11 +32,11 @@ Com `CLOUDFLARE_ACCOUNT_ID=e0f6d97a9f8f4bb1b7a8ce6a7a470b3f` e wrangler logado
 
 ```bash
 export CLOUDFLARE_ACCOUNT_ID=e0f6d97a9f8f4bb1b7a8ce6a7a470b3f
-wrangler pages project create saimo-tv2 --production-branch main
+wrangler pages project create nvnplus-tv2 --production-branch main
 scripts/publicar_site.sh
 ```
 
-O endereço novo é `saimo-tv.pages.dev`; domínio próprio, se houver, precisa ser
+O endereço novo é `nvnplus-tv.pages.dev`; domínio próprio, se houver, precisa ser
 ligado ao projeto novo.
 
 Depois disso, publicar é sempre `scripts/publicar_site.sh`; push no GitHub não

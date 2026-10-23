@@ -15,7 +15,7 @@ import {
 import { chave } from '../services/radios';
 import { ROTULO_TIPO, useAbrirVod } from './compartilhado';
 
-const RECENTES = 'saimo-buscas-recentes';
+const RECENTES = 'nvnplus-buscas-recentes';
 const lerRecentes = (): string[] => {
   try { const l = JSON.parse(localStorage.getItem(RECENTES) || '[]'); return Array.isArray(l) ? l : []; } catch { return []; }
 };

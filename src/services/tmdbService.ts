@@ -1,6 +1,6 @@
 /**
  * Busca de capa no TMDB, com o mesmo algoritmo de casamento do
- * `api-saimo-tv` — o gerador que enriquece o catálogo do Supabase.
+ * `api-nvnplus-tv` — o gerador que enriquece o catálogo do Supabase.
  *
  * O Cinemeta que este site usava antes ficava com o primeiro resultado da
  * busca, sem comparar nome nenhum: "A 13ª Emenda" batia com qualquer coisa
@@ -513,4 +513,3 @@ export function episodiosDaTemporada(tmdbId: number, temporada: number): Promise
   episodiosCache.set(chave, promessa);
   return promessa;
 }
-

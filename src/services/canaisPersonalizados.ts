@@ -7,8 +7,8 @@
 import type { Channel, ChannelSource } from '../types/channel';
 import { parseCatalog } from './catalogService';
 
-const CHAVE = 'saimo-canais-personalizados';
-const EVENTO = 'saimo-canais-personalizados-mudou';
+const CHAVE = 'nvnplus-canais-personalizados';
+const EVENTO = 'nvnplus-canais-personalizados-mudou';
 
 function ler(): Channel[] {
   try {
@@ -69,7 +69,7 @@ export function importar(texto: string): number {
 }
 
 /** Exporta canais em formato M3U padrão para download. */
-export function exportarM3U(canais: Channel[], nomeArquivo = 'saimo-tv-canais.m3u'): void {
+export function exportarM3U(canais: Channel[], nomeArquivo = 'nvnplus-tv-canais.m3u'): void {
   let m3u = '#EXTM3U\n';
   for (const c of canais) {
     const cat = c.category || 'Geral';

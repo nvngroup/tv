@@ -8,8 +8,8 @@
  */
 import type { ItemDestaque } from './vodService';
 
-const CHAVE = 'saimo-vod-favoritos';
-const EVENTO = 'saimo-vod-favoritos-mudou';
+const CHAVE = 'nvnplus-vod-favoritos';
+const EVENTO = 'nvnplus-vod-favoritos-mudou';
 
 function ler(): ItemDestaque[] {
   try {

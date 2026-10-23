@@ -1,4 +1,4 @@
-# Como funcionam as Tendências de Hoje — Saimo TV
+# Como funcionam as Tendências de Hoje — NvN.Plus TV
 
 ## Visão geral do fluxo
 
