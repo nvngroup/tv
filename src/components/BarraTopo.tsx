@@ -100,14 +100,12 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
       if (perto) {
         limparTimer();
         setMouseNoTopo(true);
-      } else {
-        if (!timerRef.current) {
+      } else if (!timerRef.current) {
           timerRef.current = setTimeout(() => {
             setMouseNoTopo(false);
             timerRef.current = null;
           }, 300);
         }
-      }
     };
 
     const onMouseLeaveDoc = (e: MouseEvent) => {
@@ -221,7 +219,7 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
             <path d="M5 8a3 3 0 0 1 3-3h16a3 3 0 0 1 3 3v13a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8Z" fill="url(#barraLogoGrad)" />
             <path d="M12 12l9 4-9 4V12Z" fill="#fff" />
           </svg>
-          <span>Saimo<b>TV</b></span>
+          <span>NvN.Plus<b>TV</b></span>
           {isAdultUnlocked && <em className="adult-badge">+18</em>}
         </button>
 
