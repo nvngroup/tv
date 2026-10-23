@@ -17,6 +17,7 @@ export interface SituacaoRadio {
 let audio: HTMLAudioElement | null = null;
 let hls: Hls | null = null;
 let situacao: SituacaoRadio = { radio: null, estado: 'parado' };
+const VOLUME_KEY = 'radio-volume';
 const ouvintes = new Set<() => void>();
 
 function mudar(proxima: SituacaoRadio) {
@@ -28,12 +29,20 @@ function elemento(): HTMLAudioElement {
   if (audio) return audio;
   audio = new Audio();
   audio.preload = 'none';
+  const salvo = Number(localStorage.getItem(VOLUME_KEY));
+  audio.volume = Number.isFinite(salvo) && salvo >= 0 && salvo <= 1 ? salvo : 1;
   audio.addEventListener('playing', () => mudar({ ...situacao, estado: 'tocando' }));
   audio.addEventListener('error', () => { if (situacao.radio) mudar({ ...situacao, estado: 'erro' }); });
   return audio;
 }
 
 export const atual = (): SituacaoRadio => situacao;
+export const volumeAtual = (): number => elemento().volume;
+export function definirVolume(volume: number): void {
+  const nivel = Math.max(0, Math.min(1, volume));
+  elemento().volume = nivel;
+  localStorage.setItem(VOLUME_KEY, String(nivel));
+}
 
 /** Avisa quando muda o que toca. Devolve quem cancela. */
 export function assinar(fn: () => void): () => void {

@@ -12,7 +12,7 @@ import { CampoBusca, SemLista } from '../components/Telas';
 import { useListas } from '../services/listas';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { chave, recentes, type Radio } from '../services/radios';
-import { assinar, atual as atualRadio, parar, tocar } from '../services/radioPlayer';
+import { assinar, atual as atualRadio, parar, tocar, volumeAtual, definirVolume } from '../services/radioPlayer';
 import './Radios.css';
 
 
@@ -20,6 +20,7 @@ export function Radios() {
   const { canais: link } = useListas();
   const lista = useRadios();
   const [termo, setTermo] = useState('');
+  const [volume, setVolume] = useState(volumeAtual);
   const [favoritas, setFavoritas] = useLocalStorage<string[]>('nvnplus-radios-favoritas', []);
   const { radio: atual, estado } = useSyncExternalStore(assinar, atualRadio);
   const ouvidas = useMemo(() => {
@@ -67,6 +68,10 @@ export function Radios() {
                 </div>
                 {estado === 'tocando' && <Equalizador />}
                 <button className="radio-parar" onClick={parar}>Parar</button>
+                <label className="radio-volume">Volume
+                  <input type="range" min="0" max="1" step="0.01" value={volume}
+                    aria-label="Volume do rádio" onChange={(e) => { const n = Number(e.target.value); setVolume(n); definirVolume(n); }} />
+                </label>
               </>
             ) : (
               <div><small>Rádios</small><h1>Escolha uma rádio</h1><p>{lista.length} estações ao vivo</p></div>
