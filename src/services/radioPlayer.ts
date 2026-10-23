@@ -49,6 +49,7 @@ export function parar(): void {
 }
 
 export function tocar(radio: Radio): void {
+  window.dispatchEvent(new Event('nvnplus-radio-iniciada'));
   const a = elemento();
   hls?.destroy();
   hls = null;

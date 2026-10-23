@@ -1,0 +1,23 @@
+.reproducao-slot, .reproducao-host { display: flex; flex: 1; flex-direction: column; position: relative; width: 100%; height: 100%; min-width: 0; min-height: 0; }
+.reproducao-minimizar { position: absolute; right: 18px; top: 12px; z-index: 10000; padding: 8px 12px; border: 1px solid #ffffff40; border-radius: 12px; background: #080d18d9; color: #fff; font-size: 12px; cursor: pointer; }
+.nvn-mini-player { position: fixed; bottom: 24px; right: 24px; width: min(360px, calc(100vw - 32px)); z-index: 980; border: 1px solid #4ff3e050; border-radius: 16px; overflow: hidden; background: #0b101c; color: #f8fafc; box-shadow: 0 14px 48px #0009; }
+.nvn-mini-player[hidden] { display: none; }
+.nvn-mini-player > header { display: flex; align-items: center; gap: 4px; padding: 8px 10px; }
+.nvn-mini-player > header strong { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+.nvn-mini-player > header button { display: grid; place-items: center; width: 36px; height: 36px; flex-shrink: 0; border-radius: 8px; font-size: 22px; }
+.nvn-mini-player button:hover { background: #ffffff14; }
+.nvn-mini-player button:focus-visible { outline: 2px solid #4ff3e0; outline-offset: -3px; }
+.nvn-mini-midia { display: flex; position: relative; aspect-ratio: 16 / 9; background: #000; }
+.nvn-mini-retomar { display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 20px; background: radial-gradient(ellipse at top, #173b41, #0b101c); font-size: 13px; }
+.nvn-mini-retomar button { border: 1px solid #4ff3e060; border-radius: 12px; padding: 10px 16px; color: #4ff3e0; font-weight: 600; }
+.nvn-mini-player > footer { padding: 6px 12px; color: #a5b4cf; font-size: 12px; }
+.em-mini-player .video-player-container, .em-mini-player .movie-player, .em-mini-player .video-container { height: 100%; max-height: none; min-height: 0; width: 100%; }
+.em-mini-player .video-player-container, .em-mini-player .movie-player { cursor: default; }
+.em-mini-player .video-player-container > :not(video):not(.loading-overlay):not(.error-overlay),
+.em-mini-player .movie-player > :not(.video-container):not(.player-overlay) { display: none !important; }
+.em-mini-player .player-overlay, .em-mini-player .loading-overlay, .em-mini-player .error-overlay { inset: 0; padding: 8px; font-size: 12px; overflow: auto; }
+.em-mini-player .nvn-carregamento { gap: 8px; padding: 4px; }
+.em-mini-player .nvn-carregamento-icone .nvn-simbolo { width: 36px; height: 36px; }
+.em-mini-player .error-overlay h3, .em-mini-player .player-overlay h3 { font-size: 14px; }
+.em-mini-player .video-container { max-width: none; }
+@media (max-width: 768px) { .nvn-mini-player { bottom: calc(76px + env(safe-area-inset-bottom)); right: 12px; width: min(320px, calc(100vw - 24px)); } }

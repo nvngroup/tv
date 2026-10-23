@@ -37,6 +37,7 @@ export function useVoltarFecha(aberta: boolean, fechar: () => void): void {
   useEffect(() => {
     if (!aberta) return;
     const marca = proximaMarca++;
+    const endereco = window.location.href;
     // O estado do roteador vai junto: ele lê o próprio índice do histórico,
     // e uma entrada sem ele o confundiria no voltar.
     const atual = (window.history.state ?? {}) as Record<string, unknown>;
@@ -46,7 +47,7 @@ export function useVoltarFecha(aberta: boolean, fechar: () => void): void {
     const aoVoltar = () => {
       const estado = window.history.state as { nvnplusCamada?: number } | null;
       // Voltou para antes desta camada: ela fecha.
-      if (!estado || estado.nvnplusCamada === undefined || estado.nvnplusCamada < marca) {
+      if (estado?.nvnplusCamada === undefined || estado.nvnplusCamada < marca) {
         fechouPeloVoltar = true;
         fecharRef.current();
       }
@@ -55,7 +56,8 @@ export function useVoltarFecha(aberta: boolean, fechar: () => void): void {
 
     return () => {
       window.removeEventListener('popstate', aoVoltar);
-      if (!fechouPeloVoltar) recuarDepois();
+      const estado = window.history.state as { nvnplusCamada?: number } | null;
+      if (!fechouPeloVoltar && window.location.href === endereco && (estado?.nvnplusCamada ?? 0) >= marca) recuarDepois();
     };
   }, [aberta]);
 }

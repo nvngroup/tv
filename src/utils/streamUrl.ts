@@ -77,8 +77,8 @@ export function proxyBase(): string {
   return principal;
 }
 
-const PROXY_PRINCIPAL = 'https://nvnplus-tv.pages.dev';
-const PROXY_RESERVA = 'https://nvnplus-tv2.pages.dev';
+const PROXY_PRINCIPAL = 'https://saimo-tv.pages.dev';
+const PROXY_RESERVA = 'https://saimo-tv2.pages.dev';
 let proxyPrincipalCaido = false;
 
 /**

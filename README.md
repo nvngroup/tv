@@ -5,7 +5,7 @@
 </p>
 
 Canais ao vivo, guia de programação, filmes e séries direto no navegador:
-**<https://nvnplus-tv.pages.dev>**. Versão atual: **2.5.1**.
+**<https://saimo-tv.pages.dev>**. Versão atual: **2.5.1**.
 
 O site não embute lista nenhuma (nem de canais, nem de filmes, nem tabelas do guia).
 Os endereços padrão são servidos de forma rápida e estável via Cloudflare Pages

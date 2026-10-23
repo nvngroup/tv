@@ -1,3 +1,5 @@
+import { VideoPersistente as VideoPlayer, FilmePersistente as MoviePlayer, MiniPlayer } from './components/PlayerPersistente';
+import { lerReproducao, restrita as reproducaoRestrita } from './services/reproducao';
 import { CarregamentoMarca } from './components/Marca';
 import { useState, useCallback, useEffect, useMemo, lazy, Suspense } from 'react';
 import { HashRouter, BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation, useParams } from 'react-router-dom';
@@ -34,9 +36,8 @@ function ehCelular(): boolean {
 }
 
 // Lazy loading dos componentes pesados
-const VideoPlayer = lazy(() => import('./components/VideoPlayer').then(m => ({ default: m.VideoPlayer })));
+const VideoPlayerLocal = lazy(() => import('./components/VideoPlayer').then(m => ({ default: m.VideoPlayer })));
 const PainelDeCanais = lazy(() => import('./components/PainelDeCanais').then(m => ({ default: m.PainelDeCanais })));
-const MoviePlayer = lazy(() => import('./components/MoviePlayer').then(m => ({ default: m.MoviePlayer })));
 const ProgramGuide = lazy(() => import('./components/ProgramGuide').then(m => ({ default: m.ProgramGuide })));
 const VodCatalog = lazy(() => import('./components/VodCatalog').then(m => ({ default: m.VodCatalog })));
 const StreamTester = lazy(() => import('./components/StreamTester').then(m => ({ default: m.StreamTester })));
@@ -66,6 +67,7 @@ interface ToastState {
 
 // Componente de TV
 function TVPage() {
+  const { isAdultUnlocked } = useAdultMode();
   const { slug } = useParams<{slug?: string}>();
   const navigate = useNavigate();
   const location = useLocation();
@@ -73,6 +75,7 @@ function TVPage() {
   useEffect(() => { pararRadio(); }, []);
   const [favorites, setFavorites] = useLocalStorage<string[]>('tv-favorites', []);
   const [lastChannelId, setLastChannelId] = useLocalStorage<string | null>('tv-last-channel', null);
+  const [lembrada] = useState(lerReproducao);
   // O canal escolhido guarda junto o link (/ao-vivo/:slug) em que foi escolhido:
   // abrir outro link passa a valer o canal dele, e escolher na lista vale até
   // o link mudar.
@@ -119,10 +122,12 @@ function TVPage() {
   const canalDaEscolha = escolha
     ? (channels.find((ch) => ch.id === escolha.canal.id) ?? escolha.canal)
     : null;
+  const canalRetomado = lembrada?.tipo === 'canal' && (!reproducaoRestrita(lembrada) || isAdultUnlocked) && (!slug || slug === lembrada.canal.id) ? lembrada.canal : null;
   const selectedChannel = canalEscolhido
     ?? canalDoLink
     ?? canalDaEscolha
-    ?? (lastChannelId ? channels.find((ch) => ch.id === lastChannelId) ?? null : null);
+    ?? channels.find((ch) => ch.id === lastChannelId)
+    ?? canalRetomado;
   const setSelectedChannel = useCallback((canal: Channel | null) => {
     setEscolha(canal ? { canal, slug } : null);
   }, [slug]);
@@ -387,7 +392,7 @@ function TVPage() {
                     </button>
                   </div>
                   {secondChannel ? (
-                    <VideoPlayer
+                    <VideoPlayerLocal
                       channel={secondChannel}
                       channelNumber={channels.findIndex((c) => c.id === secondChannel?.id) + 1}
                       isTheaterMode={false}
@@ -526,10 +531,11 @@ function TVPage() {
 // Componente de Filmes
 function MoviesPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAdultUnlocked } = useAdultMode();
   const { filmes } = useListas();
-  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-  const [seriesInfo, setSeriesInfo] = useState<SeriesEpisodeInfo | null>(null);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(() => location.state?.retomarFilme ?? null);
+  const [seriesInfo, setSeriesInfo] = useState<SeriesEpisodeInfo | null>(() => location.state?.retomarSerie ?? null);
   const [toast, setToast] = useState<ToastState | null>(null);
 
   const showToast = useCallback((message: string, type: ToastState['type'] = 'info') => {
@@ -639,7 +645,7 @@ function AppLayout() {
       <Route path="/ao-vivo/:slug" element={<TVPage key={chave} />} />
       <Route path="/tv" element={<RedirecionarAoVivo />} />
       <Route path="/tv/:slug" element={<RedirecionarAoVivo />} />
-            <Route path="/movies" element={<MoviesPage key={chave} />} />
+            <Route path="/movies" element={<MoviesPage key={`${chave}|${location.state?.retomarQuando ?? ''}`} />} />
       <Route path="/app" element={
         <Suspense fallback={<LoadingFallback />}>
           <AppDownload />
@@ -661,6 +667,7 @@ function AppLayout() {
       )}
     </Routes>
     <NavegacaoMobile />
+    <MiniPlayer />
     </>
   );
 }

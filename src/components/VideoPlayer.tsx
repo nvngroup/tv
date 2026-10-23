@@ -19,7 +19,7 @@ import './AvisoApp.css';
 import { ehAppDaTv } from '../plataforma/tv';
 import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, soltarOrientacao } from '../utils/telaCheia';
 
-interface VideoPlayerProps {
+export interface VideoPlayerProps {
   channel: Channel | null;
   channelNumber?: number;
   isTheaterMode: boolean;

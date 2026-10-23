@@ -12,7 +12,7 @@
  * Os scripts são clássicos (nada de type="module"): o webOS bloqueia módulo em file://.
  */
 (function () {
-  var SITE = 'https://nvnplus-tv.pages.dev/tv/';
+  var SITE = 'https://saimo-tv.pages.dev/tv/';
   var CASCA = 1; // sobe só quando o pacote instalado muda (permissões, ícones, este arquivo)
   var LIMITE_MS = 6000;
   var info = document.getElementById('carregando');

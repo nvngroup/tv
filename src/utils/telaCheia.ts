@@ -53,7 +53,8 @@ export async function entrarEmTelaCheia(
   container: HTMLElement,
   video: HTMLVideoElement | null,
 ): Promise<void> {
-  const el = container as ElementoWebkit;
+  // Inclui o controle de minimizar quando o player pertence ao host persistente.
+  const el = (container.closest<HTMLElement>('.reproducao-host') ?? container) as ElementoWebkit;
   if (el.requestFullscreen) {
     await el.requestFullscreen({ navigationUI: 'hide' });
     travarPaisagem();

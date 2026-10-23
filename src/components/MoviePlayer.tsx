@@ -23,7 +23,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 import { CHAVE_UPSCALING, type ModoUpscaling } from '../telas/Ajustes';
 import { audioInteligenteService } from '../services/audioInteligente';
 
-interface MoviePlayerProps {
+export interface MoviePlayerProps {
   movie: Movie | null;
   onBack: () => void;
   seriesInfo?: SeriesEpisodeInfo | null;
