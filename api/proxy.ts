@@ -13,7 +13,9 @@
  * Cloudflare, com `VITE_PROXY_BASE` apontando para cá.
  */
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { onRequest } from '../functions/api/proxy';
+// Em produção a Vercel executa ESM no Node 24; imports relativos precisam da
+// extensão `.js` para resolver o módulo compilado de `functions/api/proxy.ts`.
+import { onRequest } from '../functions/api/proxy.js';
 
 export const config = {
   runtime: 'nodejs',
