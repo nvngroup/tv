@@ -17,8 +17,8 @@ export { normalizarEndereco };
 
 /** Endereços padrão: as únicas listas conhecidas do site. */
 export const PADRAO: Record<'canais' | 'filmes', string> = {
-  canais: 'https://canais-nvnplus.pages.dev/',
-  filmes: 'https://filmes-nvnplus.pages.dev/',
+  canais: 'https://canais-saimo.pages.dev/',
+  filmes: 'https://filmes-saimo.pages.dev/',
 };
 
 const CHAVE_CANAIS = 'nvnplus-link-canais';

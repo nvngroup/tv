@@ -1,12 +1,12 @@
 /**
  * Atalhos curtos de download (/tvbox, /celular, /mac, /windows, /samsung, /lg)
- * para digitar na TV. O destino sai da última release de `SaimoTV/nvnplus-downloads`:
+ * para digitar na TV. O destino sai da última release de `SaimoTV/saimo-downloads`:
  * o site não precisa ser publicado de novo quando o release sobe outra versão.
  * Sem o anexo, o atalho devolve a página /app.
  */
-const REPO = 'SaimoTV/nvnplus-downloads';
+const REPO = 'SaimoTV/saimo-downloads';
 const RELEASE = `https://api.github.com/repos/${REPO}/releases/latest`;
-const VERSAO = 'https://canais-nvnplus.pages.dev/versao.json';
+const VERSAO = 'https://canais-saimo.pages.dev/versao.json';
 
 /** Nome do anexo de cada plataforma dentro do release. */
 const ARQUIVO: Record<string, string> = {

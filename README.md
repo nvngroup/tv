@@ -1,7 +1,7 @@
 # NvN.Plus TV — Web
 
 <p align="center">
-  NvN.Plus TV: <a href="https://github.com/SaimoTV/SaimoTV-Android">TV Box</a> · <a href="https://github.com/SaimoTV/Saimo-Cell-V2">Celular</a> · <a href="https://github.com/SaimoTV/SaimoWin">Windows</a> · <a href="https://github.com/SaimoTV/SaimoPlayer">Mac</a> · <a href="https://github.com/SaimoTV/SaimoCatalogos">Catálogo</a> · <b>Site</b> · <a href="https://github.com/SaimoTV/nvnplus-downloads">Downloads</a>
+  NvN.Plus TV: <a href="https://github.com/SaimoTV/SaimoTV-Android">TV Box</a> · <a href="https://github.com/SaimoTV/Saimo-Cell-V2">Celular</a> · <a href="https://github.com/SaimoTV/SaimoWin">Windows</a> · <a href="https://github.com/SaimoTV/SaimoPlayer">Mac</a> · <a href="https://github.com/SaimoTV/SaimoCatalogos">Catálogo</a> · <b>Site</b> · <a href="https://github.com/SaimoTV/saimo-downloads">Downloads</a>
 </p>
 
 Canais ao vivo, guia de programação, filmes e séries direto no navegador:
@@ -12,8 +12,8 @@ Os endereços padrão são servidos de forma rápida e estável via Cloudflare P
 (`canais-nvnplus.pages.dev` e `filmes-nvnplus.pages.dev`). Em Ajustes > Listas o usuário pode
 alternar, restaurar o padrão ou configurar fontes personalizadas. Os links de download e os
 atalhos `/tvbox`, `/celular`, `/mac`, `/windows`, `/samsung` e `/lg` saem dos anexos da última
-release de [`SaimoTV/nvnplus-downloads`](https://github.com/SaimoTV/nvnplus-downloads/releases/latest),
-lidos na hora; o [`versao.json`](https://canais-nvnplus.pages.dev/versao.json) só informa a versão.
+release de [`SaimoTV/saimo-downloads`](https://github.com/SaimoTV/saimo-downloads/releases/latest),
+lidos na hora; o [`versao.json`](https://canais-saimo.pages.dev/versao.json) só informa a versão.
 
 ---
 

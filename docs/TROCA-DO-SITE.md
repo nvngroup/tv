@@ -5,11 +5,11 @@
 # Trocar o site de GitHub (ou largar o GitHub)
 
 O site não embute lista nenhuma. Os endereços de canais
-(`https://canais-nvnplus.pages.dev/`) e de filmes e séries
-(`https://filmes-nvnplus.pages.dev/`) são as constantes `PADRAO` de
+(`https://canais-saimo.pages.dev/`) e de filmes e séries
+(`https://filmes-saimo.pages.dev/`) são as constantes `PADRAO` de
 `src/services/listas.ts`; em Ajustes > Listas a pessoa troca, desliga (campo vazio)
 ou restaura o padrão, e isso fica no `localStorage`. Fora isso, o único nome fixo é o do
-repositório de downloads, `SaimoTV/nvnplus-downloads` (`src/services/versao.ts` e
+repositório de downloads, `SaimoTV/saimo-downloads` (`src/services/versao.ts` e
 `functions/_lib/baixar.ts`): os botões e os atalhos `/tvbox`, `/celular`, `/mac`,
 `/windows`, `/samsung` e `/lg` leem os anexos da última release pela API do GitHub e
 casam pelo nome do arquivo (`SaimoTV.apk`, `SaimoCell.apk`, `SaimoTV.dmg`,
