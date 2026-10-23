@@ -13,7 +13,7 @@
 .radios-secao { margin-bottom: 2rem; }
 .radios-secao h2 { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 1rem; }
 .radios-grade { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px 14px; }
-.cartao-radio { width: 100%; min-width: 0; display: flex; flex-direction: column; gap: 8px; text-align: center; }
+.cartao-radio { position: relative; width: 100%; min-width: 0; display: flex; flex-direction: column; gap: 8px; text-align: center; }
 .cartao-radio-logo {
   position: relative; width: 100%; aspect-ratio: 1; border-radius: 22px; display: grid; place-items: center; overflow: hidden;
   background: rgba(255, 255, 255, 0.07); border: 2px solid transparent; transition: transform 0.18s, border-color 0.18s;
@@ -26,3 +26,9 @@
 @media (max-width: 1023px) { .radios-grade { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
 @media (max-width: 767px) { .radios-grade { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (max-width: 479px) { .radios-grade { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 10px; } }
+
+.cartao-radio-tocar { width: 100%; min-width: 0; display: flex; flex-direction: column; gap: 8px; text-align: center; }
+.radio-favoritar { position: absolute; top: 6px; right: 6px; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(10, 11, 20, .88); border: 1px solid rgba(255, 255, 255, .18); color: #cbd5e1; cursor: pointer; }
+.radio-favoritar svg { width: 20px; height: 20px; }
+.radio-favoritar:hover, .radio-favoritar.ativa { color: #fbbf24; border-color: #fbbf24; }
+.radio-favoritar:focus-visible { outline: 2px solid #4ff3e0; outline-offset: 3px; }

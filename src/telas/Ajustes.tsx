@@ -20,7 +20,7 @@ const LIMPAR: { rotulo: string; chaves: string[]; aviso: string }[] = [
   { rotulo: 'Limpar “Continue assistindo”', chaves: ['nvnplus-continuar'], aviso: 'Histórico limpo' },
   { rotulo: 'Limpar buscas recentes', chaves: ['nvnplus-buscas-recentes'], aviso: 'Buscas limpas' },
   { rotulo: 'Limpar rádios ouvidas', chaves: ['nvnplus-radios-recentes'], aviso: 'Rádios limpas' },
-  { rotulo: 'Limpar favoritos', chaves: ['tv-favorites', 'nvnplus-vod-favoritos'], aviso: 'Favoritos limpos' },
+  { rotulo: 'Limpar favoritos', chaves: ['tv-favorites', 'nvnplus-vod-favoritos', 'nvnplus-radios-favoritas'], aviso: 'Favoritos limpos' },
 ];
 
 export function Ajustes() {

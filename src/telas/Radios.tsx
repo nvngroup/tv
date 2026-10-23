@@ -7,21 +7,37 @@ import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import { BarraTopo } from '../components/BarraTopo';
 import { CampoBusca, SemLista } from '../components/Telas';
 import { useListas } from '../services/listas';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 import { baixar, chave, locais, recentes, type Radio } from '../services/radios';
 import { assinar, atual as atualRadio, parar, tocar } from '../services/radioPlayer';
 import './Radios.css';
 
-function CartaoRadio({ radio, tocando, aoTocar }: { radio: Radio; tocando: boolean; aoTocar: () => void }) {
+function CartaoRadio({ radio, tocando, favorita, aoTocar, aoFavoritar }: Readonly<{
+  radio: Radio;
+  tocando: boolean;
+  favorita: boolean;
+  aoTocar: () => void;
+  aoFavoritar: () => void;
+}>) {
+  const rotuloFavorita = `${favorita ? 'Remover' : 'Adicionar'} ${radio.nome} ${favorita ? 'das' : 'às'} favoritas`;
   return (
-    <button className={`cartao-radio ${tocando ? 'tocando' : ''}`} onClick={aoTocar} title={radio.nome}>
-      <div className="cartao-radio-logo">
-        {radio.logo
-          ? <img src={radio.logo} alt="" loading="lazy" referrerPolicy="no-referrer" />
-          : <span>{radio.nome.charAt(0)}</span>}
-        {tocando && <Equalizador />}
-      </div>
-      <strong>{radio.nome}</strong>
-    </button>
+    <div className={`cartao-radio ${tocando ? 'tocando' : ''}`}>
+      <button className="cartao-radio-tocar" onClick={aoTocar} title={radio.nome}>
+        <div className="cartao-radio-logo">
+          {radio.logo
+            ? <img src={radio.logo} alt="" loading="lazy" referrerPolicy="no-referrer" />
+            : <span>{radio.nome.charAt(0)}</span>}
+          {tocando && <Equalizador />}
+        </div>
+        <strong>{radio.nome}</strong>
+      </button>
+      <button type="button" className={`radio-favoritar${favorita ? ' ativa' : ''}`}
+        onClick={aoFavoritar} aria-label={rotuloFavorita} title={rotuloFavorita} aria-pressed={favorita}>
+        <svg viewBox="0 0 24 24" fill={favorita ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" aria-hidden="true">
+          <path d="m12 3 2.8 5.7 6.3.9-4.5 4.4 1.1 6.2-5.7-3-5.7 3 1.1-6.2L3.2 9.6l6.3-.9z" />
+        </svg>
+      </button>
+    </div>
   );
 }
 
@@ -33,6 +49,7 @@ export function Radios() {
   const { canais: link } = useListas();
   const [lista, setLista] = useState<Radio[]>(locais);
   const [termo, setTermo] = useState('');
+  const [favoritas, setFavoritas] = useLocalStorage<string[]>('nvnplus-radios-favoritas', []);
   const { radio: atual, estado } = useSyncExternalStore(assinar, atualRadio);
   const ouvidas = useMemo(() => {
     void atual;
@@ -58,8 +75,17 @@ export function Radios() {
 
   const deAaZ = useMemo(() => [...filtradas].sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR')), [filtradas]);
 
+  const favoritasLista = useMemo(() => deAaZ.filter((r) => favoritas.includes(r.nome)), [deAaZ, favoritas]);
+
+  const alternarFavorita = (nome: string) => {
+    setFavoritas((anteriores) => anteriores.includes(nome)
+      ? anteriores.filter((n) => n !== nome)
+      : [...anteriores, nome]);
+  };
+
   const cartao = (r: Radio) => (
     <CartaoRadio key={r.nome} radio={r} tocando={atual?.nome === r.nome && estado !== 'erro'}
+      favorita={favoritas.includes(r.nome)} aoFavoritar={() => alternarFavorita(r.nome)}
       aoTocar={() => (atual?.nome === r.nome && estado !== 'erro' ? parar() : tocar(r))} />
   );
 
@@ -96,6 +122,12 @@ export function Radios() {
         <section className="radios-secao tela-miolo" aria-labelledby="radios-recentes">
           <h2 id="radios-recentes">Ouvidas por último</h2>
           <div className="radios-grade">{recentesLista.map(cartao)}</div>
+        </section>
+      )}
+      {favoritasLista.length > 0 && (
+        <section className="radios-secao tela-miolo" aria-labelledby="radios-favoritas">
+          <h2 id="radios-favoritas">Favoritas</h2>
+          <div className="radios-grade">{favoritasLista.map(cartao)}</div>
         </section>
       )}
       {deAaZ.length > 0 && (
