@@ -904,7 +904,7 @@ export function VodCatalog({
       if (match) {
         const t = Number(match[1]);
         const n = Number(match[2]);
-        const achou = episodiosAgrupados.find((e) => e.temporada === t && e.numero === n);
+        const achou = episodiosAgrupados.some((e) => e.temporada === t && e.numero === n);
         if (achou) return { temporada: t, numero: n, comecado: true };
       }
     }
@@ -960,7 +960,7 @@ export function VodCatalog({
     if (termo.length < 2) return;
     let vivo = true;
     const espera = setTimeout(() => {
-      buscar(termo).then((res) => { if (vivo && res) setBuscaAchados(res); });
+      void buscar(termo).then((res) => { if (vivo && res) setBuscaAchados(res); });
     }, 200);
     return () => { vivo = false; clearTimeout(espera); };
   }, [termoBusca]);
@@ -1439,7 +1439,7 @@ export function VodCatalog({
                       <button
                         key={item.chave}
                         className="vod-card-poster"
-                        onClick={() => { setAtor(null); abrirItem(item); }}
+                        onClick={() => { setAtor(null); void abrirItem(item); }}
                       >
                         <div className="vod-card-poster-thumb">
                           {capa ? (
@@ -1679,7 +1679,7 @@ export function VodCatalog({
                         {episodiosDaTempAtiva.map((e) => {
                           const id = `series-${aberto.chave}-s${e.temporada}e${e.numero}`;
                           const infoEp = detalhesTemporada[e.numero];
-                          const nome = infoEp?.nome && infoEp.nome.trim() ? infoEp.nome : `Episódio ${e.numero}`;
+                          const nome = infoEp?.nome?.trim() ? infoEp.nome : `Episódio ${e.numero}`;
                           const duracao = infoEp?.duracao ? `${infoEp.duracao} min` : null;
                           const versoesRotulo = e.versoes.map((v) => (v === 'leg' ? 'Legendado' : 'Dublado')).join(' / ');
                           const ehDestaque = (partidaSerie?.temporada === e.temporada && partidaSerie?.numero === e.numero) || ultimoEpisodioId === id;
@@ -1861,7 +1861,7 @@ function CarrosselFileira({
   aoPassar,
   verTodos,
   rotuloVerTodos = 'Ver todos',
-}: CarrosselFileiraProps) {
+}: Readonly<CarrosselFileiraProps>) {
   const trilhoRef = useRef<HTMLDivElement | null>(null);
   const [borda, setBorda] = useState({ esq: false, dir: true });
 
