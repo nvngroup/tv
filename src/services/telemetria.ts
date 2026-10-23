@@ -12,7 +12,8 @@
 
 import { marcaTv } from '../plataforma/tv';
 
-const BASE = 'https://saimo-tv.pages.dev/api/online/v1';
+const BASE = 'https://tv.nvn.plus/api/online/v1';
+const CONFIGURACAO_TELEMETRIA = 'https://tv.nvn.plus/api/online/telemetria.json';
 const PLATAFORMA = marcaTv() ?? 'site';
 const VERSAO = 'web';
 /** Zapeando, cada canal que passa não vira batida: só quem ficou. */
@@ -98,7 +99,7 @@ function percentualGuardado(): number {
     const salvo = JSON.parse(localStorage.getItem(CHAVE_PCT) || 'null') as { pct?: number; em?: number } | null;
     const pct = Number(salvo?.pct);
     if (!salvo || !Number.isFinite(pct) || pct <= 0 || pct > 100 || Date.now() - Number(salvo.em || 0) > 86_400_000) {
-      void fetch(BASE.replace(/\/v1$/, '/telemetria.json'), { cache: 'no-store' })
+      void fetch(CONFIGURACAO_TELEMETRIA, { cache: 'no-store' })
         .then((r) => (r.ok ? r.json() : null))
         .then((d) => {
           const novo = Number(d?.amostraPct);
