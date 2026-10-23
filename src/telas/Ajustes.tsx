@@ -1,24 +1,12 @@
 /**
- * Ajustes: o que abrir ao iniciar, importar/exportar canais,
- * atalhos, limpezas e links.
+ * Ajustes: o que abrir ao iniciar, reprodução, limpezas e links.
  */
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarraTopo } from '../components/BarraTopo';
-import { FormListas } from '../components/FormListas';
-import { useListas } from '../services/listas';
 import { useLocalStorage } from '../hooks/useLocalStorage';
-import { useCanais } from '../hooks/useCanais';
 import { audioInteligenteService, CHAVE_AUDIO_INTELIGENTE } from '../services/audioInteligente';
 import { zeroDelayService, CHAVE_ZERO_DELAY, type ModoZeroDelay } from '../services/zeroDelay';
-import {
-  aoMudar as aoMudarPersonalizados,
-  exportarM3U,
-  importar,
-  limpar as limparPersonalizados,
-  locais as canaisLocais,
-} from '../services/canaisPersonalizados';
-import type { Channel } from '../types/channel';
 import './Ajustes.css';
 
 export type AoIniciar = 'inicio' | 'ultimo';
@@ -37,16 +25,11 @@ const LIMPAR: { rotulo: string; chaves: string[]; aviso: string }[] = [
 
 export function Ajustes() {
   const navigate = useNavigate();
-  const canais = useCanais();
-  const listas = useListas();
-  const [favoritosIds] = useLocalStorage<string[]>('tv-favorites', []);
   const [aoIniciar, setAoIniciar] = useLocalStorage<AoIniciar>(CHAVE_AO_INICIAR, 'inicio');
   const [upscaling, setUpscaling] = useLocalStorage<ModoUpscaling>(CHAVE_UPSCALING, 'off');
   const [audioInteligente, setAudioInteligente] = useLocalStorage<boolean>(CHAVE_AUDIO_INTELIGENTE, true);
   const [zeroDelay, setZeroDelay] = useLocalStorage<ModoZeroDelay>(CHAVE_ZERO_DELAY, 'off');
   const [aviso, setAviso] = useState('');
-  const [personalizados, setPersonalizados] = useState<Channel[]>(canaisLocais);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const alterarAudioInteligente = (ativo: boolean) => {
     setAudioInteligente(ativo);
@@ -64,8 +47,6 @@ export function Ajustes() {
     window.dispatchEvent(new Event('nvnplus-upscaling-mudou'));
   };
 
-  useEffect(() => aoMudarPersonalizados(() => setPersonalizados(canaisLocais())), []);
-
   const notificar = (msg: string) => {
     setAviso(msg);
     window.setTimeout(() => setAviso(''), 3000);
@@ -77,58 +58,12 @@ export function Ajustes() {
     notificar(texto);
   };
 
-  const handleExportarTodos = () => {
-    exportarM3U(canais, 'nvnplus-tv-todos-canais.m3u');
-    notificar('Lista de canais exportada!');
-  };
-
-  const handleExportarFavoritos = () => {
-    const favs = canais.filter((c) => favoritosIds.includes(c.id));
-    if (!favs.length) {
-      notificar('Você não tem canais favoritos para exportar');
-      return;
-    }
-    exportarM3U(favs, 'nvnplus-tv-favoritos.m3u');
-    notificar('Canais favoritos exportados!');
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (evt) => {
-      const text = evt.target?.result;
-      if (typeof text === 'string') {
-        const qtd = importar(text);
-        if (qtd > 0) {
-          notificar(`${qtd} canal(is) importado(s) com sucesso!`);
-        } else {
-          notificar('Nenhum canal válido encontrado no arquivo.');
-        }
-      }
-    };
-    reader.readAsText(file);
-    e.target.value = '';
-  };
-
   return (
     <div className="tela tela-com-barra">
       <BarraTopo />
       <div className="tela-miolo ajustes">
         <h1 className="tela-titulo">Ajustes</h1>
         {aviso && <div className="ajustes-aviso">{aviso}</div>}
-
-        <section className="ajustes-bloco" id="listas">
-          <h2>Listas</h2>
-          <p>Os endereços de onde o site lê os canais e os filmes e séries. Já vêm preenchidos; troque por outros, ou deixe em branco e salve para desligar uma lista (o site fica vazio naquela parte).</p>
-          <FormListas
-            key={`${listas.canais}|${listas.filmes}`}
-            permitirApagar
-            aoSalvar={() => notificar('Listas salvas')}
-            aoApagar={() => notificar('Lista desligada')}
-            aoRestaurar={() => notificar('Endereço padrão restaurado')}
-          />
-        </section>
 
         <section className="ajustes-bloco">
           <h2>Ao iniciar</h2>
@@ -185,36 +120,6 @@ export function Ajustes() {
         </section>
 
         <section className="ajustes-bloco">
-          <h2>Canais e listas (M3U / TXT)</h2>
-          <p>Exporte seus canais favoritos ou importe uma lista própria de IPTV.</p>
-          <div className="ajustes-botoes">
-            <button className="ajustes-botao" onClick={handleExportarTodos}>Exportar todos os canais (M3U)</button>
-            <button className="ajustes-botao" onClick={handleExportarFavoritos}>Exportar favoritos (M3U)</button>
-            <button className="ajustes-botao destaque" onClick={() => fileInputRef.current?.click()}>
-              Importar lista (.m3u / .txt)
-            </button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".m3u,.m3u8,.txt"
-              style={{ display: 'none' }}
-              onChange={handleFileChange}
-            />
-            {personalizados.length > 0 && (
-              <button
-                className="ajustes-botao perigo"
-                onClick={() => {
-                  limparPersonalizados();
-                  notificar('Canais importados removidos.');
-                }}
-              >
-                Limpar {personalizados.length} canais importados
-              </button>
-            )}
-          </div>
-        </section>
-
-        <section className="ajustes-bloco">
           <h2>Dados deste navegador</h2>
           <div className="ajustes-botoes">
             {LIMPAR.map((l) => (
@@ -226,12 +131,8 @@ export function Ajustes() {
         <section className="ajustes-bloco">
           <h2>Mais</h2>
           <div className="ajustes-botoes">
-            <button className="ajustes-botao" onClick={() => navigate('/app')}>Baixar o app (TV Box, celular, Mac, Windows)</button>
             <button className="ajustes-botao" onClick={() => navigate('/novidades')}>Novidades</button>
-            <a className="ajustes-botao" href="https://discord.gg/8DKqT3xJvD" target="_blank" rel="noreferrer noopener">Comunidade no Discord</a>
-            {listas.canais && (
-              <a className="ajustes-botao" href={`${listas.canais}catalogo.txt`} target="_blank" rel="noreferrer noopener">Lista de canais (texto)</a>
-            )}
+            <a className="ajustes-botao" href="https://wa.me/552120428610" target="_blank" rel="noopener noreferrer">Suporte no WhatsApp</a>
           </div>
         </section>
       </div>
