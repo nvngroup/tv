@@ -1,7 +1,7 @@
 import { SimboloMarca } from './Marca';
 /**
  * A barra do topo, a mesma do app do Mac e da TV Box: o ícone, as abas
- * (Buscar, Início, Ao vivo, Eventos, On Demand, Favoritos, Rádios), a engrenagem
+ * (Buscar, Favoritos, Início, Ao Vivo, Rádio, On Demand, Eventos), a engrenagem
  * dos ajustes e o relógio. A aba aberta é uma cápsula que desliza até a
  * escolhida; Alt+1 a Alt+8 levam a cada uma (⌘ não serve: o navegador a usa).
  *
@@ -21,18 +21,19 @@ interface Aba {
   prefixos?: string[];
   icone: React.ReactNode;
   destacada?: boolean;
+  somenteIcone?: boolean;
 }
 
 const tr = { fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' } as const;
 
 const ABAS: Aba[] = [
-  { rota: '/busca', rotulo: 'Buscar', icone: <svg viewBox="0 0 24 24" {...tr}><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg> },
+  { rota: '/busca', rotulo: 'Buscar', somenteIcone: true, icone: <svg viewBox="0 0 24 24" {...tr}><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg> },
+  { rota: '/favoritos', rotulo: 'Favoritos', somenteIcone: true, icone: <svg viewBox="0 0 24 24" {...tr}><path d="M12 21s-8-4.9-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.1-8 11-8 11z" /></svg> },
   { rota: '/', rotulo: 'Início', icone: <svg viewBox="0 0 24 24" {...tr}><path d="M3 11 12 3l9 8" /><path d="M5 10v10h14V10" /></svg> },
-  { rota: '/ao-vivo', rotulo: 'Ao vivo', prefixos: ['/ao-vivo/'], icone: <svg viewBox="0 0 24 24" {...tr}><rect x="2" y="4" width="20" height="14" rx="2" /><path d="M8 21h8M12 18v3" /></svg> },
-  { rota: '/eventos', rotulo: 'Eventos', icone: <svg viewBox="0 0 24 24" {...tr}><circle cx="12" cy="12" r="9" /><path d="m12 7 4 3-1.5 5h-5L8 10z" /></svg> },
+  { rota: '/ao-vivo', rotulo: 'Ao Vivo', prefixos: ['/ao-vivo/'], icone: <svg viewBox="0 0 24 24" {...tr}><rect x="2" y="4" width="20" height="14" rx="2" /><path d="M8 21h8M12 18v3" /></svg> },
+  { rota: '/radios', rotulo: 'Rádio', icone: <svg viewBox="0 0 24 24" {...tr}><rect x="3" y="8" width="18" height="12" rx="2" /><circle cx="15" cy="14" r="3" /><path d="M7 12h3M7 16h3M5 8l11-5" /></svg> },
   { rota: '/movies', rotulo: 'On Demand', icone: <svg viewBox="0 0 24 24" {...tr}><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M7 3v18M17 3v18M3 8h4M3 16h4M17 8h4M17 16h4" /></svg> },
-  { rota: '/favoritos', rotulo: 'Favoritos', icone: <svg viewBox="0 0 24 24" {...tr}><path d="M12 21s-8-4.9-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.1-8 11-8 11z" /></svg> },
-  { rota: '/radios', rotulo: 'Rádios', icone: <svg viewBox="0 0 24 24" {...tr}><rect x="3" y="8" width="18" height="12" rx="2" /><circle cx="15" cy="14" r="3" /><path d="M7 12h3M7 16h3M5 8l11-5" /></svg> },
+  { rota: '/eventos', rotulo: 'Eventos', icone: <svg viewBox="0 0 24 24" {...tr}><circle cx="12" cy="12" r="9" /><path d="m12 7 4 3-1.5 5h-5L8 10z" /></svg> },
 ];
 
 const relogio = () => new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
@@ -219,7 +220,7 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
               aria-label={a.rotulo}
             >
               {a.icone}
-              {a.rota !== '/busca' && <span>{a.rotulo}</span>}
+              {!a.somenteIcone && <span>{a.rotulo}</span>}
               {a.destacada && <span className="barra-aba-dot" aria-hidden="true" />}
             </button>
           ))}

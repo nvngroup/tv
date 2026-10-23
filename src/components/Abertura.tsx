@@ -3,10 +3,20 @@ import { ehTv } from '../plataforma/tv';
 import { SimboloMarca } from './Marca';
 import './Abertura.css';
 
+const CHAVE_ABERTURA = 'nvnplus-abertura-vista';
+let exibidaNestaPagina = false;
+
+function jaExibida(): boolean {
+  if (exibidaNestaPagina) return true;
+  try { return sessionStorage.getItem(CHAVE_ABERTURA) === '1'; } catch { return false; }
+}
+
 export function Abertura() {
-  const [fim, setFim] = useState(() => ehTv() || window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const [fim, setFim] = useState(() => jaExibida() || ehTv() || window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   useEffect(() => {
     if (fim) return;
+    exibidaNestaPagina = true;
+    try { sessionStorage.setItem(CHAVE_ABERTURA, '1'); } catch { /* Mantém a marca em memória se o armazenamento estiver indisponível. */ }
     const fechar = () => setFim(true);
     const timer = window.setTimeout(fechar, 1800);
     window.addEventListener('keydown', fechar);

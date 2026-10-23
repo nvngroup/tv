@@ -156,9 +156,7 @@
 .grade-item:hover .grade-tirar { opacity: 1; }
 .grade-tirar:hover { transform: scale(1.12); background: rgba(0, 0, 0, 0.85); }
 
-.equalizador { position: absolute; left: 8px; bottom: 8px; height: 18px; }
-
-.equalizador { display: flex; align-items: flex-end; gap: 3px; height: 28px; }
+.equalizador { display: flex; position: static; flex-shrink: 0; align-items: flex-end; gap: 3px; height: 28px; }
 .equalizador i { width: 4px; border-radius: 2px; background: #4ff3e0; animation: eq 0.9s ease-in-out infinite; }
 .equalizador i:nth-child(2) { animation-delay: -0.3s; background: #a35cf0; }
 .equalizador i:nth-child(3) { animation-delay: -0.6s; }
