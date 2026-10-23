@@ -1,5 +1,5 @@
 /**
- * A lista de rádios: `vod/radios.txt` do SaimoPlayer, uma por linha,
+ * A lista de rádios: `vod/radios.txt` do NvN.Plus TV, uma por linha,
  * `nome|endereço|logo` (o logo é opcional). Porte de `Radios.kt`.
  *
  * A última lista baixada fica em disco para a tela abrir na hora, e a do

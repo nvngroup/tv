@@ -1,5 +1,5 @@
 /**
- * Tela On Demand - Paridade 100% com o aplicativo do macOS (SaimoPlayer)
+ * Catálogo On Demand da NvN.Plus TV
  *
  * Arquitetura em Fileiras (TelaEmFileiras):
  * - Hero Destaque no topo (DestaqueTopo) com imagem larga ao fundo (FundoDoDestaque)

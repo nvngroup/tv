@@ -1,5 +1,5 @@
 /**
- * Normalização do endereço de uma lista, igual à dos outros apps Saimo.
+ * Normalização do endereço de uma lista, igual à dos outros apps de TV.
  *
  * A pessoa digita ou cola o que tem: "meu-site.exemplo.com/listas", a pasta, ou até
  * o arquivo ("…/catalogo.txt"). O que o site guarda é sempre a pasta, com

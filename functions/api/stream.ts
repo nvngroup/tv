@@ -190,7 +190,7 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
   if (todos.length === 0) {
     const doCatalogo = await buscarNoCatalogo(cleanId, isSerie, season, episode, versao);
     if (doCatalogo) {
-      todos = [{ url: doCatalogo, title: 'Catálogo Saimo' }];
+      todos = [{ url: doCatalogo, title: 'Catálogo NvN.Plus' }];
     }
   }
 

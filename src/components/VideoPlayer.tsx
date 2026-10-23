@@ -1,3 +1,4 @@
+import { CarregamentoMarca } from './Marca';
 import { useRef, useEffect, useState, useCallback, useMemo, memo } from 'react';
 import { rota } from '../utils/rotas';
 import { useMediaSession } from '../hooks/useMediaSession';
@@ -1052,12 +1053,7 @@ export const VideoPlayer = memo(function VideoPlayer({
 
           {isLoading && (
             <div className="loading-overlay">
-              <div className="loader">
-                <div className="loader-ring"></div>
-                <div className="loader-ring"></div>
-                <div className="loader-ring"></div>
-              </div>
-              <p>Carregando {channel.name}...</p>
+              <CarregamentoMarca rotulo={`Carregando ${channel.name}…`} />
             </div>
           )}
 

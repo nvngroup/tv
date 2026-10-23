@@ -45,11 +45,6 @@ const ITENS: Item[] = [
     rotulo: 'Filmes e séries',
     icone: <svg {...ICONE}><rect x="2" y="3" width="20" height="18" rx="2" /><path d="M7 3v18M17 3v18M2 8h5M2 16h5M17 8h5M17 16h5" /></svg>,
   },
-  {
-    caminho: '/app',
-    rotulo: 'Baixar app',
-    icone: <svg {...ICONE}><path d="M12 3v12M7 10l5 5 5-5M5 21h14" /></svg>,
-  },
 ];
 
 export function NavegacaoMobile() {

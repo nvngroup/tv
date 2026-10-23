@@ -1,3 +1,4 @@
+import { CarregamentoMarca } from './Marca';
 import { ehAppDaTv } from '../plataforma/tv';
 import { useRef, useEffect, useState, useCallback, memo, useMemo } from 'react';
 import { rota } from '../utils/rotas';
@@ -1123,8 +1124,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       {/* Loading overlay */}
       {isLoading && (
         <div className="player-overlay loading" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <div className="spinner" />
-          <span style={{ marginBottom: fontes.length > 1 ? '20px' : '0' }}>Carregando...</span>
+          <CarregamentoMarca />
 
           {fontes.length > 1 && (
             <button

@@ -1,3 +1,4 @@
+import { CarregamentoMarca } from './components/Marca';
 import { useState, useCallback, useEffect, useMemo, lazy, Suspense } from 'react';
 import { HashRouter, BrowserRouter, Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { BarraTopo } from './components/BarraTopo';
@@ -52,13 +53,7 @@ const LoadingFallback = () => (
     background: 'var(--bg-primary, #0a0a0a)',
     color: 'var(--text-primary, #fff)'
   }}>
-    <div style={{ textAlign: 'center' }}>
-      <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ marginBottom: '1rem', opacity: 0.7 }} aria-hidden="true">
-        <rect x="2" y="7" width="20" height="14" rx="2" />
-        <path d="M17 2l-5 5-5-5" />
-      </svg>
-      <div>Carregando...</div>
-    </div>
+    <CarregamentoMarca />
   </div>
 );
 
@@ -300,7 +295,7 @@ function TVPage() {
           </div>
         )}
 
-        {/* Desktop: Stage 100% idêntico ao macOS SaimoPlayer (AoVivo.swift / ContentView.swift) */}
+        {/* Layout de reprodução ao vivo no computador */}
         {!isMobile && (
           <div className="stage-aovivo-mac">
             {selectedMovie ? (

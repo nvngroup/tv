@@ -1,3 +1,4 @@
+import { CarregamentoMarca } from './Marca';
 import { useRef, useEffect, useState, useCallback } from 'react';
 import Hls from 'hls.js';
 import mpegts from 'mpegts.js';
@@ -537,8 +538,7 @@ export function StreamTester({ initialUrl = '' }: StreamTesterProps) {
           <div className="video-container">
             {isLoading && (
               <div className="loading-overlay">
-                <div className="spinner"></div>
-                <span>Carregando...</span>
+                <CarregamentoMarca />
               </div>
             )}
             {error && (

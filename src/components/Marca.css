@@ -1,0 +1,10 @@
+.nvn-simbolo { display: block; width: 48px; height: 48px; object-fit: contain; border-radius: 24%; flex-shrink: 0; }
+.barra-logo .nvn-simbolo { width: 36px; height: 36px; }
+.logo-icon .nvn-simbolo, .brand-icon .nvn-simbolo { width: 100%; height: 100%; }
+.nvn-carregamento { display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 16px; text-align: center; }
+.nvn-carregamento-icone { position: relative; padding: 12px; }
+.nvn-carregamento-icone .nvn-simbolo { width: 64px; height: 64px; }
+.nvn-carregamento-icone::after { content: ''; position: absolute; inset: 0; border: 2px solid rgba(79,243,224,.12); border-top-color: #4ff3e0; border-right-color: #a35cf0; border-radius: 50%; animation: nvn-girar 1.4s linear infinite; }
+.nvn-carregamento .nvn-carregamento-texto { color: #cbd5e1; font-size: 14px; letter-spacing: .025em; }
+@keyframes nvn-girar { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .nvn-carregamento-icone::after { animation: none; } }

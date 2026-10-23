@@ -1,5 +1,5 @@
+import { SimboloMarca } from './Marca';
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDpad } from '../contexts/dpadContexto';
 import './HomeSelector.css';
 
@@ -11,7 +11,6 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<'tv' | 'movies' | null>(null);
   const { focusFirst, isUsingDpad } = useDpad();
-  const navigate = useNavigate();
 
   const tvCardRef = useRef<HTMLButtonElement>(null);
   const moviesCardRef = useRef<HTMLButtonElement>(null);
@@ -58,47 +57,13 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
       <header className="home-header">
         <div className="brand">
           <div className="brand-icon">
-            <svg viewBox="0 0 48 48" fill="none">
-              <path d="M8 12C8 9.79086 9.79086 8 12 8H36C38.2091 8 40 9.79086 40 12V32C40 34.2091 38.2091 36 36 36H12C9.79086 36 8 34.2091 8 32V12Z" fill="url(#paint0_linear)" />
-              <path d="M18 18L32 24L18 30V18Z" fill="white" />
-              <path d="M16 40H32" stroke="url(#paint1_linear)" strokeWidth="3" strokeLinecap="round" />
-              <path d="M24 36V40" stroke="url(#paint2_linear)" strokeWidth="3" strokeLinecap="round" />
-              <defs>
-                <linearGradient id="paint0_linear" x1="8" y1="8" x2="40" y2="36" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#8B5CF6" />
-                  <stop offset="1" stopColor="#EC4899" />
-                </linearGradient>
-                <linearGradient id="paint1_linear" x1="16" y1="40" x2="32" y2="40" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#8B5CF6" />
-                  <stop offset="1" stopColor="#EC4899" />
-                </linearGradient>
-                <linearGradient id="paint2_linear" x1="24" y1="36" x2="24" y2="40" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#8B5CF6" />
-                  <stop offset="1" stopColor="#EC4899" />
-                </linearGradient>
-              </defs>
-            </svg>
+            <SimboloMarca />
           </div>
           <div className="brand-text">
-            <h1>Saimo<span>TV</span></h1>
+            <h1>NvN<span>.Plus</span></h1>
             <p>Entretenimento sem limites</p>
           </div>
         </div>
-
-        <button
-          className="home-download-btn"
-          onClick={() => navigate('/app')}
-          data-focusable="true"
-          data-focus-key="home-download"
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="7 10 12 15 17 10" />
-            <line x1="12" y1="15" x2="12" y2="3" />
-          </svg>
-          <span>Baixar app</span>
-          <small>TV Box · Celular · Mac</small>
-        </button>
       </header>
 
       {/* Seletor de modo */}

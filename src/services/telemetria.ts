@@ -1,5 +1,5 @@
 /**
- * O que o Saimo Monitor fica sabendo deste navegador.
+ * O que o monitor de telemetria fica sabendo deste navegador.
  *
  * Que o site abriu, o que está tocando de tempos em tempos, e quando uma fonte
  * falha, um canal cai ou a página quebra. O aparelho é um UUID sorteado aqui e
