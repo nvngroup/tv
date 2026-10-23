@@ -107,8 +107,6 @@ export function montar(slot: HTMLElement | null, pedido: Pedido) {
   if (!mesmo) registrarTempo(true);
   const ativo = sessao.pedido;
   if (!ativo || !mesmo) aguardandoMidia = true;
-  // O catálogo pode devolver outro objeto com os mesmos dados ao expandir o miniPlayer.
-  // Preserva a identidade das props de mídia para não reiniciar o motor do player.
   if (pedido.tipo === 'canal' && ativo?.tipo === 'canal' && JSON.stringify(pedido.props.channel) === JSON.stringify(ativo.props.channel)) {
     pedido = { ...pedido, props: { ...pedido.props, channel: ativo.props.channel } };
   } else if (pedido.tipo === 'filme' && ativo?.tipo === 'filme' && JSON.stringify(pedido.props.movie) === JSON.stringify(ativo.props.movie)) {
