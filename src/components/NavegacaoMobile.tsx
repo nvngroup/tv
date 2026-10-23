@@ -41,6 +41,11 @@ const ITENS: Item[] = [
     icone: <svg {...ICONE}><rect x="3" y="4" width="18" height="18" rx="2" /><circle cx="12" cy="13" r="5" /><path d="M12 8v5" /></svg>,
   },
   {
+    caminho: '/radios',
+    rotulo: 'Rádio',
+    icone: <svg {...ICONE}><path d="M4 11a8 8 0 0 1 16 0v8a2 2 0 0 1-2 2h-2v-8h4M4 13H2v6a2 2 0 0 0 2 2h2v-8H4z" /><path d="M12 3v2" /></svg>,
+  },
+  {
     caminho: '/movies',
     rotulo: 'Filmes e séries',
     icone: <svg {...ICONE}><rect x="2" y="3" width="20" height="18" rx="2" /><path d="M7 3v18M17 3v18M2 8h5M2 16h5M17 8h5M17 16h5" /></svg>,
