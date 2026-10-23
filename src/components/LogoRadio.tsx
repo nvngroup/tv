@@ -4,7 +4,7 @@ import type { Radio } from '../services/radios';
 
 type LogoLocal = { arquivo: string; fonte: string; nome: string };
 
-function ImagemRadio({ fontes, destaque }: { fontes: string[]; destaque: boolean }) {
+function ImagemRadio({ fontes, destaque }: Readonly<{ fontes: string[]; destaque: boolean }>) {
   const [indice, setIndice] = useState(0);
   const [carregou, setCarregou] = useState(false);
   const fonte = fontes[indice];
@@ -28,7 +28,7 @@ function ImagemRadio({ fontes, destaque }: { fontes: string[]; destaque: boolean
   );
 }
 
-export function LogoRadio({ radio, destaque = false }: { radio: Radio; destaque?: boolean }) {
+export function LogoRadio({ radio, destaque = false }: Readonly<{ radio: Radio; destaque?: boolean }>) {
   // O endereço do stream identifica a emissora, evitando confundir nomes e frequências iguais.
   const local = (logos as Record<string, LogoLocal>)[radio.url];
   const fontes = [...new Set([
