@@ -28,7 +28,7 @@ const tr = { fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap
 const ABAS: Aba[] = [
   { rota: '/busca', rotulo: 'Buscar', icone: <svg viewBox="0 0 24 24" {...tr}><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg> },
   { rota: '/', rotulo: 'Início', icone: <svg viewBox="0 0 24 24" {...tr}><path d="M3 11 12 3l9 8" /><path d="M5 10v10h14V10" /></svg> },
-  { rota: '/tv', rotulo: 'Ao vivo', prefixos: ['/tv/'], icone: <svg viewBox="0 0 24 24" {...tr}><rect x="2" y="4" width="20" height="14" rx="2" /><path d="M8 21h8M12 18v3" /></svg> },
+  { rota: '/ao-vivo', rotulo: 'Ao vivo', prefixos: ['/ao-vivo/'], icone: <svg viewBox="0 0 24 24" {...tr}><rect x="2" y="4" width="20" height="14" rx="2" /><path d="M8 21h8M12 18v3" /></svg> },
   { rota: '/eventos', rotulo: 'Eventos', icone: <svg viewBox="0 0 24 24" {...tr}><circle cx="12" cy="12" r="9" /><path d="m12 7 4 3-1.5 5h-5L8 10z" /></svg> },
   { rota: '/movies', rotulo: 'On Demand', icone: <svg viewBox="0 0 24 24" {...tr}><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M7 3v18M17 3v18M3 8h4M3 16h4M17 8h4M17 16h4" /></svg> },
   { rota: '/favoritos', rotulo: 'Favoritos', icone: <svg viewBox="0 0 24 24" {...tr}><path d="M12 21s-8-4.9-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.1-8 11-8 11z" /></svg> },
@@ -43,7 +43,7 @@ const ativa = (a: Aba, caminho: string) =>
 interface BarraTopoProps {
   /** Se `false`, força a barra a ficar oculta independente do mouse. Se omitido, auto-esconde apenas se estiver em rota com player. */
   visible?: boolean;
-  /** Se `true`, auto-esconde quando o mouse se afasta. Se `false`, fica fixa na tela. Se omitido, auto-esconde apenas se estiver em rota de player (/tv). */
+  /** Se `true`, auto-esconde quando o mouse se afasta. Se `false`, fica fixa na tela. Se omitido, auto-esconde apenas se estiver em rota de player (/ao-vivo). */
   autoHide?: boolean;
 }
 
@@ -60,9 +60,9 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
   const trilho = useRef<HTMLElement>(null);
   const [capsula, setCapsula] = useState<{ x: number; w: number } | null>(null);
 
-  // O nav bar só auto-esconde quando um player estiver sendo usado (/tv ou autoHide=true).
+  // O nav bar só auto-esconde quando um player estiver sendo usado (/ao-vivo ou autoHide=true).
   // Fora isso (catálogos, início, busca, eventos, favoritos, rádios, etc.), ele fica fixo e visível na tela.
-  const deveAutoEsconder = autoHide ?? pathname.startsWith('/tv');
+  const deveAutoEsconder = autoHide ?? pathname.startsWith('/ao-vivo');
 
   const [mouseNoTopo, setMouseNoTopo] = useState(() => !deveAutoEsconder);
   // Controle remoto (TV): sem mouse para chegar ao topo, a barra aparece quando o foco entra nela.
@@ -216,9 +216,10 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
                 (e.currentTarget as HTMLElement)?.blur();
               }}
               title={`${a.rotulo} (Alt+${i + 1})`}
+              aria-label={a.rotulo}
             >
               {a.icone}
-              <span>{a.rotulo}</span>
+              {a.rota !== '/busca' && <span>{a.rotulo}</span>}
               {a.destacada && <span className="barra-aba-dot" aria-hidden="true" />}
             </button>
           ))}

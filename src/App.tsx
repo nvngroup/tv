@@ -1,6 +1,6 @@
 import { CarregamentoMarca } from './components/Marca';
 import { useState, useCallback, useEffect, useMemo, lazy, Suspense } from 'react';
-import { HashRouter, BrowserRouter, Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
+import { HashRouter, BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { BarraTopo } from './components/BarraTopo';
 import { AdultModeContext, useAdultMode } from './contexts/adultoContexto';
 import { Inicio } from './telas/Inicio';
@@ -73,7 +73,7 @@ function TVPage() {
   useEffect(() => { pararRadio(); }, []);
   const [favorites, setFavorites] = useLocalStorage<string[]>('tv-favorites', []);
   const [lastChannelId, setLastChannelId] = useLocalStorage<string | null>('tv-last-channel', null);
-  // O canal escolhido guarda junto o link (/tv/:slug) em que foi escolhido:
+  // O canal escolhido guarda junto o link (/ao-vivo/:slug) em que foi escolhido:
   // abrir outro link passa a valer o canal dele, e escolher na lista vale até
   // o link mudar.
   const [escolha, setEscolha] = useState<{ canal: Channel; slug?: string } | null>(null);
@@ -90,7 +90,7 @@ function TVPage() {
   const [isChannelsPanelOpen, setIsChannelsPanelOpen] = useState(() => window.innerWidth > 640 || !ehCelular());
   const [controlsVisible, setControlsVisible] = useState(true);
 
-  // Ao navegar para /tv novamente, reabre os canais
+  // Ao navegar para /ao-vivo novamente, reabre os canais
   const [prevPath, setPrevPath] = useState(location.pathname);
   if (prevPath !== location.pathname) {
     setPrevPath(location.pathname);
@@ -606,6 +606,12 @@ function MoviesPage() {
   );
 }
 
+/** Atualiza links antigos sem perder o canal, a busca ou o fragmento. */
+function RedirecionarAoVivo() {
+  const { pathname, search, hash } = useLocation();
+  return <Navigate to={{ pathname: pathname.replace(/^\/tv(?=\/|$)/, '/ao-vivo'), search, hash }} replace />;
+}
+
 // Layout principal que gerencia scroll
 function AppLayout() {
   const location = useLocation();
@@ -629,8 +635,10 @@ function AppLayout() {
       <Route path="/favoritos" element={<Favoritos key={chave} />} />
       <Route path="/radios" element={<Radios key={chave} />} />
       <Route path="/ajustes" element={<Ajustes />} />
-      <Route path="/tv" element={<TVPage key={chave} />} />
-      <Route path="/tv/:slug" element={<TVPage key={chave} />} />
+      <Route path="/ao-vivo" element={<TVPage key={chave} />} />
+      <Route path="/ao-vivo/:slug" element={<TVPage key={chave} />} />
+      <Route path="/tv" element={<RedirecionarAoVivo />} />
+      <Route path="/tv/:slug" element={<RedirecionarAoVivo />} />
             <Route path="/movies" element={<MoviesPage key={chave} />} />
       <Route path="/app" element={
         <Suspense fallback={<LoadingFallback />}>
@@ -685,7 +693,7 @@ function AdultModeProvider({ children }: { children: React.ReactNode }) {
 }
 
 /*
- * No site as páginas têm endereço limpo (/tv, /movies, /app), que dá para
+ * No site as páginas têm endereço limpo (/ao-vivo, /movies, /app), que dá para
  * mandar a alguém. No app de desktop (tauri://, sem raiz de site) continua o
  * endereço com #. Um link antigo com # que chega ao site é convertido.
  */

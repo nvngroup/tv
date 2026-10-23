@@ -29,7 +29,7 @@ const ITENS: Item[] = [
     icone: <svg {...ICONE}><path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1z" /></svg>,
   },
   {
-    caminho: '/tv',
+    caminho: '/ao-vivo',
     rotulo: 'Ao vivo',
     icone: <svg {...ICONE}><rect x="2" y="7" width="20" height="14" rx="2" /><path d="m17 2-5 5-5-5" /></svg>,
   },
@@ -85,7 +85,7 @@ export function NavegacaoMobile() {
       })}
     </nav>
     {eventos && (
-      <EventsModal onClose={() => setEventos(false)} onWatch={(id) => navigate(`/tv/${id}`)} />
+      <EventsModal onClose={() => setEventos(false)} onWatch={(id) => navigate(`/ao-vivo/${id}`)} />
     )}
     </>
   );

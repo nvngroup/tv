@@ -116,7 +116,7 @@ export function Busca() {
         <Fileira titulo="Canais">
           {canaisAchados.map((c) => (
             <CartaoLargo key={c.id} titulo={c.name} logo={c.logo} linha={c.category}
-              aoAbrir={() => { guardar(t); navigate(`/tv/${c.id}`); }} />
+              aoAbrir={() => { guardar(t); navigate(`/ao-vivo/${c.id}`); }} />
           ))}
         </Fileira>
       )}

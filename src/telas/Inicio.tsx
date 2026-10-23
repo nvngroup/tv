@@ -43,7 +43,7 @@ export function Inicio() {
     sessionStorage.setItem('nvnplus-entrada', '1');
     try {
       const ao = JSON.parse(localStorage.getItem(CHAVE_AO_INICIAR) || '"inicio"');
-      if (ao === 'ultimo' && localStorage.getItem('tv-last-channel')) navigate('/tv', { replace: true });
+      if (ao === 'ultimo' && localStorage.getItem('tv-last-channel')) navigate('/ao-vivo', { replace: true });
     } catch { /* valor ilegível: fica no Início */ }
   }, [navigate]);
   useEffect(() => aoMudarVodFav(() => setVodFav(vodFavoritos())), []);
@@ -72,7 +72,7 @@ export function Inicio() {
   const primeiro = filas[0]?.itens[0] ?? null;
   const heroi = useHeroiVod(sob ?? primeiro);
 
-  const abrirCanal = (c: Channel) => navigate(`/tv/${c.id}`);
+  const abrirCanal = (c: Channel) => navigate(`/ao-vivo/${c.id}`);
 
   return (
     <div className="tela tela-com-barra">
@@ -100,7 +100,7 @@ export function Inicio() {
       )}
 
       {noAr.length > 0 && (
-        <Fileira titulo="Ao vivo agora" aoVerTodos={() => navigate('/tv')} rotuloVerTodos="Abrir Ao vivo">
+        <Fileira titulo="Ao vivo agora" aoVerTodos={() => navigate('/ao-vivo')} rotuloVerTodos="Abrir Ao vivo">
           {noAr.map(({ canal, titulo, progresso }) => (
             <CartaoLargo
               key={canal.id}

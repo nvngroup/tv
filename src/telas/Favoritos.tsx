@@ -60,7 +60,7 @@ export function Favoritos() {
               {favCanais.map((c) => (
                 <div key={c.id} className="grade-item">
                   <CartaoLargo titulo={c.name} logo={c.logo} linha={getCurrentProgram(c.id)?.current?.title ?? c.category}
-                    aoAbrir={() => navigate(`/tv/${c.id}`)} />
+                    aoAbrir={() => navigate(`/ao-vivo/${c.id}`)} />
                   <button className="grade-tirar" title="Tirar dos favoritos"
                     onClick={() => setIds((a) => a.filter((x) => x !== c.id))}>♥</button>
                 </div>

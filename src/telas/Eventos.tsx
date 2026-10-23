@@ -142,7 +142,7 @@ export function Eventos() {
         <Fileira key={nome} titulo={nome}>
           {grupos[i].map((j) => (
             <CartaoJogo key={`${j.casa}${j.fora}${j.inicio}${j.canal.id}`} jogo={j} agora={agora}
-              aoAbrir={() => navigate(`/tv/${j.canal.id}`)} aoPassar={() => setSob(j)} />
+              aoAbrir={() => navigate(`/ao-vivo/${j.canal.id}`)} aoPassar={() => setSob(j)} />
           ))}
         </Fileira>
       ))}

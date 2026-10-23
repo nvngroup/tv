@@ -36,7 +36,7 @@ export const AppHeader = memo(function AppHeader({
   const [pin, setPin] = useState('');
   const clickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Sincronizar modo adultos ao navegar entre /tv e /movies
+  // Sincronizar modo adultos ao navegar entre /ao-vivo e /movies
   useEffect(() => {
     const handleStorageChange = () => {
       // Quando voltar da outra página, verifica se o estado mudou
@@ -112,7 +112,7 @@ export const AppHeader = memo(function AppHeader({
   };
 
   const isHome = location.pathname === '/';
-  const isTV = location.pathname === '/tv';
+  const isTV = location.pathname === '/ao-vivo';
   const isMovies = location.pathname === '/movies';
 
   const handleNavigation = (path: string) => {
@@ -171,7 +171,7 @@ export const AppHeader = memo(function AppHeader({
           <nav className="header-nav">
           <button 
             className={`nav-link ${isTV ? 'active' : ''}`}
-            onClick={() => handleNavigation('/tv')}
+            onClick={() => handleNavigation('/ao-vivo')}
             data-focusable="true"
             data-focus-key="nav-tv"
           >
@@ -268,7 +268,7 @@ export const AppHeader = memo(function AppHeader({
     {showEventsModal && (
       <EventsModal 
         onClose={() => setShowEventsModal(false)}
-        onWatch={(slug) => navigate(`/tv/${slug}`)}
+        onWatch={(slug) => navigate(`/ao-vivo/${slug}`)}
       />
     )}
 
