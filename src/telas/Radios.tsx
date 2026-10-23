@@ -5,6 +5,7 @@
  */
 import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import { BarraTopo } from '../components/BarraTopo';
+import { LogoRadio } from '../components/LogoRadio';
 import { CampoBusca, SemLista } from '../components/Telas';
 import { useListas } from '../services/listas';
 import { useLocalStorage } from '../hooks/useLocalStorage';
@@ -24,9 +25,7 @@ function CartaoRadio({ radio, tocando, favorita, aoTocar, aoFavoritar }: Readonl
     <div className={`cartao-radio ${tocando ? 'tocando' : ''}`}>
       <button className="cartao-radio-tocar" onClick={aoTocar} title={radio.nome}>
         <div className="cartao-radio-logo">
-          {radio.logo
-            ? <img src={radio.logo} alt="" loading="lazy" referrerPolicy="no-referrer" />
-            : <span>{radio.nome.charAt(0)}</span>}
+          <LogoRadio radio={radio} />
           {tocando && <Equalizador />}
         </div>
         <strong>{radio.nome}</strong>
@@ -98,7 +97,7 @@ export function Radios() {
             {atual ? (
               <>
                 <div className="radio-agora-logo">
-                  {atual.logo ? <img src={atual.logo} alt="" referrerPolicy="no-referrer" /> : <span>{atual.nome.charAt(0)}</span>}
+                  <LogoRadio radio={atual} destaque />
                 </div>
                 <div>
                   <small>{estado === 'erro' ? 'Não foi possível tocar' : estado === 'carregando' ? 'Conectando…' : 'Tocando agora'}</small>
