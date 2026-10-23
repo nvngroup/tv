@@ -1,5 +1,4 @@
 import { CarregamentoMarca } from './Marca';
-import { ehAppDaTv } from '../plataforma/tv';
 import { useRef, useEffect, useState, useCallback, memo, useMemo } from 'react';
 import { rota } from '../utils/rotas';
 import { useMediaSession } from '../hooks/useMediaSession';
@@ -174,13 +173,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   }, []);
 
   /*
-   * Endereço http não abre no site, e insistir só atrasa o aviso.
-   *
-   * O navegador recusa vídeo http dentro de uma página https, e o proxy, que
-   * serviria de ponte, leva 403 desses servidores: eles recusam a faixa de IPs
-   * da Cloudflare, onde o site mora. Foi medido em todas as fontes http do
-   * catálogo, nenhuma passa — então o caminho é a aba separada, e ela aparece
-   * de saída em vez de depois de um minuto de espera.
+   * URLs HTTP seguem para o proxy do site. Ele pode não conseguir acessar
+   * alguns servidores, mas isso só fica claro depois de tentar as fontes na
+   * ordem normal.
    */
   const fontesOriginais = useMemo(() => {
     if (!movie) return [];
@@ -216,10 +211,6 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     // Em série, o episódio novo prefere a fonte que estava tocando (host, depois posição).
     setFonteIdx(fonteInicial(fontes, movie));
   }, [movie?.id, movie?.initialSourceUrl, fontes]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Desktop e TV são apps instalados: não têm a barreira de conteúdo misto da página https.
-  const noDesktop = !(globalThis as { __SAIMO_DESKTOP__?: boolean }).__SAIMO_DESKTOP__ && !ehAppDaTv();
-  const soHttp = noDesktop && !!urlAtiva && urlAtiva.startsWith('http://');
 
   /** O servidor de uma fonte, que é o que distingue uma da outra na lista. */
   const servidorDe = (endereco: string) => {
@@ -304,17 +295,6 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     setSelectedSubtitle(-1);
 
     localStorage.setItem('current-movie-id', movie.id);
-
-    if (soHttp) {
-      setIsLoading(false);
-      setIsProxyBlocked(true);
-      setError('Este vídeo só existe em http.');
-      return () => {
-        if (atual()) loadGenerationRef.current += 1;
-        abortador.abort();
-        salvarProgresso();
-      };
-    }
 
     const url = getProxiedUrl(urlAtiva);
     const tituloMonitor = seriesInfo?.seriesName || movie.seriesName || movie.name;
@@ -499,7 +479,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       video.removeEventListener('canplay', handleCanPlay);
       window.removeEventListener('beforeunload', salvarProgresso);
     };
-  }, [resolvendo, movie, soHttp, urlAtiva, fonteIdx, fontes, fontes.length, seriesInfo?.seriesName]);
+  }, [resolvendo, movie, urlAtiva, fonteIdx, fontes, fontes.length, seriesInfo?.seriesName]);
 
 
   const episodeIndex = useMemo(() => {

@@ -43,7 +43,6 @@ export interface VideoPlayerProps {
 export const VideoPlayer = memo(function VideoPlayer({
   channel,
   isTheaterMode,
-  onToggleTheater: _onToggleTheater,
   onOpenGuide,
   isMultiScreen = false,
   onToggleMultiScreen,
@@ -202,12 +201,7 @@ export const VideoPlayer = memo(function VideoPlayer({
     (melhor, f, i) => (f.indiceTentativa <= sourceIndex ? i : melhor), 0,
   );
 
-  /*
-   * A primeira fonte http do canal. Numa página https o navegador bloqueia
-   * vídeo http, e quando nem o proxy consegue buscá-la não há o que fazer aqui
-   * dentro — mas aberta numa aba própria ela toca, porque ali não há página
-   * https em volta para bloquear.
-   */
+  /* URL HTTP para oferecer como alternativa externa depois do fallback interno. */
   const fonteHttp = useMemo(() => {
     const atual = fontes[fontePos]?.source.url;
     if (atual?.startsWith('http://')) return atual;
@@ -215,18 +209,14 @@ export const VideoPlayer = memo(function VideoPlayer({
   }, [fontes, fontePos]);
 
   /*
-   * Fonte http não abre no site, ponto.
-   *
-   * O navegador recusa vídeo http dentro de uma página https, e o proxy, que
-   * existe justamente para contornar isso, leva 403 desses CDNs: eles recusam a
-   * faixa de IPs da Cloudflare, onde o site mora. Medido em todas as fontes
-   * http do catálogo — nenhuma passa. Então não vale gastar doze segundos de
-   * relógio em cada uma antes de dizer o que já se sabe: o caminho é a aba
-   * separada, e o aviso aparece de saída.
+   * O navegador bloqueia HTTP direto dentro da página HTTPS, mas a tentativa
+   * pelo proxy usa HTTPS e ainda pode funcionar. Só descartamos a tentativa
+   * direta; fontes HTTP via proxy participam do fallback normal.
    */
   const tentavel = useCallback(
-    // Na TV o app é instalado: http abre direto, sem a regra da página https.
-    (a: Attempt | undefined) => !!a && (ehAppDaTv() || !a.source.url.startsWith('http://')),
+    (a: Attempt | undefined) => !!a && (
+      ehAppDaTv() || a.viaProxy || !a.source.url.startsWith('http://')
+    ),
     [],
   );
   const semCaminhoNoSite = attempts.length > 0 && !attempts.some(tentavel);
@@ -296,7 +286,7 @@ export const VideoPlayer = memo(function VideoPlayer({
       setIsLoading(false);
       return;
     }
-    // Fonte http: anda até a próxima que dá para abrir; não havendo, o aviso.
+    // Não tente HTTP direto no navegador; sua tentativa pelo proxy continua válida.
     if (!tentavel(attempt)) {
       const seguinte = attempts.findIndex((a, i) => i > sourceIndex && tentavel(a));
       if (seguinte !== -1) { setSourceIndex(seguinte); return; }
