@@ -1829,4 +1829,539 @@
     "nome": "Web Rádio Arauto da Imaculada",
     "fonte": "https://public-rf-upload.minhawebradio.net/1132/mobileicon/74ac21590f8bb0c993ae13017baf357e.png"
   },
-  
+  "https://radio901.webnimbus.cloud/radioalpha/icecast.audio": {
+    "arquivo": "906f9c8ed578c84ab2d8.webp",
+    "nome": "Alpha FM 90.1",
+    "fonte": "https://radioalphacuritiba.com.br/wp-content/uploads/2023/05/images.jpg"
+  },
+  "https://azevedo.jmvstream.com/stream": {
+    "arquivo": "a866b9726119f91c5e8f.webp",
+    "nome": "97 FM Natal",
+    "fonte": "https://97fmnatal.com.br/images/whatsapp.png"
+  },
+  "https://servidor17-5.brlogic.com:8300/live": {
+    "arquivo": "4a0aee7abc0baab85593.webp",
+    "nome": "Brado Rádio",
+    "fonte": "https://platform-upload.cdn-brlogic.com/152162/logo-horizontal/c668a65fca2a9176ea6740887ab1911f.jpg"
+  },
+  "https://stm28.xcast.com.br:11364/stream": {
+    "arquivo": "451e8e5af8b54d0ca7fa.webp",
+    "nome": "Band FM Triângulo",
+    "fonte": "https://bandfmtriangulo.com/wp-content/uploads/2025/02/BAND-FM-TRIANGULO-LOGO-MARCA-192X192.png"
+  },
+  "https://webradio.amsolution.com.br/radio/8230/cocais": {
+    "arquivo": "1de4e0d935b49fb84eb0.webp",
+    "nome": "Cocais FM 89.5",
+    "fonte": "https://www.meionews.com/assets/icon/apple-icon-57x57.png"
+  },
+  "https://ssl1.transmissaodigital.com:20028/live": {
+    "arquivo": "0d72825ea349848f9b16.webp",
+    "nome": "Cultura FM 100.9",
+    "fonte": "https://www.google.com/favicon.ico"
+  },
+  "https://rrdns-megasistema.webnow.com.br/conquista.mp3": {
+    "arquivo": "a05f0ede56d3d6f56068.webp",
+    "nome": "Conquista FM 97.7",
+    "fonte": "https://www.conquistafm.com.br/_nuxt/icons/icon_512x512.034b1d.png"
+  },
+  "https://sc4s.cdn.upx.com:8069/stream%22%20data-turbolinks-permanent": {
+    "arquivo": "4419c77f87a66dbf344d.webp",
+    "nome": "Clube FM 100.5",
+    "fonte": "https://assets.clubefm.com.br/uploads/site/apple_touch_icon/1/apple-logo.png"
+  },
+  "https://stream.enetbras.com.br/7028/stream": {
+    "arquivo": "bb0e8b0dad1a42f9a5e4.webp",
+    "nome": "Cobra FM 107.1",
+    "fonte": "https://cobrafm.com.br/cobra.png"
+  },
+  "https://ice.fabricahost.com.br/104fmgoioerepr": {
+    "arquivo": "5f0811213fd472c273b4.webp",
+    "nome": "104 FM Goioerê",
+    "fonte": "https://radioapp.ggwebcomercio.com.br/arquivos/4821b6ccd37bd7e2ae240d70d3774b0b/config/radio104fmgoioere,0206172448F01.png"
+  },
+  "https://26573.live.streamtheworld.com/ATL_CRI_FM.mp3": {
+    "arquivo": "00d2d08dcff88b1be261.webp",
+    "nome": "Atlântida FM 97.3",
+    "fonte": "https://atl.clicrbs.com.br/_next/image?url=%2Fimages%2Flogo-small.png&w=320&q=75"
+  },
+  "https://stm1.xcast.com.br:7882/stream": {
+    "arquivo": "ee2e9ace4c93e8c8fc7d.webp",
+    "nome": "Anos Dourados FM",
+    "fonte": "https://anosdouradosfm.com/public/78875-2023-12-29.jpg"
+  },
+  "https://ice.fabricahost.com.br/estereosom": {
+    "arquivo": "d1ed4125dad89fbeff44.webp",
+    "nome": "Estereosom FM",
+    "fonte": "https://estereosom.com.br/wp-content/themes/portal-ch-estereosom/img/icon.png"
+  },
+  "https://sv10.hdradios.net:8616/stream": {
+    "arquivo": "e99f6c0eca1eed54ff30.webp",
+    "nome": "104 FM Bezerros",
+    "fonte": "https://104fmbezerros.com.br/site/wp-content/uploads/2026/05/NOVA-LOGO-3D-SITE-BOLETIMESPORTIVO.NET-Copia.jpg"
+  },
+  "https://ssl.conectastreaming.com:7040/;": {
+    "arquivo": "b088764166ba3c637ad6.webp",
+    "nome": "Difusora FM 91.1",
+    "fonte": "https://www.difusorabd.com.br/site/wp-content/uploads/2023/03/logo-alternativo-3.png"
+  },
+  "https://sv1.audiostream.com.br/radio/8030/stream": {
+    "arquivo": "473d40a2ce4949f91668.webp",
+    "nome": "CBN Salvador",
+    "fonte": "https://static.tudoradio.com/ins/w:254/plain/https://tudoradio.com/owl-carousel/img/logo.png"
+  },
+  "https://stm26.srvaudio.com.br:10484/stream": {
+    "arquivo": "96bb667e1833744a67d1.webp",
+    "nome": "Cidade FM Loanda",
+    "fonte": "https://ps-str.srvsite.com/arquivos/6474/20220914103554_favicon.ico"
+  },
+  "https://stream-148.zeno.fm/wb1ptm05dkhvv": {
+    "arquivo": "2c179bda6d35e89566b7.webp",
+    "nome": "FM Dom Bosco 96.1",
+    "fonte": "https://fmdombosco.com/wp-content/uploads/2023/11/TELA-ICONE-APP2-300x300.png"
+  },
+  "https://play.radio.br:8089/estacaofm/estacaofm/icecast.audio": {
+    "arquivo": "83e7956ac75a0b97afd0.webp",
+    "nome": "Estação FM 89.5",
+    "fonte": "https://estacaofm.com.br/wp-content/uploads/2023/08/fav-estacao.jpg"
+  },
+  "https://streaming.livespanel.com:8016/fmodia": {
+    "arquivo": "7bbe20a59ebeffd4e754.webp",
+    "nome": "FM O Dia 100.5",
+    "fonte": "https://www.fmodia.com.br/wp-content/uploads/2023/11/cropped-icon-fm-o-dia-512x512-1-180x180.png"
+  },
+  "https://jpdofunk3.com.br:8018/stream": {
+    "arquivo": "7763b4e254367e6c56f4.webp",
+    "nome": "DJ Troia",
+    "fonte": "https://jpdofunk3.com.br:2020/system/theme/Material/images/favicon.ico"
+  },
+  "https://servidor36.brlogic.com:8572/live": {
+    "arquivo": "652d6103f234d0d345e3.webp",
+    "nome": "Dixie Rebel Radio",
+    "fonte": "https://www.dixierebel.com.br/img/logotipo-webradio-dixierebel.png"
+  },
+  "https://cast.youngtech.radio.br/listen/fundacaoculturaljlle/radio": {
+    "arquivo": "3fdb64f285a441431064.webp",
+    "nome": "Joinville Cultural FM 105.1",
+    "fonte": "https://www.joinville.sc.gov.br/wp-content/uploads/2021/12/cropped-favicon-2-180x180.png"
+  },
+  "https://8335.brasilstream.com.br/stream": {
+    "arquivo": "d9fa9c4182ae3540dc1c.webp",
+    "nome": "Liberdade FM 92.9",
+    "fonte": "https://radioliberdade.com.br/imagens/upload/config/full-logotopo-1735211535.png?v=1119"
+  },
+  "https://stm01.virtualcast.com.br:8000/massasaopaulo": {
+    "arquivo": "eb8cfd8dd15ad44a3693.webp",
+    "nome": "Massa FM 97.7",
+    "fonte": "https://cdn.massa.com.br/uploads/2026/08/cropped-20260810164315-favicon-180x180.png"
+  },
+  "https://cast.radiu.live:9300/stream": {
+    "arquivo": "f2f42496e5083a0b4024.webp",
+    "nome": "Itapoan FM 97.5",
+    "fonte": "https://itapoanfm.com.br/wp-content/uploads/2024/04/favicogiganteitapoan-300x300.png"
+  },
+  "https://jpdofunk3.com.br:8262/stream": {
+    "arquivo": "148f265bc32297081826.webp",
+    "nome": "Dj Guu Ofc",
+    "fonte": "https://jpdofunk3.com.br:2020/favicon.ico"
+  },
+  "https://paineldj6.com.br:20066/stream": {
+    "arquivo": "6dd95bb22725c17fa236.webp",
+    "nome": "Mirador FM 98.5",
+    "fonte": "https://radiomirador.com.br/wp-content/uploads/2023/10/cropped-Logo-Mirador-laranja-sem-fundo-1-180x180.png"
+  },
+  "https://radio.saopaulo01.com.br:10937/aac": {
+    "arquivo": "9036f1a78db6b1d97ef1.webp",
+    "nome": "Jovem Pan FM 106.9",
+    "fonte": "https://jovempan.com.br/wp-content/uploads/sites/2/2026/06/cropped-favicon.png?w=180"
+  },
+  "https://centova.svdns.com.br:20050/stream": {
+    "arquivo": "9205edc8d19bdd07cbc5.webp",
+    "nome": "Limeira FM 106.9",
+    "fonte": "https://assets.cadena.com.br/assets/nova_logo_cadena_horizontal-40a94ce6.png"
+  },
+  "https://playerservices.streamtheworld.com/api/livestream-redirect/MIXFM_RECIFE971AAC.aac": {
+    "arquivo": "d9055be9f0912444d95c.webp",
+    "nome": "Mix FM Recife 97.1",
+    "fonte": "https://radiomixfm.com.br/wp-content/uploads/2017/06/cropped-logo-2023-180x180.jpeg"
+  },
+  "https://cast.mgtradio.net/radio/8080/aac": {
+    "arquivo": "0191128443460d58757a.webp",
+    "nome": "MGT Rádio Dance Hits",
+    "fonte": "https://www.mgtradio.net/favicon.ico"
+  },
+  "https://cast.mgtradio.net/radio/8000/aac": {
+    "arquivo": "0191128443460d58757a.webp",
+    "nome": "MGT Rádio Sertanejo",
+    "fonte": "https://www.mgtradio.net/favicon.ico"
+  },
+  "https://stream1.svrdedicado.org/8006/stream": {
+    "arquivo": "f223b6f7a00db9b76446.webp",
+    "nome": "Canaã FM 93.5",
+    "fonte": "https://ministeriocanaanacional.com/wp-content/uploads/2021/07/cropped-fav-180x180.png"
+  },
+  "https://playerservices.streamtheworld.com/api/livestream-redirect/MIXFM_POAAAC.aac": {
+    "arquivo": "300a6646f3c2f7f32a1f.webp",
+    "nome": "Mix FM Porto Alegre",
+    "fonte": "https://mixfmpoa.com.br/wp-content/plugins/under-construction-page/themes/images/favicon.png"
+  },
+  "https://webradio.amsolution.com.br/radio/8080/mix": {
+    "arquivo": "b27545e7410087ddb2d4.webp",
+    "nome": "Mix FM Teresina 91.5",
+    "fonte": "https://www.mixfmteresina.com.br/favicon.png"
+  },
+  "https://ssl1.transmissaodigital.com:2692/stream": {
+    "arquivo": "83af5166f6f2a63783c8.webp",
+    "nome": "Morena FM 98",
+    "fonte": "https://www.morenafm.com/pics/morena-logo-300.png"
+  },
+  "https://centova4.transmissaodigital.com:20071/;": {
+    "arquivo": "075bcea34d291d962a04.webp",
+    "nome": "Mundial FM",
+    "fonte": "https://mundial.fm.br/wp-content/uploads/2023/02/cropped-log1-180x180.jpg"
+  },
+  "https://playerservices.streamtheworld.com/api/livestream-redirect/ITA_FLO.mp3": {
+    "arquivo": "8b67d45be29ecad35cfa.webp",
+    "nome": "Itapema FM",
+    "fonte": "https://e4n4itr6emt.exactdn.com/wp-content/uploads/2025/04/cropped-favicon-itapema-fm.png?strip=all&resize=180%2C180"
+  },
+  "https://stm2.streamproarte.com.br:7358/stream": {
+    "arquivo": "e294357d02bfd6ce3920.webp",
+    "nome": "Nova FM Tapejara",
+    "fonte": "https://novafmtapejara.com.br/wp-content/uploads/2023/08/cropped-LOGO-PARA-FACE.jpeg-1-180x180.jpg"
+  },
+  "https://live9.livemus.com.br:27460/stream": {
+    "arquivo": "b02c4bac62b9ff4e8eb8.webp",
+    "nome": "Power Web Rádio",
+    "fonte": "https://www.powerwebradio.com.br/admin/assets/img/logo.png?October2320261127am27"
+  },
+  "https://stm24.xcast.com.br:11928/stream": {
+    "arquivo": "b963cc3358dc60e98555.webp",
+    "nome": "Notícia FM 88.9",
+    "fonte": "https://noticiafm.com/uploads/media/6a0b5ac6dfbde_1779129030.png"
+  },
+  "https://9121.brasilstream.com.br/stream": {
+    "arquivo": "237afb4253af4c1203d9.webp",
+    "nome": "Rádio Advento FM",
+    "fonte": "https://adventofm.com.br/images/logo_1883802429.png"
+  },
+  "https://rrdns-continental.webnow.com.br/mllondrina.mp3": {
+    "arquivo": "5a7b1042c613e41097a8.webp",
+    "nome": "Mundo Livre FM 93.1",
+    "fonte": "https://mundolivrefm.com.br/_next/image?url=https%3A%2F%2Fmedia-production.mundolivrefm.com.br%2Fwordpress%2Fwp-content%2Fuploads%2F2026%2F07%2F19113117%2Flogo-mundolivre-geral.png&w=640&q=75"
+  },
+  "https://classicoims.out.airtime.pro:8000/classicoims_a": {
+    "arquivo": "8172b97cc88941197a7c.webp",
+    "nome": "Rádio Batuta Clássicos",
+    "fonte": "https://radiobatuta.ims.com.br/favicon.ico"
+  },
+  "https://casthttps.suaradionanet.net/13325/stream": {
+    "arquivo": "f0ad2af88fbbad1b4368.webp",
+    "nome": "Ilha FM 107.1",
+    "fonte": "https://manager.suaradionanet.net/storage/radios/ilhafm/site_basic/69d77c3d4e5636.23432873.png"
+  },
+  "https://radioims.out.airtime.pro:8000/radioims_a": {
+    "arquivo": "8172b97cc88941197a7c.webp",
+    "nome": "Rádio Batuta MPB",
+    "fonte": "https://radiobatuta.ims.com.br/favicon.ico"
+  },
+  "https://media01.bitfibra.com.br/listen/nova_tupa_fm/radio.mp3": {
+    "arquivo": "9bb71eee3ac2015bf8bd.webp",
+    "nome": "Nova Tupã FM 100.3",
+    "fonte": "https://www.radiotupa.com.br/site/wp-content/uploads/2023/11/favicon-300x300.png"
+  },
+  "https://paineldj6.com.br:20088/live": {
+    "arquivo": "40f8f1596541fbcb048e.webp",
+    "nome": "Cidade FM 98.9",
+    "fonte": "https://www.radiocidadebd.com/public/05691-2025-09-14.png"
+  },
+  "https://cast.hoost.com.br:8314/stream": {
+    "arquivo": "ec1e06872be2a2af1ebd.webp",
+    "nome": "Nova Difusora 79.9 FM",
+    "fonte": "https://www.novadifusora.com.br/files/2022/03/cropped-logo-site-180x180.png"
+  },
+  "https://azura.ez1fm.com/listen/arara_azul/radio.mp3": {
+    "arquivo": "b5e89747499b039e6ea2.webp",
+    "nome": "Rádio Arara Azul FM 96.9",
+    "fonte": "https://araraazulfm.com.br/wp-content/uploads/2024/09/cropped-icon-180x180.png"
+  },
+  "https://carajas2.jmvstream.com/live": {
+    "arquivo": "b53558f423d145023c64.webp",
+    "nome": "Rádio Clube do Pará",
+    "fonte": "https://radioclube.dol.com.br/wp-content/uploads/2024/10/cropped-android-chrome-512x512-1-180x180.png"
+  },
+  "https://s12.maxcast.com.br:8086/live": {
+    "arquivo": "dae36f23ce260ab199b5.webp",
+    "nome": "Rádio BLA Rock",
+    "fonte": "https://www.radiobla.com.br/imagens/74d904bc181b991bf35bd8468563300f.png"
+  },
+  "https://servidor33.brlogic.com:8598/live": {
+    "arquivo": "24f56467807555ae6ac1.webp",
+    "nome": "Rádio Cordeiro de Deus",
+    "fonte": "https://platform-upload.cdn-brlogic.com/10677/mobileicon/1269418035827c238c272f44fc8b938cx192.png"
+  },
+  "https://s05.maxcast.com.br:8012/live": {
+    "arquivo": "f0682fbbab98c036dd17.webp",
+    "nome": "Rádio Caverá FM 87.9",
+    "fonte": "https://www.radiocavera.com/imagens/061929b2cca3b264c4a0fe6630d59058.png"
+  },
+  "https://cloud1.cdnseguro.com:20038/stream": {
+    "arquivo": "6a449f336025e7dcdb17.webp",
+    "nome": "Rádio Canção Nova",
+    "fonte": "https://static.cancaonova.com/favicons/apple-touch-icon-57x57.png"
+  },
+  "https://servidor32.brlogic.com:8198/live": {
+    "arquivo": "bd3ee9e639bf1022b300.webp",
+    "nome": "Rádio Dence",
+    "fonte": "https://platform-upload.cdn-brlogic.com/87/mobileicon/f3431e5e25205cec620767a7205bce57x192.png"
+  },
+  "https://cast.radiu.live:8903/stream": {
+    "arquivo": "a6919780df1e85c545b3.webp",
+    "nome": "Rádio Baiana FM 89.3",
+    "fonte": "https://baianafm.com.br/wp/wp-content/uploads/2017/05/novo-baiana-logo.png"
+  },
+  "https://stm3.srvif.com:8054/stream": {
+    "arquivo": "1a452b337fb70d9ae0d9.webp",
+    "nome": "Rádio Escuta FM 92.1",
+    "fonte": "https://www.escutafm.com.br/admin/assets/img/logo.png?October2320261127am29"
+  },
+  "https://servidor39.brlogic.com:7146/live": {
+    "arquivo": "6fe70be15ca9a99df9c2.webp",
+    "nome": "Rádio Espírita Luz do Amanhã",
+    "fonte": "https://platform-upload.cdn-brlogic.com/251005/mobileicon/aa335458c5834f846b34fc97364a0a3ex192.png"
+  },
+  "https://servidor34-5.brlogic.com:8190/live": {
+    "arquivo": "fa9e552c2ca5a8da62b8.webp",
+    "nome": "Rádio Elohim 100.7 FM",
+    "fonte": "https://platform-upload.cdn-brlogic.com/2384/mobileicon/a03efe142def3a9a4e92bd6588ec262ax192.png"
+  },
+  "https://servidor23.brlogic.com:7782/autodj": {
+    "arquivo": "fe85605f64be5d98045e.webp",
+    "nome": "Radio Hot 97.7",
+    "fonte": "https://hot107.com.br/assets/imagens/logo_header_hot107.png"
+  },
+  "https://live8.livemus.com.br:27142/stream": {
+    "arquivo": "74c0a1b438cef4ad1732.webp",
+    "nome": "Radio Instrumental Gospel",
+    "fonte": "https://www.radioinstrumentalgospel.com.br/admin/assets/img/logo.png?October2320261127am29"
+  },
+  "https://playerservices.streamtheworld.com/api/livestream-redirect/NOVABRASIL_SPAAC.aac": {
+    "arquivo": "f3376a8c78dace05a3c8.webp",
+    "nome": "Novabrasil FM 89.7",
+    "fonte": "https://novabrasilfm.com.br/app/uploads/2025/03/cropped-favicon-1-180x180.png"
+  },
+  "https://playerservices.streamtheworld.com/api/livestream-redirect/NOVABRASIL_MACAAC.aac": {
+    "arquivo": "f3376a8c78dace05a3c8.webp",
+    "nome": "Novabrasil FM Maceió",
+    "fonte": "https://novabrasilfm.com.br/app/uploads/2025/03/cropped-favicon-1-180x180.png"
+  },
+  "https://webradio.amsolution.com.br/radio/8050/mania": {
+    "arquivo": "27173aafea5c923d1f22.webp",
+    "nome": "Rádio Mania FM 95.5",
+    "fonte": "https://www.radiomaniafm.com.br/wp-content/uploads/2022/10/cropped-logo-radio-180x180.jpg"
+  },
+  "https://ssl1.transmissaodigital.com:20010/;": {
+    "arquivo": "6667962f8b003aa414b2.webp",
+    "nome": "Rádio Cidade Verde 93.5 FM",
+    "fonte": "https://radiocidadeverde.com.br/wp-content/uploads/2019/12/cropped-logoradio-180x180.jpg"
+  },
+  "https://cast4.hoost.com.br:20214/stream": {
+    "arquivo": "a9904f2b9b676a7b6468.webp",
+    "nome": "Rádio ON FM 107.7",
+    "fonte": "https://www.radioonfm.com.br/images/logoRadioOnBranco.png"
+  },
+  "https://servidor29-3.brlogic.com:8100/live": {
+    "arquivo": "7191d8476980b294661f.webp",
+    "nome": "Rádio Lasafá FM",
+    "fonte": "https://platform-upload.cdn-brlogic.com/2061/mobileicon/7723827d529c523febed686720c4794dx192.png"
+  },
+  "https://9727.brasilstream.com.br/stream": {
+    "arquivo": "c912787cfc4268ae4490.webp",
+    "nome": "Rádio Progresso de Ijuí",
+    "fonte": "https://radioprogresso.com.br/wp-content/uploads/fbrfg/apple-touch-icon.png"
+  },
+  "https://streaming.livespanel.com:9430/stream": {
+    "arquivo": "d5c507db43f103bace43.webp",
+    "nome": "Piatã FM 94.3",
+    "fonte": "https://piatafm.com.br/wp-content/uploads/2023/08/logomarca-300x210-1.png"
+  },
+  "https://stream.zeno.fm/7c83b37e32quv": {
+    "arquivo": "dcc64e023f8fad4332fa.webp",
+    "nome": "Rádio Rap Brasil",
+    "fonte": "https://www.cxradio.com.br/assets/img/ui/logo-header.webp"
+  },
+  "https://libretime.multihuman.com.br:8443/main": {
+    "arquivo": "22c973150562c5e38583.webp",
+    "nome": "MultiHuman EntheoMusic",
+    "fonte": "https://multihuman.com.br/site/wp-content/uploads/fbrfg/apple-touch-icon.png"
+  },
+  "https://cast2.youngtech.radio.br/listen/saobento903fm/radio": {
+    "arquivo": "c4f54253982038d2eae6.webp",
+    "nome": "Rádio São Bento FM 90.3",
+    "fonte": "https://www.radiosaobento.com/imagens/logo.png"
+  },
+  "https://s01.svrdedicado.org:7492/stream": {
+    "arquivo": "95447225683c1decea90.webp",
+    "nome": "Rádio Guajuvira",
+    "fonte": "https://fmguajuvira.com.br/public/82971-2025-12-15.jpg"
+  },
+  "https://s10.maxcast.com.br:8014/live": {
+    "arquivo": "8139bc413cc50ce594e9.webp",
+    "nome": "Rádio Prefácio",
+    "fonte": "https://www.radioprefacio.com/imagens/d760f2361cbd3df7ad32907cae17a7f2.png"
+  },
+  "https://stream.zeno.fm/zyvh88ftvxhvv": {
+    "arquivo": "0d72825ea349848f9b16.webp",
+    "nome": "Rádio Pira FM",
+    "fonte": "https://accounts.google.com/favicon.ico"
+  },
+  "https://radio.saopaulo01.com.br/8026/stream": {
+    "arquivo": "e60a952ccc7321022900.webp",
+    "nome": "Rádio Tapejara 101.5 FM",
+    "fonte": "https://www.radiotapejara.com.br/assets/images/logo.png?v=1"
+  },
+  "https://sv1.audiostream.com.br:8000/prime": {
+    "arquivo": "3673bf8cd925b250f4bc.webp",
+    "nome": "Rádio Prime",
+    "fonte": "https://radioprime.com.br/rdprime/ouvir/logo"
+  },
+  "https://flow.emm.usp.br:8008/radiousp-rp-64.mp3": {
+    "arquivo": "2e20a1a3d6bc37492f88.webp",
+    "nome": "Rádio USP FM",
+    "fonte": "https://jornal.usp.br/wp-content/uploads/2021/09/20210909_dialogos-sexta.jpg"
+  },
+  "https://stm39.srvstm.com:8758/stream": {
+    "arquivo": "deae46f1be19d0e8b936.webp",
+    "nome": "Rádio Maravilha FM",
+    "fonte": "https://radiomaravilhafm.com/assets/logomaravilha_footer-DapglCSW.png"
+  },
+  "https://cast.hoost.com.br:20150/stream": {
+    "arquivo": "3653713b4f8941fabe26.webp",
+    "nome": "Rádio São Francisco 97.7 FM",
+    "fonte": "https://radiosaochico.com.br/wp-content/smush-webp/2025/05/cropped-favicon-180x180.png.webp"
+  },
+  "https://paineldj.com.br:20087/stream": {
+    "arquivo": "dd45b475e1fca24f3093.webp",
+    "nome": "Radio Sepiol",
+    "fonte": "https://radiosepiol.com.br/admin/assets/img/logo.png?October2320261127am31"
+  },
+  "https://stream02.ouveai.com.br/8066/stream": {
+    "arquivo": "43accb6df599fd52cb3b.webp",
+    "nome": "Rádio Vale Feliz 96.3 FM",
+    "fonte": "https://www.radiovalefeliz.com.br/site/img/core-smartphones.png?v=2023-10-19"
+  },
+  "https://servidor17.brlogic.com:9394/live": {
+    "arquivo": "9c8ada98a36dbfd36139.webp",
+    "nome": "Radio Norte 100.3 FM",
+    "fonte": "https://radionortelondrina.com.br/wp-content/uploads/2025/10/favicon-300x300.png"
+  },
+  "https://player.transmissaodigital.com/proxy/7434": {
+    "arquivo": "5be3931ad6c9a173e881.webp",
+    "nome": "RC FM 98.1",
+    "fonte": "https://rcfm.com.br/img/favicon.png"
+  },
+  "https://servidor33-3.brlogic.com:8020/live": {
+    "arquivo": "5f6d75ddc22b8086290b.webp",
+    "nome": "Rádio Viva o Samba",
+    "fonte": "https://platform-upload.cdn-brlogic.com/170/mobileicon/5e390b0c5bc32cc22877402243d52c03x192.png"
+  },
+  "https://radio.saopaulo01.com.br:7002/stream": {
+    "arquivo": "5cf5bee4d7d2265b6f4a.webp",
+    "nome": "Rádio Uirapuru 102.5 FM",
+    "fonte": "https://rduirapuru.com.br/wp-content/uploads/2018/10/cropped-favicon-1-180x180.png"
+  },
+  "https://ice.fabricahost.com.br/radiotropicalvix": {
+    "arquivo": "11f5ca619f0f0917e552.webp",
+    "nome": "Rádio Tropical 103.7 FM",
+    "fonte": "https://radiotropicalvix.com.br/wp-content/uploads/2023/11/cropped-ICON-COQUEIRO-180x180.png"
+  },
+  "https://casthttps1.suaradionanet.net/10318/stream": {
+    "arquivo": "bb57d7144277e76a879e.webp",
+    "nome": "Sonora FM 87.5",
+    "fonte": "https://www.radiosonorafm.com.br/public/images/logo_menu.png"
+  },
+  "https://c32.radioboss.fm:8254/source": {
+    "arquivo": "71e63c5813f0aeb1fc8c.webp",
+    "nome": "Rede Blitz",
+    "fonte": "https://www.redeblitz.com.br/painel/upload/logo.png?v=462"
+  },
+  "https://8923.brasilstream.com.br/stream": {
+    "arquivo": "c064269a040e641d1556.webp",
+    "nome": "Super Rádio Tupi 96.5 FM",
+    "fonte": "https://www.tupi.fm/wp-content/uploads/favicon.ico"
+  },
+  "https://s04.maxcast.com.br:8930/autodj": {
+    "arquivo": "59c16cbd44c1308c766e.webp",
+    "nome": "Sintoniza Rock",
+    "fonte": "https://sintonizarock.com/imagens/9b29ae9511b108f90bb9c4854cbf5a9a.png"
+  },
+  "https://stm1.mxcast.com.br:7154/stream": {
+    "arquivo": "b15f6ac9d784fa3f1ee1.webp",
+    "nome": "RM Cast",
+    "fonte": "https://rmcast.com.br/images/favicon/apple-touch-icon.png"
+  },
+  "https://streaming.fox.srv.br:8072/stream": {
+    "arquivo": "9205edc8d19bdd07cbc5.webp",
+    "nome": "Super Rádio 1150 AM",
+    "fonte": "https://assets.cadena.com.br/assets/nova_logo_cadena_horizontal-40a94ce6.png"
+  },
+  "https://live.unitins.br/": {
+    "arquivo": "48e3e30b08f8d13cf759.webp",
+    "nome": "Unitins FM",
+    "fonte": "https://fm.unitins.br/img/player_logo.png"
+  },
+  "https://ice.fabricahost.com.br/ternurafm": {
+    "arquivo": "1466bc42f1539f95a423.webp",
+    "nome": "Ternura FM 93.9",
+    "fonte": "https://ternurafm.com.br/wp-content/uploads/2024/10/fav.png"
+  },
+  "https://jpdofunk3.com.br:8242/stream": {
+    "arquivo": "148f265bc32297081826.webp",
+    "nome": "Sad Music Radio",
+    "fonte": "https://jpdofunk3.com.br:2020/favicon.ico"
+  },
+  "https://ssl1.transmissaodigital.com:20441/stream": {
+    "arquivo": "332f21d71185aa6be4f6.webp",
+    "nome": "Rede Conexão FM 98.1",
+    "fonte": "https://www.redeconexao.com.br/admin/assets/img/logo.png?October2320261127am34"
+  },
+  "https://centova4.transmissaodigital.com:20143/principal;": {
+    "arquivo": "8f3435e1210a299e4509.webp",
+    "nome": "Rede Blast",
+    "fonte": "https://redeblast.com/assets/img/apple-touch-icon.png"
+  },
+  "https://streaming.vinhafm.com.br/stream": {
+    "arquivo": "9a3deced54baab5b5dc2.webp",
+    "nome": "Vinha FM 91.9",
+    "fonte": "https://www.vinhafm.com.br/favicon.ico"
+  },
+  "https://paineldj.com.br:20172/stream": {
+    "arquivo": "47ab10c1223f01be6623.webp",
+    "nome": "Voz do Esporte 2",
+    "fonte": "https://vozdoesporte.com.br/radio/wp-content/uploads/2023/08/logo-2.png"
+  },
+  "https://cast4.audiostream.com.br:2661/mp3": {
+    "arquivo": "90ef928e868da4d34434.webp",
+    "nome": "Torres FM 101.1",
+    "fonte": "https://www.redepampa.com.br/wp-content/uploads/2020/12/favicon.png"
+  },
+  "https://paineldj.com.br:20193/stream": {
+    "arquivo": "47ab10c1223f01be6623.webp",
+    "nome": "Voz do Esporte 4",
+    "fonte": "https://vozdoesporte.com.br/radio/wp-content/uploads/2023/08/logo-2.png"
+  },
+  "https://ice.fabricahost.com.br/topfm1041sp": {
+    "arquivo": "22903228dfaee32434ff.webp",
+    "nome": "Top FM 104.1",
+    "fonte": "https://topfmsp.com.br/wp-content/uploads/2024/03/images-removebg-preview-1-1-300x300.png"
+  },
+  "https://servidor13.brlogic.com:7262/live": {
+    "arquivo": "bd5f969d967f6d44674d.webp",
+    "nome": "Vibe Mundial FM",
+    "fonte": "https://vibemundialfm.com.br/wp-content/uploads/2024/11/cropped-fav-300x300.png"
+  },
+  "https://jpdofunk3.com.br:8004/stream": {
+    "arquivo": "148f265bc32297081826.webp",
+    "nome": "Vatos Millo HR",
+    "fonte": "https://jpdofunk3.com.br/favicon.ico"
+  }
+}
