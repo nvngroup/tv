@@ -166,46 +166,6 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
-.external-players {
-  margin-top: 16px;
-  text-align: center;
-}
-
-.external-players p {
-  color: #888;
-  font-size: 0.85rem;
-  margin-bottom: 12px;
-}
-
-.player-buttons {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.player-buttons button {
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  color: #fff;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.player-buttons button:hover {
-  background: rgba(139, 92, 246, 0.3);
-  border-color: rgba(139, 92, 246, 0.5);
-}
-
-.error-hint {
-  color: #666;
-  font-size: 0.85rem;
-  text-align: center;
-}
-
 /* Controls */
 .player-controls {
   position: absolute;
@@ -263,54 +223,6 @@
 .top-actions {
   display: flex;
   gap: 8px;
-}
-
-/* External player dropdown */
-.external-menu-wrapper {
-  position: relative;
-}
-
-.external-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 8px;
-  background: rgba(20, 20, 30, 0.95);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 8px 0;
-  min-width: 160px;
-  z-index: 100;
-  animation: fadeIn 0.15s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.external-dropdown button {
-  display: block;
-  width: 100%;
-  padding: 10px 16px;
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 0.9rem;
-  text-align: left;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.external-dropdown button:hover {
-  background: rgba(139, 92, 246, 0.3);
-}
-
-.external-dropdown hr {
-  border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin: 8px 0;
 }
 
 /* Center play button */
@@ -1180,24 +1092,6 @@
   font-weight: normal;
 }
 
-.cast-modal-back {
-  width: 100%;
-  margin-top: 16px;
-  padding: 10px;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  color: #888;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.cast-modal-back:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
-}
-
 .cast-modal-close {
   width: 100%;
   margin-top: 16px;
@@ -1215,10 +1109,6 @@
   background: rgba(239, 68, 68, 0.15);
   border-color: rgba(239, 68, 68, 0.3);
   color: #ef4444;
-}
-
-.cast-options.external-players .cast-option.copy-url {
-  border-style: dashed;
 }
 
 @keyframes fadeIn {
@@ -1673,10 +1563,6 @@
 
   .controls-top {
     gap: 0.6rem;
-  }
-
-  .top-actions .external-menu-wrapper {
-    display: none;
   }
 
   .movie-title-bar h2 {

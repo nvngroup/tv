@@ -79,7 +79,6 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   ));
   const [showControls, setShowControls] = useState(true);
   const [playbackRate, setPlaybackRate] = useState(1);
-  const [showExternalMenu, setShowExternalMenu] = useState(false);
   const [showEpisodeMenu, setShowEpisodeMenu] = useState(false);
   const [episodeMenuSeason, setEpisodeMenuSeason] = useState<number | null>(null);
   const [drawerDetalhes, setDrawerDetalhes] = useState<Record<number, EpisodioTmdb>>({});
@@ -155,7 +154,6 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   const [castState, setCastState] = useState<CastState>({ isConnected: false, deviceName: null, method: null });
   const [showCastModal, setShowCastModal] = useState(false);
   const [castMessage, setCastMessage] = useState<string | null>(null);
-  const [showExternalCastPlayers, setShowExternalCastPlayers] = useState(false);
 
   const controlsTimeoutRef = useRef<number | null>(null);
 
@@ -351,7 +349,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
               .then((resposta) => seguro(() => {
                 if (resposta.status === 403) {
                   setIsProxyBlocked(true);
-                  setError('O servidor recusou esta fonte. Tente outra fonte ou um player externo.');
+                  setError('O servidor recusou esta fonte. Tente outra fonte.');
                 } else {
                   setError('Não foi possível reproduzir este vídeo nas fontes disponíveis.');
                 }
@@ -895,11 +893,6 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   const handleCastOption = useCallback(async (method: CastMethod) => {
     if (!movie) return;
 
-    if (method === 'openExternal') {
-      setShowExternalCastPlayers(true);
-      return;
-    }
-
     const result = await castService.cast(
       method,
       urlAtiva,
@@ -915,14 +908,6 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       setShowCastModal(false);
     }
   }, [movie, urlAtiva]);
-
-  const handleCastExternalPlayer = useCallback((playerUrl: string) => {
-    castService.openInExternalPlayer(playerUrl);
-    setCastMessage('Abrindo player externo...');
-    setTimeout(() => setCastMessage(null), 3000);
-    setShowExternalCastPlayers(false);
-    setShowCastModal(false);
-  }, []);
 
   // Pula até o fim do trecho marcado (abertura, recapitulação ou prévia).
   const skipIntro = useCallback(() => {
@@ -1014,39 +999,6 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       }
     }
   }, [movie, urlAtiva]);
-
-  // Abrir em player externo
-  const openInExternalPlayer = useCallback((player: string) => {
-    if (!movie) return;
-
-    let url = '';
-    switch (player) {
-      case 'vlc':
-        url = `vlc://${urlExterna}`;
-        break;
-      case 'mx':
-        url = `intent:${urlExterna}#Intent;package=com.mxtech.videoplayer.ad;end`;
-        break;
-      case 'iina':
-        url = `iina://open?url=${encodeURIComponent(urlExterna)}`;
-        break;
-      case 'potplayer':
-        url = `potplayer://${urlExterna}`;
-        break;
-      case 'copy':
-        navigator.clipboard.writeText(urlExterna).then(() => {
-          // Feedback visual poderia ser adicionado aqui
-        });
-        return;
-      case 'newtab':
-        window.open(urlExterna, '_blank');
-        return;
-    }
-
-    if (url) {
-      window.location.href = url;
-    }
-  }, [movie, urlExterna]);
 
   if (!movie) {
     return (
@@ -1199,44 +1151,6 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                 </div>
               )}
 
-              <div className="error-actions">
-                <button
-                  onClick={() => openInExternalPlayer('copy')}
-                  data-focusable="true"
-                  data-nav-group="error-actions"
-                >
-                  📋 Copiar endereço
-                </button>
-              </div>
-              <div className="external-players" style={{ marginTop: 0 }}>
-                <p>Ou abrir em player externo:</p>
-                <div className="player-buttons">
-                  <button
-                    onClick={() => openInExternalPlayer('vlc')}
-                    title="VLC Media Player"
-                    data-focusable="true"
-                    data-nav-group="external-players"
-                  >
-                    VLC
-                  </button>
-                  <button
-                    onClick={() => openInExternalPlayer('iina')}
-                    title="IINA (macOS)"
-                    data-focusable="true"
-                    data-nav-group="external-players"
-                  >
-                    IINA
-                  </button>
-                  <button
-                    onClick={() => openInExternalPlayer('potplayer')}
-                    title="PotPlayer"
-                    data-focusable="true"
-                    data-nav-group="external-players"
-                  >
-                    PotPlayer
-                  </button>
-                </div>
-              </div>
             </>
           ) : (
             <>
@@ -1274,70 +1188,6 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                   Abrir em nova aba
                 </button>
               </div>
-              <div className="external-players">
-                <p>Abrir em player externo:</p>
-                <div className="player-buttons">
-                  <button
-                    onClick={() => openInExternalPlayer('vlc')}
-                    title="VLC Media Player"
-                    data-focusable="true"
-                    data-nav-group="external-players"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        openInExternalPlayer('vlc');
-                      }
-                    }}
-                  >
-                    VLC
-                  </button>
-                  <button
-                    onClick={() => openInExternalPlayer('iina')}
-                    title="IINA (macOS)"
-                    data-focusable="true"
-                    data-nav-group="external-players"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        openInExternalPlayer('iina');
-                      }
-                    }}
-                  >
-                    IINA
-                  </button>
-                  <button
-                    onClick={() => openInExternalPlayer('potplayer')}
-                    title="PotPlayer"
-                    data-focusable="true"
-                    data-nav-group="external-players"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        openInExternalPlayer('potplayer');
-                      }
-                    }}
-                  >
-                    PotPlayer
-                  </button>
-                  <button
-                    onClick={() => openInExternalPlayer('copy')}
-                    title="Copiar URL"
-                    data-focusable="true"
-                    data-nav-group="external-players"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        openInExternalPlayer('copy');
-                      }
-                    }}
-                  >
-                    📋 Copiar URL
-                  </button>
-                </div>
-              </div>
-              <p className="error-hint">
-                💡 Dica: Se o vídeo não carregar, abra em um player externo como VLC
-              </p>
             </>
           )}
         </div>
@@ -1475,8 +1325,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                 : movie.category}
             </span>
           </div>
-          <div className="top-actions">
-            {seriesInfo && (
+          {seriesInfo && (
+            <div className="top-actions">
               <button
                 className={`control-btn episodes-menu-btn${showEpisodeMenu ? ' active' : ''}`}
                 onClick={() => setShowEpisodeMenu((aberto) => !aberto)}
@@ -1489,121 +1339,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                   <path d="M8 9h8M8 13h8M8 17h5" />
                 </svg>
               </button>
-            )}
-            <div className="external-menu-wrapper">
-              <button
-                className="control-btn"
-                onClick={() => setShowExternalMenu(!showExternalMenu)}
-                title="Abrir em player externo"
-                data-focusable="true"
-                data-nav-group="player-top"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setShowExternalMenu(!showExternalMenu);
-                  } else if (e.key === 'Escape' && showExternalMenu) {
-                    e.preventDefault();
-                    setShowExternalMenu(false);
-                  }
-                }}
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
-                  <path d="M15 3h6v6M10 14L21 3" />
-                </svg>
-              </button>
-              {showExternalMenu && (
-                <div className="external-dropdown">
-                  <button
-                    onClick={() => { openInExternalPlayer('vlc'); setShowExternalMenu(false); }}
-                    data-focusable="true"
-                    data-nav-group="external-menu"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        openInExternalPlayer('vlc');
-                        setShowExternalMenu(false);
-                      } else if (e.key === 'Escape') {
-                        e.preventDefault();
-                        setShowExternalMenu(false);
-                      }
-                    }}
-                  >
-                    🎬 VLC Player
-                  </button>
-                  <button
-                    onClick={() => { openInExternalPlayer('iina'); setShowExternalMenu(false); }}
-                    data-focusable="true"
-                    data-nav-group="external-menu"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        openInExternalPlayer('iina');
-                        setShowExternalMenu(false);
-                      } else if (e.key === 'Escape') {
-                        e.preventDefault();
-                        setShowExternalMenu(false);
-                      }
-                    }}
-                  >
-                    🎥 IINA (macOS)
-                  </button>
-                  <button
-                    onClick={() => { openInExternalPlayer('potplayer'); setShowExternalMenu(false); }}
-                    data-focusable="true"
-                    data-nav-group="external-menu"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        openInExternalPlayer('potplayer');
-                        setShowExternalMenu(false);
-                      } else if (e.key === 'Escape') {
-                        e.preventDefault();
-                        setShowExternalMenu(false);
-                      }
-                    }}
-                  >
-                    ▶️ PotPlayer
-                  </button>
-                  <button
-                    onClick={() => { openInExternalPlayer('newtab'); setShowExternalMenu(false); }}
-                    data-focusable="true"
-                    data-nav-group="external-menu"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        openInExternalPlayer('newtab');
-                        setShowExternalMenu(false);
-                      } else if (e.key === 'Escape') {
-                        e.preventDefault();
-                        setShowExternalMenu(false);
-                      }
-                    }}
-                  >
-                    🌐 Nova aba
-                  </button>
-                  <hr />
-                  <button
-                    onClick={() => { openInExternalPlayer('copy'); setShowExternalMenu(false); }}
-                    data-focusable="true"
-                    data-nav-group="external-menu"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        openInExternalPlayer('copy');
-                        setShowExternalMenu(false);
-                      } else if (e.key === 'Escape') {
-                        e.preventDefault();
-                        setShowExternalMenu(false);
-                      }
-                    }}
-                  >
-                    📋 Copiar URL
-                  </button>
-                </div>
-              )}
             </div>
-          </div>
+          )}
         </div>
 
         {/* Center play button */}
@@ -2115,106 +1852,60 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
       {/* Modal de Cast */}
       {showCastModal && (
-        <div className="cast-modal-overlay" onClick={() => { setShowCastModal(false); setShowExternalCastPlayers(false); }}>
+        <div className="cast-modal-overlay" onClick={() => setShowCastModal(false)}>
           <div className="cast-modal" onClick={(e) => e.stopPropagation()}>
-            {!showExternalCastPlayers ? (
-              <>
-                <h3>Transmitir para dispositivo</h3>
-                <p>Escolha como deseja transmitir "{movie?.name}"</p>
+            <h3>Transmitir para dispositivo</h3>
+            <p>Escolha como deseja transmitir "{movie?.name}"</p>
 
-                <div className="cast-options">
-                  {castService.getAvailableMethods().map((method) => (
-                    <button
-                      key={method.method}
-                      className="cast-option"
-                      onClick={() => handleCastOption(method.method)}
-                    >
-                      {method.icon === 'chromecast' && (
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M2 16.1A5 5 0 0 1 5.9 20M2 12.05A9 9 0 0 1 9.95 20M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6" />
-                          <circle cx="2" cy="20" r="2" fill="currentColor" />
-                        </svg>
-                      )}
-                      {method.icon === 'airplay' && (
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1" />
-                          <polygon points="12 15 17 21 7 21 12 15" />
-                        </svg>
-                      )}
-                      {method.icon === 'tv' && (
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <rect x="2" y="3" width="20" height="14" rx="2" />
-                          <path d="M8 21h8M12 17v4" />
-                        </svg>
-                      )}
-                      {method.icon === 'share' && (
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <circle cx="18" cy="5" r="3" />
-                          <circle cx="6" cy="12" r="3" />
-                          <circle cx="18" cy="19" r="3" />
-                          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-                        </svg>
-                      )}
-                      {method.icon === 'copy' && (
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                        </svg>
-                      )}
-                      {method.icon === 'external' && (
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                          <polyline points="15 3 21 3 21 9" />
-                          <line x1="10" y1="14" x2="21" y2="3" />
-                        </svg>
-                      )}
-                      <span>{method.name}</span>
-                      <small>{method.description}</small>
-                    </button>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <>
-                <h3>Abrir em player externo</h3>
-                <p>Escolha um player para abrir o vídeo</p>
-
-                <div className="cast-options external-players">
-                  {movie && castService.getExternalPlayerLinks(urlAtiva).map((player) => (
-                    <button
-                      key={player.name}
-                      className="cast-option"
-                      onClick={() => handleCastExternalPlayer(player.url)}
-                    >
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <polygon points="5 3 19 12 5 21 5 3" />
-                      </svg>
-                      <span>{player.name}</span>
-                      <small>{player.platforms.join(', ')}</small>
-                    </button>
-                  ))}
-
+            <div className="cast-options">
+              {castService.getAvailableMethods()
+                .filter((method) => method.method !== 'openExternal')
+                .map((method) => (
                   <button
-                    className="cast-option copy-url"
-                    onClick={() => handleCastOption('copyLink')}
+                    key={method.method}
+                    className="cast-option"
+                    onClick={() => handleCastOption(method.method)}
                   >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                    </svg>
-                    <span>Copiar URL do stream</span>
-                    <small>Para colar manualmente no player</small>
+                    {method.icon === 'chromecast' && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M2 16.1A5 5 0 0 1 5.9 20M2 12.05A9 9 0 0 1 9.95 20M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6" />
+                        <circle cx="2" cy="20" r="2" fill="currentColor" />
+                      </svg>
+                    )}
+                    {method.icon === 'airplay' && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1" />
+                        <polygon points="12 15 17 21 7 21 12 15" />
+                      </svg>
+                    )}
+                    {method.icon === 'tv' && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" />
+                        <path d="M8 21h8M12 17v4" />
+                      </svg>
+                    )}
+                    {method.icon === 'share' && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="18" cy="5" r="3" />
+                        <circle cx="6" cy="12" r="3" />
+                        <circle cx="18" cy="19" r="3" />
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                      </svg>
+                    )}
+                    {method.icon === 'copy' && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                      </svg>
+                    )}
+                    <span>{method.name}</span>
+                    <small>{method.description}</small>
                   </button>
-                </div>
+              ))}
+            </div>
 
-                <button className="cast-modal-back" onClick={() => setShowExternalCastPlayers(false)}>
-                  ← Voltar
-                </button>
-              </>
-            )}
-
-            <button className="cast-modal-close" onClick={() => { setShowCastModal(false); setShowExternalCastPlayers(false); }}>
+            <button className="cast-modal-close" onClick={() => setShowCastModal(false)}>
               Cancelar
             </button>
           </div>
