@@ -1,11 +1,11 @@
 /**
- * Rádios: a lista do endereço de canais (`radios.txt`), em fileiras de ouvidas
+ * Rádios: a lista do endereço de canais (`radios.txt`), em grades de ouvidas
  * por último e de A a Z. A que toca aparece no alto com o equalizador.
  * Toca num player só dela (um <audio>), e para ao sair da tela.
  */
 import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import { BarraTopo } from '../components/BarraTopo';
-import { CampoBusca, Fileira, SemLista } from '../components/Telas';
+import { CampoBusca, SemLista } from '../components/Telas';
 import { useListas } from '../services/listas';
 import { baixar, chave, locais, recentes, type Radio } from '../services/radios';
 import { assinar, atual as atualRadio, parar, tocar } from '../services/radioPlayer';
@@ -92,8 +92,18 @@ export function Radios() {
 
       {!link && <SemLista tipo="radios" />}
       {link && lista.length === 0 && <p className="tela-vazio">Carregando as rádios…</p>}
-      {!termo && recentesLista.length > 0 && <Fileira titulo="Ouvidas por último">{recentesLista.map(cartao)}</Fileira>}
-      {deAaZ.length > 0 && <Fileira titulo="Todas, de A a Z">{deAaZ.map(cartao)}</Fileira>}
+      {!termo && recentesLista.length > 0 && (
+        <section className="radios-secao tela-miolo" aria-labelledby="radios-recentes">
+          <h2 id="radios-recentes">Ouvidas por último</h2>
+          <div className="radios-grade">{recentesLista.map(cartao)}</div>
+        </section>
+      )}
+      {deAaZ.length > 0 && (
+        <section className="radios-secao tela-miolo" aria-labelledby="radios-todas">
+          <h2 id="radios-todas">Todas, de A a Z</h2>
+          <div className="radios-grade">{deAaZ.map(cartao)}</div>
+        </section>
+      )}
       {lista.length > 0 && filtradas.length === 0 && <p className="tela-vazio">Nenhuma rádio com “{termo}”.</p>}
     </div>
   );
