@@ -1371,7 +1371,7 @@ export function VodCatalog({
                     ) : (
                       <span className="vod-poster-letra">{item.titulo.charAt(0)}</span>
                     )}
-                    {fav && <span className="vod-badge-favorito">★</span>}
+                    {fav && <span className="vod-badge-favorito" aria-label="Nos favoritos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-8-4.9-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.1-8 11-8 11z" /></svg></span>}
                   </div>
                   <strong className="vod-card-poster-nome">{item.rotulo}</strong>
                   {item.ano && <small className="vod-card-poster-ano">{item.ano}</small>}
@@ -1935,7 +1935,7 @@ function CarrosselFileira({
                   ) : (
                     <span className="vod-poster-letra">{item.titulo.charAt(0)}</span>
                   )}
-                  {fav && <span className="vod-badge-favorito">★</span>}
+                  {fav && <span className="vod-badge-favorito" aria-label="Nos favoritos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-8-4.9-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.1-8 11-8 11z" /></svg></span>}
                   {item.progresso != null && item.progresso > 0 && (
                     <div className="vod-card-progresso">
                       <div style={{ width: `${Math.round(item.progresso * 100)}%` }} />

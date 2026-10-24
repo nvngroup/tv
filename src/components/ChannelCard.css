@@ -339,17 +339,17 @@
   opacity: 1;
 }
 
-.favorite-btn.active {
+.favorite-btn.is-favorite {
   color: #ec4899;
   background: rgba(236, 72, 153, 0.15);
 }
 
-.favorite-btn.active svg {
+.favorite-btn.is-favorite svg {
   fill: #ec4899;
   filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.5));
 }
 
-.favorite-btn.active:hover {
+.favorite-btn.is-favorite:hover {
   transform: scale(1.15);
 }
 

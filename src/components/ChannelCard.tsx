@@ -176,8 +176,9 @@ export const ChannelCard = memo(function ChannelCard({
           fill={isFavorite ? 'currentColor' : 'none'}
           stroke="currentColor"
           strokeWidth="2"
+          strokeLinejoin="round"
         >
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+          <path d="M12 21s-8-4.9-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.1-8 11-8 11z" />
         </svg>
       </button>
     </div>
