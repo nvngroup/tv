@@ -133,10 +133,10 @@ export function MiniPlayer() {
       </aside>
       {pedido && createPortal(
         <>
-          {!mini && <button className="reproducao-minimizar" type="button" onClick={() => navigate('/')} aria-label="Minimizar player">Minimizar</button>}
+          {!mini && pedido.tipo === 'filme' && <button className="reproducao-minimizar" type="button" onClick={() => navigate('/')} aria-label="Minimizar player">Minimizar</button>}
           <Suspense fallback={<CarregamentoMarca />}>
             {pedido.tipo === 'canal'
-              ? <Video {...pedido.props} isTheaterMode={mini ? false : pedido.props.isTheaterMode}
+              ? <Video {...pedido.props} onMinimize={() => { void navigate('/'); }} isTheaterMode={mini ? false : pedido.props.isTheaterMode}
                   isMultiScreen={mini ? false : pedido.props.isMultiScreen} forceMuted={mini ? false : pedido.props.forceMuted} />
               : pedido.tipo === 'filme'
                 ? <Filme key={pedido.props.movie?.id} {...pedido.props} onBack={voltarDoFilme} onEpisodeChange={mudarEpisodio} />

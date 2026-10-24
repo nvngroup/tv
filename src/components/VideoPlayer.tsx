@@ -27,6 +27,7 @@ export interface VideoPlayerProps {
   isTheaterMode: boolean;
   onToggleTheater?: () => void;
   onOpenGuide: () => void;
+  onMinimize?: () => void;
   isMultiScreen?: boolean;
   onToggleMultiScreen?: () => void;
   isSplitActive?: boolean;
@@ -46,6 +47,7 @@ export const VideoPlayer = memo(function VideoPlayer({
   channel,
   isTheaterMode,
   onOpenGuide,
+  onMinimize,
   isMultiScreen = false,
   onToggleMultiScreen,
   isSplitActive = false,
@@ -1043,6 +1045,7 @@ export const VideoPlayer = memo(function VideoPlayer({
             channel={channel}
             isVisible={showControls}
             onOpenGuide={onOpenGuide}
+            onMinimize={onMinimize}
           />
 
           <video

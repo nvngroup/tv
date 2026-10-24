@@ -21,12 +21,14 @@ interface ProgramInfoProps {
   channel: Channel;
   isVisible: boolean;
   onOpenGuide: () => void;
+  onMinimize?: () => void;
 }
 
 export const ProgramInfo = memo(function ProgramInfo({ 
   channel, 
   isVisible,
-  onOpenGuide
+  onOpenGuide,
+  onMinimize,
 }: ProgramInfoProps) {
   const [currentProgram, setCurrentProgram] = useState<CurrentProgram | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -128,6 +130,18 @@ export const ProgramInfo = memo(function ProgramInfo({
               </svg>
               <span>Guia</span>
             </button>
+            {onMinimize && (
+              <button
+                className="program-btn player-minimize-btn"
+                onClick={onMinimize}
+                title="Minimizar player"
+                aria-label="Minimizar player"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5v7m-5-2 5 5 5-5" />
+                </svg>
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -217,6 +231,18 @@ export const ProgramInfo = memo(function ProgramInfo({
             </svg>
             <span>Guia</span>
           </button>
+          {onMinimize && (
+            <button
+              className="program-btn player-minimize-btn"
+              onClick={onMinimize}
+              title="Minimizar player"
+              aria-label="Minimizar player"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M5 12h14M12 5v7m-5-2 5 5 5-5" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
 
