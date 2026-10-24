@@ -42,7 +42,6 @@ const PainelDeCanais = lazy(() => import('./components/PainelDeCanais').then(m =
 const ProgramGuide = lazy(() => import('./components/ProgramGuide').then(m => ({ default: m.ProgramGuide })));
 const VodCatalog = lazy(() => import('./components/VodCatalog').then(m => ({ default: m.VodCatalog })));
 const StreamTester = lazy(() => import('./components/StreamTester').then(m => ({ default: m.StreamTester })));
-const Conta = lazy(() => import('./telas/Conta').then(m => ({ default: m.Conta })));
 const AppDownload = lazy(() => import('./components/AppDownload').then(m => ({ default: m.AppDownload })));
 const Novidades = lazy(() => import('./components/Novidades').then(m => ({ default: m.Novidades })));
 
@@ -643,7 +642,7 @@ function AppLayout() {
       <Route path="/favoritos" element={<Favoritos key={chave} />} />
       <Route path="/radios" element={<Radios key={chave} />} />
       <Route path="/ajustes" element={<Ajustes />} />
-      <Route path="/conta" element={<Suspense fallback={<LoadingFallback />}><Conta /></Suspense>} />
+      <Route path="/conta" element={<Inicio key={chave} />} />
       <Route path="/ao-vivo" element={<TVPage key={chave} />} />
       <Route path="/ao-vivo/:slug" element={<TVPage key={chave} />} />
       <Route path="/tv" element={<RedirecionarAoVivo />} />

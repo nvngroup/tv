@@ -1,4 +1,5 @@
 import { SimboloMarca } from './Marca';
+import { Conta } from '../telas/Conta';
 /**
  * A barra do topo, a mesma do app do Mac e da TV Box: o ícone, as abas
  * (Buscar, Favoritos, Início, TV, Rádio, Filmes e Séries, Eventos), a engrenagem
@@ -7,7 +8,7 @@ import { SimboloMarca } from './Marca';
  *
  * Vinte cliques no ícone abrem o PIN do modo adulto, como no site de sempre.
  */
-import { memo, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAdultMode } from '../contexts/adultoContexto';
 import { assinar, atual as atualRadio, parar as pararRadio } from '../services/radioPlayer';
@@ -53,10 +54,16 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
   const { pathname } = useLocation();
   const [cliques, setCliques] = useState(0);
   const [pedePin, setPedePin] = useState(false);
+  const [contaAberta, setContaAberta] = useState(pathname === '/conta');
   const [pin, setPin] = useState('');
   const zerar = useRef<ReturnType<typeof setTimeout> | null>(null);
   const trilho = useRef<HTMLElement>(null);
   const [capsula, setCapsula] = useState<{ x: number; w: number } | null>(null);
+
+  const fecharConta = useCallback(() => {
+    setContaAberta(false);
+    if (pathname === '/conta') void navigate('/', { replace: true });
+  }, [navigate, pathname]);
 
   useEffect(() => {
     if (pedePin) return;
@@ -286,13 +293,15 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
             </svg>
           </button>
           <button
-            className={`barra-conta ${pathname === '/conta' ? 'on' : ''}`}
+            className={`barra-conta ${contaAberta || pathname === '/conta' ? 'on' : ''}`}
             onClick={(e) => {
               (e.currentTarget as HTMLElement)?.blur();
-              void navigate('/conta');
+              setContaAberta(true);
             }}
             title="Entrar ou acessar conta"
             aria-label="Entrar ou acessar conta"
+            aria-haspopup="dialog"
+            aria-expanded={contaAberta}
           >
             <svg viewBox="0 0 24 24" {...tr}>
               <circle cx="12" cy="8" r="4" />
@@ -301,6 +310,8 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
           </button>
         </div>
       </header>
+
+      {contaAberta && <Conta onClose={fecharConta} />}
 
       {pedePin && (
         <div className="pin-modal-backdrop" onClick={() => setPedePin(false)}>
