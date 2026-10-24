@@ -19,6 +19,7 @@ import './VideoPlayer.css';
 import './AvisoApp.css';
 import { ehAppDaTv } from '../plataforma/tv';
 import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, soltarOrientacao } from '../utils/telaCheia';
+import { fontePrincipalDoCanal, priorizarFonteDoCanal, salvarFontePrincipalDoCanal } from '../utils/fontesCanais';
 
 export interface VideoPlayerProps {
   channel: Channel | null;
@@ -65,7 +66,7 @@ export const VideoPlayer = memo(function VideoPlayer({
   const dashRef = useRef<DashHandle | null>(null);
   /** Para o monitor: qual abertura é esta e se ela já avisou que tocou. */
   const aberturaRef = useRef('');
-  const tentativaRef = useRef<{ titulo: string; url: string; fonte: number; desde: number; avisado: boolean } | null>(null);
+  const tentativaRef = useRef<{ canalId: string; titulo: string; url: string; fonte: number; desde: number; avisado: boolean } | null>(null);
 
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
@@ -169,13 +170,20 @@ export const VideoPlayer = memo(function VideoPlayer({
    * o site ler o catálogo com várias fontes, ainda chega só com `url` — daí a
    * lista de uma fonte só como piso.
    */
-  const attempts = useMemo<Attempt[]>(() => {
+  const attemptsBase = useMemo<Attempt[]>(() => {
     if (!channel) return [];
     const sources: ChannelSource[] = channel.sources?.length
       ? channel.sources
       : channel.url ? [{ url: channel.url }] : [];
     return buildAttempts(sources);
   }, [channel]);
+  const channelId = channel?.id;
+  const attempts = useMemo(
+    () => channelId
+      ? priorizarFonteDoCanal(attemptsBase, fontePrincipalDoCanal(channelId))
+      : attemptsBase,
+    [attemptsBase, channelId],
+  );
 
   const [sourceIndex, setSourceIndex] = useState(0);
   const [reloadTick, setReloadTick] = useState(0);
@@ -305,7 +313,7 @@ export const VideoPlayer = memo(function VideoPlayer({
     const chaveAbertura = `${channel.id}|${reloadTick}`;
     telemetria.comecou('live', channel.name, source.url, posicaoDaFonte, aberturaRef.current !== chaveAbertura);
     aberturaRef.current = chaveAbertura;
-    tentativaRef.current = { titulo: channel.name, url: source.url, fonte: posicaoDaFonte, desde: performance.now(), avisado: false };
+    tentativaRef.current = { canalId: channel.id, titulo: channel.name, url: source.url, fonte: posicaoDaFonte, desde: performance.now(), avisado: false };
 
     let cancelado = false;
 
@@ -637,6 +645,7 @@ export const VideoPlayer = memo(function VideoPlayer({
       if (t && !t.avisado) {
         t.avisado = true;
         telemetria.tocou('live', t.titulo, t.url, t.fonte, performance.now() - t.desde);
+        salvarFontePrincipalDoCanal(t.canalId, t.url);
       }
       setIsLoading(false);
       setError(null); // Limpa erro - vídeo está definitivamente funcionando
