@@ -147,7 +147,7 @@ export function iniciarLembranca() {
   const lembranca = sessao.lembranca;
   if (!lembranca || !miniSlot) return;
   const pedido: Pedido = lembranca.tipo === 'canal'
-    ? { tipo: 'canal', props: { channel: lembranca.canal, isTheaterMode: false, onOpenGuide: () => {} } }
+    ? { tipo: 'canal', props: { channel: lembranca.canal, isTheaterMode: false } }
     : { tipo: 'filme', props: { movie: lembranca.filme, seriesInfo: lembranca.serie, onBack: fechar } };
   montar(miniSlot, pedido);
   publicar({ ...sessao, slot: null });

@@ -20,13 +20,11 @@ const formatDuration = (start: Date, end: Date): string => {
 interface ProgramInfoProps {
   channel: Channel;
   isVisible: boolean;
-  onOpenGuide: () => void;
 }
 
 export const ProgramInfo = memo(function ProgramInfo({
   channel,
   isVisible,
-  onOpenGuide,
 }: ProgramInfoProps) {
   const [currentProgram, setCurrentProgram] = useState<CurrentProgram | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -111,23 +109,9 @@ export const ProgramInfo = memo(function ProgramInfo({
                 {isLoading ? 'Buscando programação...' : 'Transmissão ao vivo'}
               </h3>
               <p className="program-description">
-                {isLoading ? 'Aguarde...' : 'Sem informação de programação'}
+                {isLoading ? 'Aguarde...' : 'Programação indisponível'}
               </p>
             </div>
-          </div>
-
-          <div className="program-actions">
-            <button
-              className="program-btn guide-btn"
-              onClick={onOpenGuide}
-              title="Guia de programação"
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="3" y="4" width="18" height="18" rx="2" />
-                <path d="M3 10h18M9 4v18" />
-              </svg>
-              <span>Guia</span>
-            </button>
           </div>
         </div>
       </div>
@@ -202,20 +186,6 @@ export const ProgramInfo = memo(function ProgramInfo({
                 <path d="M6 9l6 6 6-6" />
               )}
             </svg>
-          </button>
-
-
-
-          <button
-            className="program-btn guide-btn"
-            onClick={onOpenGuide}
-            title="Guia de programação"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="3" y="4" width="18" height="18" rx="2" />
-              <path d="M3 10h18M9 4v18" />
-            </svg>
-            <span>Guia</span>
           </button>
         </div>
       </div>

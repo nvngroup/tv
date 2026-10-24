@@ -235,7 +235,7 @@ const LinhaProgramas = memo(function LinhaProgramas({
           <span className="eg-prog-texto">
             <span className="eg-prog-titulo">{p.title}</span>
             <span className="eg-prog-hora">
-              {noAr && <span className="eg-ao-vivo">Ao vivo</span>}
+              {noAr && <span className="eg-ao-vivo">NO AR</span>}
               <span className="eg-prog-intervalo">{hora(ini)} – {hora(fin)}</span>
             </span>
           </span>
@@ -248,7 +248,7 @@ const LinhaProgramas = memo(function LinhaProgramas({
     <div className="eg-linha" style={{ transform: `translateY(${topo}px)` }}>
       {blocos.length > 0 ? blocos : (
         <div className={`eg-vazio${pronto ? '' : ' carregando'}`}>
-          <span className="eg-vazio-texto">{pronto ? 'Sem programação' : ''}</span>
+          <span className="eg-vazio-texto">{pronto ? 'Programação indisponível' : ''}</span>
         </div>
       )}
     </div>
@@ -301,7 +301,7 @@ function Detalhes({ canal, programa, agora, onAssistir, onFechar }: Readonly<Det
         </div>
         <h3 className="eg-detalhes-titulo">{programa.title}</h3>
         <p className="eg-detalhes-hora">
-          {noAr && <span className="eg-ao-vivo">Ao vivo</span>}
+          {noAr && <span className="eg-ao-vivo">NO AR</span>}
           {passou && <span className="eg-tag">Encerrado</span>}
           <span>{diaRelativo(ini, agora)}, {hora(ini)} – {hora(fin)}</span>
           <span className="eg-sep" aria-hidden="true" />

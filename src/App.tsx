@@ -243,7 +243,7 @@ function TVPage() {
   return (
     <div className={`page-container tv-page ${isTheaterMode ? 'theater-mode' : ''} ${deitado ? 'deitado' : ''} ${deitado && (selectedMovie || selectedChannel) ? 'tocando' : ''}`}>
       {/* Header Global com auto-hide no Live TV (aparece apenas ao passar o mouse no topo da tela) */}
-      {!isTheaterMode && <BarraTopo autoHide={true} />}
+      {!isTheaterMode && <BarraTopo autoHide={!isMobile} onOpenGuide={listas.canais ? () => setIsGuideOpen(true) : undefined} isGuideOpen={isGuideOpen} />}
 
       {!listas.canais && <SemLista tipo="canais" />}
       {listas.canais && <Suspense fallback={<LoadingFallback />}>
@@ -260,7 +260,6 @@ function TVPage() {
                     channelNumber={channels.findIndex((c) => c.id === selectedChannel?.id) + 1}
                     isTheaterMode={isTheaterMode}
                     onToggleTheater={handleToggleTheater}
-                    onOpenGuide={() => setIsGuideOpen(true)}
                     isChannelsPanelOpen={isChannelsPanelOpen}
                     onToggleChannelsPanel={() => setIsChannelsPanelOpen((v) => !v)}
                     onNextChannel={handleNextChannel}
@@ -339,7 +338,6 @@ function TVPage() {
                     channelNumber={channels.findIndex((c) => c.id === selectedChannel?.id) + 1}
                     isTheaterMode={false}
                     onToggleTheater={handleToggleTheater}
-                    onOpenGuide={() => setIsGuideOpen(true)}
                     isMultiScreen={true}
                     onToggleMultiScreen={handleToggleMultiScreen}
                     isSplitActive={activeSide === 'primary'}
@@ -398,7 +396,6 @@ function TVPage() {
                       channelNumber={channels.findIndex((c) => c.id === secondChannel?.id) + 1}
                       isTheaterMode={false}
                       onToggleTheater={handleToggleTheater}
-                      onOpenGuide={() => setIsGuideOpen(true)}
                       isMultiScreen={true}
                       onToggleMultiScreen={handleToggleMultiScreen}
                       isSplitActive={activeSide === 'secondary'}
@@ -468,7 +465,6 @@ function TVPage() {
                 channelNumber={channels.findIndex((c) => c.id === selectedChannel?.id) + 1}
                 isTheaterMode={isTheaterMode}
                 onToggleTheater={handleToggleTheater}
-                onOpenGuide={() => setIsGuideOpen(true)}
                 isMultiScreen={false}
                 onToggleMultiScreen={handleToggleMultiScreen}
                 isChannelsPanelOpen={isChannelsPanelOpen}

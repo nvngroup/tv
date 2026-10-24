@@ -118,6 +118,12 @@
 }
 
 .barra-direita { display: flex; align-items: center; gap: 6px; }
+.barra-guia {
+  width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%;
+  color: rgba(255, 255, 255, 0.7); transition: background 0.15s, color 0.15s;
+}
+.barra-guia svg { width: 18px; height: 18px; }
+.barra-guia:hover, .barra-guia.on { background: rgba(255, 255, 255, 0.1); color: #4ff3e0; }
 .barra-engrenagem {
   width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%;
   color: rgba(255, 255, 255, 0.7); transition: background 0.15s, color 0.15s, transform 0.3s;

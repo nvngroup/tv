@@ -26,7 +26,6 @@ export interface VideoPlayerProps {
   channelNumber?: number;
   isTheaterMode: boolean;
   onToggleTheater?: () => void;
-  onOpenGuide: () => void;
   onMinimize?: () => void;
   isMultiScreen?: boolean;
   onToggleMultiScreen?: () => void;
@@ -46,7 +45,6 @@ export interface VideoPlayerProps {
 export const VideoPlayer = memo(function VideoPlayer({
   channel,
   isTheaterMode,
-  onOpenGuide,
   onMinimize,
   isMultiScreen = false,
   onToggleMultiScreen,
@@ -1044,7 +1042,6 @@ export const VideoPlayer = memo(function VideoPlayer({
           <ProgramInfo
             channel={channel}
             isVisible={showControls}
-            onOpenGuide={onOpenGuide}
           />
 
           <video
@@ -1284,22 +1281,6 @@ export const VideoPlayer = memo(function VideoPlayer({
               </div>
 
               <div className="controlbar-spacer" />
-
-              {/* Guia EPG */}
-              <button
-                className="control-btn"
-                onClick={() => { resetControlsTimeout(); onOpenGuide(); }}
-                title="Programação completa (G)"
-                data-focusable="true"
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                  <line x1="16" y1="2" x2="16" y2="6" />
-                  <line x1="8" y1="2" x2="8" y2="6" />
-                  <line x1="3" y1="10" x2="21" y2="10" />
-                  <circle cx="12" cy="15" r="2" fill="currentColor" />
-                </svg>
-              </button>
 
               {/* Zero Delay (Baixa Latência) */}
               {channel && (
