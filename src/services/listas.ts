@@ -12,6 +12,7 @@
  */
 import { useSyncExternalStore } from 'react';
 import { normalizarEndereco, resolverEndereco } from '../utils/enderecoLista';
+import { notificarDadosContaAlterados } from './supabase';
 
 export { normalizarEndereco };
 
@@ -57,6 +58,7 @@ export function definirLink(lista: Lista, endereco: string): void {
   memoria[lista] = endereco;
   // Vazio é guardado como vazio: a lista fica desligada, não volta ao padrão.
   try { localStorage.setItem(chave, endereco); } catch { /* segue só na memória desta visita */ }
+  notificarDadosContaAlterados();
   window.dispatchEvent(new Event(EVENTO));
 }
 
@@ -65,6 +67,14 @@ export function restaurarPadrao(lista: Lista): void {
   carregar();
   memoria[lista] = PADRAO[lista];
   try { localStorage.removeItem(lista === 'canais' ? CHAVE_CANAIS : CHAVE_FILMES); } catch { /* só memória */ }
+  notificarDadosContaAlterados();
+  window.dispatchEvent(new Event(EVENTO));
+}
+
+/** Atualiza a memória das fontes após restaurar o perfil sincronizado. */
+export function recarregarListasDoArmazenamento(): void {
+  lidoDoDisco = false;
+  carregar();
   window.dispatchEvent(new Event(EVENTO));
 }
 

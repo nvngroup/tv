@@ -7,6 +7,7 @@ import { BarraTopo } from '../components/BarraTopo';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { audioInteligenteService, CHAVE_AUDIO_INTELIGENTE } from '../services/audioInteligente';
 import { zeroDelayService, CHAVE_ZERO_DELAY, type ModoZeroDelay } from '../services/zeroDelay';
+import { notificarDadosContaAlterados } from '../services/supabase';
 import './Ajustes.css';
 
 export type AoIniciar = 'inicio' | 'ultimo';
@@ -54,6 +55,7 @@ export function Ajustes() {
 
   const limparDados = (chaves: string[], texto: string) => {
     chaves.forEach((c) => localStorage.removeItem(c));
+    notificarDadosContaAlterados();
     window.dispatchEvent(new Event('nvnplus-vod-favoritos-mudou'));
     notificar(texto);
   };
@@ -125,6 +127,14 @@ export function Ajustes() {
             {LIMPAR.map((l) => (
               <button key={l.rotulo} className="ajustes-botao" onClick={() => limparDados(l.chaves, l.aviso)}>{l.rotulo}</button>
             ))}
+          </div>
+        </section>
+
+        <section className="ajustes-bloco">
+          <h2>Conta e sincronização</h2>
+          <p>Entre para levar favoritos, progresso e preferências para outros aparelhos. O catálogo continua livre.</p>
+          <div className="ajustes-botoes">
+            <button className="ajustes-botao" onClick={() => navigate('/conta')}>Acessar ou criar conta</button>
           </div>
         </section>
 

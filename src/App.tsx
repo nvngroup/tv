@@ -12,6 +12,7 @@ import { Favoritos } from './telas/Favoritos';
 import { Busca } from './telas/Busca';
 import { parar as pararRadio } from './services/radioPlayer';
 import { Ajustes } from './telas/Ajustes';
+import { ContaProvider } from './contexts/ContaContext';
 import { Toast } from './components/Toast';
 import { NavegacaoMobile } from './components/NavegacaoMobile';
 import { useVoltarFecha } from './hooks/useVoltarFecha';
@@ -41,6 +42,7 @@ const PainelDeCanais = lazy(() => import('./components/PainelDeCanais').then(m =
 const ProgramGuide = lazy(() => import('./components/ProgramGuide').then(m => ({ default: m.ProgramGuide })));
 const VodCatalog = lazy(() => import('./components/VodCatalog').then(m => ({ default: m.VodCatalog })));
 const StreamTester = lazy(() => import('./components/StreamTester').then(m => ({ default: m.StreamTester })));
+const Conta = lazy(() => import('./telas/Conta').then(m => ({ default: m.Conta })));
 const AppDownload = lazy(() => import('./components/AppDownload').then(m => ({ default: m.AppDownload })));
 const Novidades = lazy(() => import('./components/Novidades').then(m => ({ default: m.Novidades })));
 
@@ -641,6 +643,7 @@ function AppLayout() {
       <Route path="/favoritos" element={<Favoritos key={chave} />} />
       <Route path="/radios" element={<Radios key={chave} />} />
       <Route path="/ajustes" element={<Ajustes />} />
+      <Route path="/conta" element={<Suspense fallback={<LoadingFallback />}><Conta /></Suspense>} />
       <Route path="/ao-vivo" element={<TVPage key={chave} />} />
       <Route path="/ao-vivo/:slug" element={<TVPage key={chave} />} />
       <Route path="/tv" element={<RedirecionarAoVivo />} />
@@ -753,29 +756,31 @@ function App() {
 
   return (
     <Roteador>
-      <DpadNavigationProvider>
-        <AdultModeProvider>
-          <svg width="0" height="0" style={{ position: 'absolute', pointerEvents: 'none' }} aria-hidden="true">
-            <defs>
-              <filter id="nvnplus-upscale-hd" colorInterpolationFilters="sRGB">
-                <feConvolveMatrix
-                  order="3"
-                  kernelMatrix="0 -0.45 0 -0.45 2.8 -0.45 0 -0.45 0"
-                  preserveAlpha="true"
-                />
-              </filter>
-              <filter id="nvnplus-upscale-4k" colorInterpolationFilters="sRGB">
-                <feConvolveMatrix
-                  order="3"
-                  kernelMatrix="-0.15 -0.55 -0.15 -0.55 3.8 -0.55 -0.15 -0.55 -0.15"
-                  preserveAlpha="true"
-                />
-              </filter>
-            </defs>
-          </svg>
-          <AppLayout />
-        </AdultModeProvider>
-      </DpadNavigationProvider>
+      <ContaProvider>
+        <DpadNavigationProvider>
+          <AdultModeProvider>
+            <svg width="0" height="0" style={{ position: 'absolute', pointerEvents: 'none' }} aria-hidden="true">
+              <defs>
+                <filter id="nvnplus-upscale-hd" colorInterpolationFilters="sRGB">
+                  <feConvolveMatrix
+                    order="3"
+                    kernelMatrix="0 -0.45 0 -0.45 2.8 -0.45 0 -0.45 0"
+                    preserveAlpha="true"
+                  />
+                </filter>
+                <filter id="nvnplus-upscale-4k" colorInterpolationFilters="sRGB">
+                  <feConvolveMatrix
+                    order="3"
+                    kernelMatrix="-0.15 -0.55 -0.15 -0.55 3.8 -0.55 -0.15 -0.55 -0.15"
+                    preserveAlpha="true"
+                  />
+                </filter>
+              </defs>
+            </svg>
+            <AppLayout />
+          </AdultModeProvider>
+        </DpadNavigationProvider>
+      </ContaProvider>
     </Roteador>
   );
 }

@@ -7,6 +7,7 @@
  * pelo caminho que já abre qualquer destaque.
  */
 import type { ItemDestaque } from './vodService';
+import { notificarDadosContaAlterados } from './supabase';
 
 const CHAVE = 'nvnplus-vod-favoritos';
 const EVENTO = 'nvnplus-vod-favoritos-mudou';
@@ -37,6 +38,7 @@ export function alternar(item: ItemDestaque): boolean {
   const resto = atual.filter((x) => !mesmo(x, item));
   const marcou = resto.length === atual.length;
   localStorage.setItem(CHAVE, JSON.stringify(marcou ? [item, ...resto] : resto));
+  notificarDadosContaAlterados();
   window.dispatchEvent(new Event(EVENTO));
   return marcou;
 }

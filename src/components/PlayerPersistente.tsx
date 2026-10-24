@@ -98,7 +98,8 @@ export function MiniPlayer() {
     };
   }, [host]);
 
-  const identidade = pedido?.tipo === 'canal' ? pedido.props.channel?.id : pedido?.props.movie?.id;
+  const identidade = pedido?.tipo === 'canal' ? pedido.props.channel?.id
+    : pedido?.tipo === 'filme' ? pedido.props.movie?.id : undefined;
   useEffect(() => { if (identidade) pararRadio(); }, [identidade]);
   useEffect(() => { if (bloqueada && pedido) reproducao.fechar(); }, [bloqueada, pedido]);
 
@@ -109,7 +110,8 @@ export function MiniPlayer() {
     else void navigate('/movies', { state: { retomarFilme: atual.filme, retomarSerie: atual.serie, retomarQuando: Date.now() } });
   };
 
-  const titulo = lembranca?.tipo === 'canal' ? lembranca.canal.name : lembranca?.filme.name;
+  const titulo = lembranca?.tipo === 'canal' ? lembranca.canal.name
+    : lembranca?.filme.name ?? (pedido?.tipo === 'radio' ? pedido.radio.nome : undefined);
 
   return (
     <>
@@ -127,7 +129,7 @@ export function MiniPlayer() {
             </div>
           )}
         </div>
-        {pedido && <footer>{lembranca?.tipo === 'canal' ? 'Ao vivo' : tempo(lembranca?.tempo ?? 0)}</footer>}
+        {pedido && <footer>{pedido.tipo === 'radio' ? 'Rádio' : lembranca?.tipo === 'canal' ? 'Ao vivo' : tempo(lembranca?.tempo ?? 0)}</footer>}
       </aside>
       {pedido && createPortal(
         <>
@@ -136,7 +138,9 @@ export function MiniPlayer() {
             {pedido.tipo === 'canal'
               ? <Video {...pedido.props} isTheaterMode={mini ? false : pedido.props.isTheaterMode}
                   isMultiScreen={mini ? false : pedido.props.isMultiScreen} forceMuted={mini ? false : pedido.props.forceMuted} />
-              : <Filme key={pedido.props.movie?.id} {...pedido.props} onBack={voltarDoFilme} onEpisodeChange={mudarEpisodio} />}
+              : pedido.tipo === 'filme'
+                ? <Filme key={pedido.props.movie?.id} {...pedido.props} onBack={voltarDoFilme} onEpisodeChange={mudarEpisodio} />
+                : null}
           </Suspense>
         </>, host,
       )}

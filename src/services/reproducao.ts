@@ -3,6 +3,7 @@ import type { MoviePlayerProps } from '../components/MoviePlayer';
 import type { Channel } from '../types/channel';
 import type { Movie, SeriesEpisodeInfo } from '../types/movie';
 import type { Radio } from './radios';
+import { notificarDadosContaAlterados } from './supabase';
 import { elementoEmTelaCheia, sairDaTelaCheia } from '../utils/telaCheia';
 
 export const CHAVE_REPRODUCAO = 'nvnplus-reproducao';
@@ -84,6 +85,7 @@ function gravar(lembranca: Lembranca) {
     else if (lembranca.tempo > 0 && (!lembranca.duracao || lembranca.tempo / lembranca.duracao < .95)) {
       localStorage.setItem(`movie-progress-${lembranca.filme.id}`, String(lembranca.tempo));
     }
+    notificarDadosContaAlterados(true);
   } catch { /* A reprodução continua se o armazenamento estiver cheio ou bloqueado. */ }
 }
 
@@ -99,7 +101,7 @@ export function registrarTempo(forcar = false) {
 }
 
 export function montar(slot: HTMLElement | null, pedido: Pedido) {
-  if (!slot) return;
+  if (!slot || pedido.tipo === 'radio') return;
   const item = pedido.tipo === 'canal' ? pedido.props.channel : pedido.props.movie;
   if (!item) return;
   const anterior = sessao.lembranca;

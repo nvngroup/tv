@@ -6,6 +6,7 @@
  * endereço do título no acervo, para o cartão abrir a ficha certa.
  */
 import type { ItemDestaque } from './vodService';
+import { notificarDadosContaAlterados } from './supabase';
 
 const CHAVE = 'nvnplus-continuar';
 
@@ -32,10 +33,12 @@ export function registrar(origem: ItemDestaque, rotulo: string, tempo: number, d
   // Acabou (ou quase): sai da fileira — série fica, no próximo episódio.
   if (fracao >= 0.95 && origem.tipo === 'f') {
     localStorage.setItem(CHAVE, JSON.stringify(resto));
+    notificarDadosContaAlterados();
     return;
   }
   const novo: Andamento = { origem, rotulo, fracao: Math.min(fracao, 1), quando: Date.now() };
   localStorage.setItem(CHAVE, JSON.stringify([novo, ...resto].slice(0, 20)));
+  notificarDadosContaAlterados();
 }
 
 export function lista(): Andamento[] {
@@ -44,4 +47,5 @@ export function lista(): Andamento[] {
 
 export function remover(titulo: string) {
   localStorage.setItem(CHAVE, JSON.stringify(ler().filter((a) => a.origem.titulo !== titulo)));
+  notificarDadosContaAlterados();
 }
