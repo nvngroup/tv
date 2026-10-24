@@ -997,6 +997,12 @@ body:has(.barra-topo.oculta) .vod-letras-barra {
   transition: all 0.15s ease;
 }
 
+.vod-btn-fav svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+}
+
 .vod-btn-fav:hover {
   background: rgba(255, 255, 255, 0.22);
 }

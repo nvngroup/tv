@@ -88,13 +88,14 @@ const LinhaDeCanal = memo(function LinhaDeCanal({
 
       <button
         type="button"
-        className={`painel-btn-estrela ${isFav ? 'favorito' : ''}`}
+        className={`painel-btn-favorito ${isFav ? 'favorito' : ''}`}
         onClick={onToggleFav}
         title={isFav ? 'Remover dos favoritos' : 'Favoritar'}
-        aria-label="Favorito"
+        aria-label={isFav ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+        aria-pressed={isFav}
       >
-        <svg viewBox="0 0 24 24" fill={isFav ? '#facc15' : 'none'} stroke={isFav ? '#facc15' : 'currentColor'} strokeWidth="2">
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        <svg viewBox="0 0 24 24" fill={isFav ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinejoin="round" aria-hidden="true">
+          <path d="M12 21s-8-4.9-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.1-8 11-8 11z" />
         </svg>
       </button>
     </div>

@@ -1554,8 +1554,13 @@ export function VodCatalog({
                             <button
                               className={`vod-btn-fav${fav ? ' ativo' : ''}`}
                               onClick={() => alternarFavorito(origemItem)}
+                              aria-label={fav ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+                              aria-pressed={fav}
                             >
-                              {fav ? '★ Nos favoritos' : '♡ Favoritar'}
+                              <svg viewBox="0 0 24 24" fill={fav ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinejoin="round" aria-hidden="true">
+                                <path d="M12 21s-8-4.9-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.1-8 11-8 11z" />
+                              </svg>
+                              {fav ? 'Nos favoritos' : 'Favoritar'}
                             </button>
                           );
                         })()}
