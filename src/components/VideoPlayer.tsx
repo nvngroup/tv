@@ -1580,7 +1580,9 @@ export const VideoPlayer = memo(function VideoPlayer({
                     <p>Escolha como deseja transmitir "{channel.name}"</p>
 
                     <div className="cast-options">
-                      {castService.getAvailableMethods().map((method) => (
+                      {castService.getAvailableMethods()
+                        .filter((method) => method.method !== 'openExternal')
+                        .map((method) => (
                         <button
                           key={method.method}
                           className="cast-option"
