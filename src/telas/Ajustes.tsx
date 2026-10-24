@@ -131,14 +131,6 @@ export function Ajustes() {
         </section>
 
         <section className="ajustes-bloco">
-          <h2>Conta e sincronização</h2>
-          <p>Entre para levar favoritos, progresso e preferências para outros aparelhos. O catálogo continua livre.</p>
-          <div className="ajustes-botoes">
-            <button className="ajustes-botao" onClick={() => navigate('/conta')}>Acessar ou criar conta</button>
-          </div>
-        </section>
-
-        <section className="ajustes-bloco">
           <h2>Mais</h2>
           <div className="ajustes-botoes">
             <button className="ajustes-botao" onClick={() => navigate('/novidades')}>Novidades</button>
