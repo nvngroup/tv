@@ -89,7 +89,7 @@ function parseEpisodio(bruto: string | undefined): Program['episodeInfo'] {
   let season: number | undefined;
   let episode: number | undefined;
   if (!raw.includes('.')) {
-    const m = raw.match(/^S?(\d+)(?:E(\d+))?$/i);
+    const m = new RegExp(/^S?(\d+)(?:E(\d+))?$/i).exec(raw);
     if (!m) return undefined;
     season = Number(m[1]);
     episode = m[2] ? Number(m[2]) : undefined;
@@ -158,7 +158,7 @@ function marcarPronto(): void {
 // ============================================================
 
 function assinatura(): string {
-  return linkCanais() + '#' + nomes.map((n) => normalise(n)).sort().join('|');
+  return linkCanais() + '#' + nomes.map((n) => normalise(n)).sort((a, b) => a.localeCompare(b)).join('|');
 }
 
 function lerCache(): CacheGuardado | null {
@@ -261,7 +261,7 @@ export function epgKey(idOuNome: string): string {
 function chave(idOuNome: string): string {
   // O identificador é o nome normalizado com hífen no lugar do espaço, então
   // desfazer a troca devolve exatamente a chave da grade.
-  return normalise(idOuNome.replace(/-/g, ' '));
+  return normalise(idOuNome.replaceAll("-", ' '));
 }
 
 export async function fetchRealEPG(): Promise<boolean> {

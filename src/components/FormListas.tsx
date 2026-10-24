@@ -5,10 +5,11 @@
  */
 import { useId, useRef, useState, type ReactNode } from 'react';
 import {
-  apagarDadosDa, definirLink, linkCanais, linkFilmes, normalizarEndereco, PADRAO, restaurarPadrao, testarEndereco,
+  apagarDadosDa, definirLink, linkCanais, linkFilmes, PADRAO, restaurarPadrao, testarEndereco,
   useListas, type Lista,
 } from '../services/listas';
 import './Listas.css';
+import { normalizarEndereco } from '../utils/enderecoLista';
 
 const CAMPOS: { lista: Lista; rotulo: string; ajuda: string }[] = [
   { lista: 'canais', rotulo: 'Canais', ajuda: 'Lista de canais, rádios e guia de programação.' },
@@ -31,7 +32,7 @@ interface Props {
   secundario?: ReactNode;
 }
 
-export function FormListas({ aoSalvar, secundario, permitirApagar, aoApagar, aoRestaurar }: Props) {
+export function FormListas({ aoSalvar, secundario, permitirApagar, aoApagar, aoRestaurar }: Readonly<Props>) {
   const atuais = useListas();
   const [valores, setValores] = useState<Record<Lista, string>>(() => ({ canais: atuais.canais, filmes: atuais.filmes }));
   const [fase, setFase] = useState<Fase>({ tipo: 'editando' });

@@ -11,10 +11,8 @@
  * = lista desligada de propósito (estado vazio, nenhum pedido de rede).
  */
 import { useSyncExternalStore } from 'react';
-import { normalizarEndereco, resolverEndereco } from '../utils/enderecoLista';
+import { resolverEndereco } from '../utils/enderecoLista';
 import { notificarDadosContaAlterados } from './supabase';
-
-export { normalizarEndereco };
 
 /** Endereços padrão: as únicas listas conhecidas do site. */
 export const PADRAO: Record<'canais' | 'filmes', string> = {
