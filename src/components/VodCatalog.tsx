@@ -1141,7 +1141,7 @@ export function VodCatalog({
             aria-current={secao === null ? 'page' : undefined}
           >
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5M5.5 9v11h13V9M9 20v-6h6v6" /></svg>
-            Filmes e Séries
+            Início
           </button>
           <button
             className={`vod-sub-pill${secao === 'filmes' ? ' ativa' : ''}`}
