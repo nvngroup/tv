@@ -1045,7 +1045,6 @@ export const VideoPlayer = memo(function VideoPlayer({
             channel={channel}
             isVisible={showControls}
             onOpenGuide={onOpenGuide}
-            onMinimize={onMinimize}
           />
 
           <video
@@ -1167,6 +1166,20 @@ export const VideoPlayer = memo(function VideoPlayer({
                     <line x1="14" y1="17" x2="16" y2="17" />
                   </svg>
                   <span className="pulse-indicator" aria-hidden="true" />
+                </button>
+              )}
+
+              {onMinimize && (
+                <button
+                  className="control-btn minimize-player-btn"
+                  onClick={() => { resetControlsTimeout(); onMinimize(); }}
+                  title="Minimizar player"
+                  aria-label="Minimizar player"
+                  data-focusable="true"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5v7m-5-2 5 5 5-5" />
+                  </svg>
                 </button>
               )}
 
