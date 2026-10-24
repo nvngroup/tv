@@ -19,7 +19,7 @@ import './VideoPlayer.css';
 import './AvisoApp.css';
 import { ehAppDaTv } from '../plataforma/tv';
 import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, soltarOrientacao } from '../utils/telaCheia';
-import { fontePrincipalDoCanal, priorizarFonteDoCanal, salvarFontePrincipalDoCanal } from '../utils/fontesCanais';
+import { carregarFontePrincipalDoCanal, priorizarFonteDoCanal, salvarFontePrincipalDoCanal } from '../utils/fontesCanais';
 
 export interface VideoPlayerProps {
   channel: Channel | null;
@@ -109,6 +109,7 @@ export const VideoPlayer = memo(function VideoPlayer({
   const [showSources, setShowSources] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [preferenciaGlobal, setPreferenciaGlobal] = useState<{ canalId: string; url?: string } | null>(null);
   const [showControls, setShowControls] = useState(true);
   const [videoResolution, setVideoResolution] = useState<string | null>(null);
   const aspectRatio = 'auto';
@@ -178,11 +179,27 @@ export const VideoPlayer = memo(function VideoPlayer({
     return buildAttempts(sources);
   }, [channel]);
   const channelId = channel?.id;
+  useEffect(() => {
+    if (!channelId) {
+      setPreferenciaGlobal(null);
+      return;
+    }
+    let ativo = true;
+    setPreferenciaGlobal(null);
+    setIsLoading(true);
+    void carregarFontePrincipalDoCanal(channelId).then((url) => {
+      if (ativo) setPreferenciaGlobal({ canalId: channelId, url });
+    }).catch(() => {
+      if (ativo) setPreferenciaGlobal({ canalId: channelId });
+    });
+    return () => { ativo = false; };
+  }, [channelId]);
+
   const attempts = useMemo(
     () => channelId
-      ? priorizarFonteDoCanal(attemptsBase, fontePrincipalDoCanal(channelId))
+      ? priorizarFonteDoCanal(attemptsBase, preferenciaGlobal?.canalId === channelId ? preferenciaGlobal.url : undefined)
       : attemptsBase,
-    [attemptsBase, channelId],
+    [attemptsBase, channelId, preferenciaGlobal],
   );
 
   const [sourceIndex, setSourceIndex] = useState(0);
@@ -263,6 +280,7 @@ export const VideoPlayer = memo(function VideoPlayer({
    */
   useEffect(() => {
     if (!channel || !videoRef.current) return;
+    if (preferenciaGlobal?.canalId !== channel.id) return;
 
     const video = videoRef.current;
 
@@ -589,7 +607,7 @@ export const VideoPlayer = memo(function VideoPlayer({
       limpar();
       if (nativo) { video.removeAttribute('src'); video.load(); }
     };
-  }, [channel, attempts, sourceIndex, reloadTick, semCaminhoNoSite, tentavel]);
+  }, [channel, attempts, sourceIndex, reloadTick, semCaminhoNoSite, tentavel, preferenciaGlobal]);
 
   // Volume sync
   useEffect(() => {

@@ -4,14 +4,12 @@ import type { ReactNode } from 'react';
 import type { User } from '@supabase/supabase-js';
 import { CHAVE_DADOS_CONTA, EVENTO_DADOS_REMOTOS, SUPABASE_CONFIGURADO, supabase } from '../services/supabase';
 import { recarregarListasDoArmazenamento } from '../services/listas';
-import { CHAVE_FONTES_CANAIS } from '../utils/fontesCanais';
 
 const CHAVES = [
   'tv-favorites', 'tv-last-channel', 'nvnplus-vod-favoritos', 'nvnplus-radios-favoritas',
   'nvnplus-continuar', 'nvnplus-continuar-updated', 'nvnplus-reproducao', 'nvnplus-ao-iniciar',
   'nvnplus-audio-inteligente', 'nvnplus-zero-delay', 'nvnplus-link-canais', 'nvnplus-link-filmes',
   'nvnplus-upscaling', 'movie-volume', 'movie-skip-time', 'tv-volume', 'radio-volume', 'legenda-idioma',
-  CHAVE_FONTES_CANAIS,
 ] as const;
 const CHAVES_LISTA = new Set(['tv-favorites', 'nvnplus-radios-favoritas', 'nvnplus-vod-favoritos']);
 const CHAVE_USUARIO = 'nvnplus-perfil-local-uid';
