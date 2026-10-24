@@ -57,14 +57,14 @@ export function assinar(fn: () => void): () => void {
 export function parar(): void {
   hls?.destroy();
   hls = null;
-  if (audio) { audio.pause(); audio.removeAttribute('src'); audio.load(); }
+  if (audio) { audio.pause(); audio.removeAttribute('src'); audio.load(); audio.remove(); }
   if (situacao.radio || situacao.estado !== 'parado') mudar({ radio: null, estado: 'parado' });
 }
 
 export function tocar(radio: Radio): void {
   const slot = reproducao.elementoPlayer();
   const a = elemento();
-  slot.replaceChildren(a);
+  slot.appendChild(a);
   reproducao.montarRadio(radio);
   hls?.destroy();
   hls = null;
