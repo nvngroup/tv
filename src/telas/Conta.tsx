@@ -1,7 +1,11 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { useConta } from '../contexts/ContaContext';
 import { useAdultMode } from '../contexts/adultoContexto';
+import { notificarDadosContaAlterados } from '../services/supabase';
+import { criarHashSenhaAdulto, verificarSenhaAdulto } from '../services/senhaAdulto';
 import './Conta.css';
+
+const CHAVE_SENHA_ADULTO = 'nvnplus-senha-adulto-v1';
 
 interface ContaProps {
   onClose: () => void;
@@ -16,10 +20,17 @@ export function Conta({ onClose }: ContaProps) {
   const [aviso, setAviso] = useState('');
   const [erro, setErro] = useState('');
   const [enviando, setEnviando] = useState(false);
-  const [pedirPinAdulto, setPedirPinAdulto] = useState(false);
-  const [pinAdulto, setPinAdulto] = useState('');
-  const [erroPinAdulto, setErroPinAdulto] = useState('');
+  const [senhaAdultoConfigurada, setSenhaAdultoConfigurada] = useState(() => Boolean(localStorage.getItem(CHAVE_SENHA_ADULTO)));
+  const [pedirSenhaAdulto, setPedirSenhaAdulto] = useState(false);
+  const [senhaAdulto, setSenhaAdulto] = useState('');
+  const [confirmarSenhaAdulto, setConfirmarSenhaAdulto] = useState('');
+  const [erroSenhaAdulto, setErroSenhaAdulto] = useState('');
+  const [salvandoSenhaAdulto, setSalvandoSenhaAdulto] = useState(false);
   const erroVisivel = user?.email_confirmed_at && /email not confirmed/i.test(erro) ? '' : erro;
+
+  useEffect(() => {
+    if (!loading) setSenhaAdultoConfigurada(Boolean(localStorage.getItem(CHAVE_SENHA_ADULTO)));
+  }, [loading]);
 
   useEffect(() => {
     const overflowAnterior = document.body.style.overflow;
@@ -65,28 +76,54 @@ export function Conta({ onClose }: ContaProps) {
     }
   };
 
-  const submeterPinAdulto = (event: FormEvent<HTMLFormElement>) => {
+  const submeterSenhaAdulto = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (pinAdulto !== '0000') {
-      setErroPinAdulto('PIN incorreto. Tente novamente.');
-      setPinAdulto('');
-      return;
+    setErroSenhaAdulto('');
+    setSalvandoSenhaAdulto(true);
+    try {
+      if (senhaAdultoConfigurada) {
+        const registro = localStorage.getItem(CHAVE_SENHA_ADULTO) ?? '';
+        if (!await verificarSenhaAdulto(senhaAdulto, registro)) {
+          setErroSenhaAdulto('Senha incorreta. Tente novamente.');
+          setSenhaAdulto('');
+          return;
+        }
+      } else {
+        if (senhaAdulto.length < 8) {
+          setErroSenhaAdulto('Use pelo menos 8 caracteres.');
+          return;
+        }
+        if (senhaAdulto !== confirmarSenhaAdulto) {
+          setErroSenhaAdulto('As senhas não coincidem.');
+          return;
+        }
+        const hash = await criarHashSenhaAdulto(senhaAdulto);
+        localStorage.setItem(CHAVE_SENHA_ADULTO, hash);
+        notificarDadosContaAlterados();
+        setSenhaAdultoConfigurada(true);
+        setAviso('Senha do modo adulto criada.');
+      }
+      unlockAdult();
+      setPedirSenhaAdulto(false);
+      setSenhaAdulto('');
+      setConfirmarSenhaAdulto('');
+    } catch (e) {
+      setErroSenhaAdulto(e instanceof Error ? e.message : 'Não foi possível salvar a senha.');
+    } finally {
+      setSalvandoSenhaAdulto(false);
     }
-    unlockAdult();
-    setPedirPinAdulto(false);
-    setPinAdulto('');
-    setErroPinAdulto('');
   };
 
   const alternarModoAdulto = () => {
     if (isAdultUnlocked) {
       lockAdult();
-      setPedirPinAdulto(false);
-      setPinAdulto('');
-      setErroPinAdulto('');
+      setPedirSenhaAdulto(false);
+      setSenhaAdulto('');
+      setConfirmarSenhaAdulto('');
+      setErroSenhaAdulto('');
     } else {
-      setPedirPinAdulto(true);
-      setErroPinAdulto('');
+      setPedirSenhaAdulto(true);
+      setErroSenhaAdulto('');
     }
   };
 
@@ -127,34 +164,56 @@ export function Conta({ onClose }: ContaProps) {
         <section className="conta-cartao conta-modo-adulto">
           <div>
             <h2>Modo adulto (+18)</h2>
-            <p>{isAdultUnlocked ? 'Desbloqueado neste aparelho.' : 'Desbloqueie o acesso às categorias e aos títulos para maiores de 18 anos.'}</p>
+            <p>{isAdultUnlocked
+              ? 'Desbloqueado enquanto este app estiver aberto.'
+              : senhaAdultoConfigurada
+                ? 'Informe sua senha para acessar as categorias e os títulos para maiores de 18 anos.'
+                : 'Crie uma senha para proteger o acesso às categorias e aos títulos para maiores de 18 anos.'}</p>
           </div>
           {isAdultUnlocked ? (
             <button className="conta-adulto-botao" type="button" onClick={alternarModoAdulto}>Bloquear modo adulto</button>
-          ) : pedirPinAdulto ? (
-            <form className="conta-form conta-adulto-form" onSubmit={(event) => void submeterPinAdulto(event)}>
-              <label>PIN do modo adulto
+          ) : pedirSenhaAdulto ? (
+            <form className="conta-form conta-adulto-form" onSubmit={(event) => void submeterSenhaAdulto(event)}>
+              <label>{senhaAdultoConfigurada ? 'Senha do modo adulto' : 'Criar senha'}
                 <input
                   type="password"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  maxLength={4}
                   autoComplete="off"
+                  name="senha-modo-adulto"
+                  minLength={senhaAdultoConfigurada ? undefined : 8}
                   autoFocus
                   required
-                  value={pinAdulto}
-                  onChange={(event) => { setPinAdulto(event.target.value.replace(/\D/g, '').slice(0, 4)); setErroPinAdulto(''); }}
+                  value={senhaAdulto}
+                  onChange={(event) => { setSenhaAdulto(event.target.value); setErroSenhaAdulto(''); }}
                 />
               </label>
-              {erroPinAdulto && <p className="conta-erro" role="alert">{erroPinAdulto}</p>}
+              {!senhaAdultoConfigurada && (
+                <label>Confirmar senha
+                  <input
+                    type="password"
+                    autoComplete="new-password"
+                    name="confirmar-senha-modo-adulto"
+                    minLength={8}
+                    required
+                    value={confirmarSenhaAdulto}
+                    onChange={(event) => { setConfirmarSenhaAdulto(event.target.value); setErroSenhaAdulto(''); }}
+                  />
+                </label>
+              )}
+              {!senhaAdultoConfigurada && <small className="conta-adulto-ajuda">Use pelo menos 8 caracteres.</small>}
+              {erroSenhaAdulto && <p className="conta-erro" role="alert">{erroSenhaAdulto}</p>}
               <div className="conta-acoes">
-                <button className="conta-adulto-botao" type="submit" disabled={pinAdulto.length !== 4}>Desbloquear</button>
-                <button className="conta-adulto-cancelar" type="button" onClick={() => { setPedirPinAdulto(false); setPinAdulto(''); setErroPinAdulto(''); }}>Cancelar</button>
+                <button className="conta-adulto-botao" type="submit" disabled={salvandoSenhaAdulto || senhaAdulto.length < (senhaAdultoConfigurada ? 1 : 8) || (!senhaAdultoConfigurada && confirmarSenhaAdulto.length === 0)}>
+                  {salvandoSenhaAdulto ? senhaAdultoConfigurada ? 'Verificando…' : 'Criando…' : senhaAdultoConfigurada ? 'Desbloquear' : 'Criar senha e desbloquear'}
+                </button>
+                <button className="conta-adulto-cancelar" type="button" onClick={() => { setPedirSenhaAdulto(false); setSenhaAdulto(''); setConfirmarSenhaAdulto(''); setErroSenhaAdulto(''); }}>Cancelar</button>
               </div>
             </form>
           ) : (
-            <button className="conta-adulto-botao" type="button" onClick={alternarModoAdulto}>Desbloquear modo adulto</button>
+            <button className="conta-adulto-botao" type="button" onClick={alternarModoAdulto} disabled={loading}>
+              {loading ? 'Sincronizando conta…' : senhaAdultoConfigurada ? 'Desbloquear modo adulto' : 'Criar senha do modo adulto'}
+            </button>
           )}
+          {senhaAdultoConfigurada && !loading && <small className="conta-adulto-ajuda">Sua senha fica protegida e é sincronizada com a conta quando você entra.</small>}
         </section>
         <p className="conta-privacidade">Os dados sincronizados pertencem à sua conta. Listas e vídeos continuam disponíveis sem login.</p>
       </section>

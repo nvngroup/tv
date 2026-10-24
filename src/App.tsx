@@ -12,7 +12,7 @@ import { Favoritos } from './telas/Favoritos';
 import { Busca } from './telas/Busca';
 import { parar as pararRadio } from './services/radioPlayer';
 import { Ajustes } from './telas/Ajustes';
-import { ContaProvider } from './contexts/ContaContext';
+import { ContaProvider, useConta } from './contexts/ContaContext';
 import { Toast } from './components/Toast';
 import { NavegacaoMobile } from './components/NavegacaoMobile';
 import { useVoltarFecha } from './hooks/useVoltarFecha';
@@ -670,20 +670,23 @@ function AppLayout() {
 
 // Provedor de contexto adulto
 function AdultModeProvider({ children }: { children: React.ReactNode }) {
-  const [isAdultUnlocked, setIsAdultUnlocked] = useLocalStorage<boolean>('adult-mode-global', false);
+  const [isAdultUnlocked, setIsAdultUnlocked] = useState(false);
   const [toast, setToast] = useState<ToastState | null>(null);
+  const { user } = useConta();
+
+  useEffect(() => { setIsAdultUnlocked(false); }, [user?.id]);
 
   const unlockAdult = useCallback(() => {
     setIsAdultUnlocked(true);
     setToast({ message: '🔓 Modo adulto desbloqueado!', type: 'success', id: Date.now() });
     setTimeout(() => setToast(null), 3000);
-  }, [setIsAdultUnlocked]);
+  }, []);
 
   const lockAdult = useCallback(() => {
     setIsAdultUnlocked(false);
     setToast({ message: '🔒 Modo adulto bloqueado', type: 'info', id: Date.now() });
     setTimeout(() => setToast(null), 3000);
-  }, [setIsAdultUnlocked]);
+  }, []);
 
   return (
     <AdultModeContext.Provider value={{ isAdultUnlocked, unlockAdult, lockAdult }}>

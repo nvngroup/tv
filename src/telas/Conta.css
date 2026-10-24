@@ -56,6 +56,7 @@
 .conta-modo-adulto { gap: 12px; }
 .conta-modo-adulto h2, .conta-modo-adulto p { margin: 0; }
 .conta-modo-adulto p { margin-top: 5px; color: rgba(255,255,255,.68); line-height: 1.45; }
+.conta-adulto-ajuda { color: rgba(255,255,255,.55); line-height: 1.4; }
 .conta-adulto-form { gap: 12px; margin: 0; padding: 0; border: 0; background: none; }
 .conta-adulto-form .conta-erro { margin: 0; }
 .conta-adulto-botao, .conta-adulto-cancelar {

@@ -9,7 +9,7 @@ const CHAVES = [
   'tv-favorites', 'tv-last-channel', 'nvnplus-vod-favoritos', 'nvnplus-radios-favoritas',
   'nvnplus-continuar', 'nvnplus-continuar-updated', 'nvnplus-reproducao', 'nvnplus-ao-iniciar',
   'nvnplus-audio-inteligente', 'nvnplus-zero-delay', 'nvnplus-link-canais', 'nvnplus-link-filmes',
-  'nvnplus-upscaling', 'movie-volume', 'movie-skip-time', 'tv-volume', 'radio-volume', 'legenda-idioma',
+  'nvnplus-upscaling', 'nvnplus-senha-adulto-v1', 'movie-volume', 'movie-skip-time', 'tv-volume', 'radio-volume', 'legenda-idioma',
 ] as const;
 const CHAVES_LISTA = new Set(['tv-favorites', 'nvnplus-radios-favoritas', 'nvnplus-vod-favoritos']);
 const CHAVE_USUARIO = 'nvnplus-perfil-local-uid';
