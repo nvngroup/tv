@@ -22,7 +22,7 @@ export function CartaoRadio({ radio, tocando, favorita, aoTocar, aoFavoritar }: 
       <button type="button" className={`radio-favoritar${favorita ? ' ativa' : ''}`}
         onClick={aoFavoritar} aria-label={rotuloFavorita} title={rotuloFavorita} aria-pressed={favorita}>
         <svg viewBox="0 0 24 24" fill={favorita ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" aria-hidden="true">
-          <path d="m12 3 2.8 5.7 6.3.9-4.5 4.4 1.1 6.2-5.7-3-5.7 3 1.1-6.2L3.2 9.6l6.3-.9z" />
+          <path d="M12 21s-8-4.9-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.1-8 11-8 11z" />
         </svg>
       </button>
     </div>

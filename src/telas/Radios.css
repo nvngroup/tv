@@ -34,5 +34,5 @@
 .cartao-radio-tocar { width: 100%; min-width: 0; display: flex; flex-direction: column; gap: 8px; text-align: center; }
 .radio-favoritar { position: absolute; top: 6px; right: 6px; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(10, 11, 20, .88); border: 1px solid rgba(255, 255, 255, .18); color: #cbd5e1; cursor: pointer; }
 .radio-favoritar svg { width: 20px; height: 20px; }
-.radio-favoritar:hover, .radio-favoritar.ativa { color: #fbbf24; border-color: #fbbf24; }
+.radio-favoritar:hover, .radio-favoritar.ativa { color: #ec4899; border-color: #ec4899; }
 .radio-favoritar:focus-visible { outline: 2px solid #4ff3e0; outline-offset: 3px; }
