@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarraTopo } from '../components/BarraTopo';
 import { useConta } from '../contexts/ContaContext';
@@ -13,6 +13,10 @@ export function Conta() {
   const [aviso, setAviso] = useState('');
   const [erro, setErro] = useState('');
   const [enviando, setEnviando] = useState(false);
+
+  useEffect(() => {
+    if (user) setErro('');
+  }, [user]);
 
   const submeter = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

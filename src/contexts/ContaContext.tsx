@@ -15,6 +15,21 @@ const CHAVES_LISTA = new Set(['tv-favorites', 'nvnplus-radios-favoritas', 'nvnpl
 const CHAVE_USUARIO = 'nvnplus-perfil-local-uid';
 type Dados = Record<string, string>;
 
+function mensagemErroSupabase(erro: unknown): string {
+  const detalhe = typeof erro === 'object' && erro !== null
+    ? erro as { code?: unknown; message?: unknown }
+    : null;
+  const codigo = typeof detalhe?.code === 'string' ? detalhe.code : '';
+  const mensagem = typeof detalhe?.message === 'string' ? detalhe.message : '';
+  if (codigo === 'PGRST205' || codigo === '42P01' || mensagem.includes("Could not find the table 'public.tv_profiles'")) {
+    return 'A tabela de sincronização ainda não foi criada no Supabase. Aplique a migração tv_profiles do repositório.';
+  }
+  if (codigo === '42501' || codigo === 'PGRST301' || /permission denied|row-level security/i.test(mensagem)) {
+    return 'O Supabase bloqueou o acesso ao perfil. Confira as permissões e políticas RLS da tabela tv_profiles.';
+  }
+  return mensagem || 'Falha ao sincronizar seus dados.';
+}
+
 function ehChaveSincronizada(chave: string): boolean {
   return CHAVES.includes(chave as typeof CHAVES[number]) || /^movie-progress-.+$/.test(chave);
 }
@@ -158,7 +173,7 @@ function ContaProvider({ children }: Readonly<{ children: ReactNode }>) {
       localStorage.setItem(CHAVE_USUARIO, userId);
       setUserPronto(userId);
     } catch (error) {
-      setErroSincronizacao(error instanceof Error ? error.message : 'Falha ao sincronizar seus dados.');
+      setErroSincronizacao(mensagemErroSupabase(error));
       throw error;
     } finally {
       setLoading(false);
@@ -205,7 +220,7 @@ function ContaProvider({ children }: Readonly<{ children: ReactNode }>) {
         void client.from('tv_profiles').upsert(
           { user_id: user.id, data: atual, updated_at: new Date().toISOString() },
           { onConflict: 'user_id' },
-        ).then(({ error }) => setErroSincronizacao(error?.message ?? ''));
+        ).then(({ error }) => setErroSincronizacao(error ? mensagemErroSupabase(error) : ''));
       };
       if (frequente) {
         if (!timer) timer = window.setTimeout(gravar, 30_000);
