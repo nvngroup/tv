@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { useConta } from '../contexts/ContaContext';
+import { useAdultMode } from '../contexts/adultoContexto';
 import './Conta.css';
 
 interface ContaProps {
@@ -8,12 +9,16 @@ interface ContaProps {
 
 export function Conta({ onClose }: ContaProps) {
   const { user, loading, erroSincronizacao, entrar, cadastrar, sair } = useConta();
+  const { isAdultUnlocked, unlockAdult, lockAdult } = useAdultMode();
   const [modoCadastro, setModoCadastro] = useState(false);
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [aviso, setAviso] = useState('');
   const [erro, setErro] = useState('');
   const [enviando, setEnviando] = useState(false);
+  const [pedirPinAdulto, setPedirPinAdulto] = useState(false);
+  const [pinAdulto, setPinAdulto] = useState('');
+  const [erroPinAdulto, setErroPinAdulto] = useState('');
   const erroVisivel = user?.email_confirmed_at && /email not confirmed/i.test(erro) ? '' : erro;
 
   useEffect(() => {
@@ -60,6 +65,31 @@ export function Conta({ onClose }: ContaProps) {
     }
   };
 
+  const submeterPinAdulto = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (pinAdulto !== '0000') {
+      setErroPinAdulto('PIN incorreto. Tente novamente.');
+      setPinAdulto('');
+      return;
+    }
+    unlockAdult();
+    setPedirPinAdulto(false);
+    setPinAdulto('');
+    setErroPinAdulto('');
+  };
+
+  const alternarModoAdulto = () => {
+    if (isAdultUnlocked) {
+      lockAdult();
+      setPedirPinAdulto(false);
+      setPinAdulto('');
+      setErroPinAdulto('');
+    } else {
+      setPedirPinAdulto(true);
+      setErroPinAdulto('');
+    }
+  };
+
   return (
     <div className="conta-dialog-fundo" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
       <section className="conta-dialog" role="dialog" aria-modal="true" aria-labelledby="conta-titulo">
@@ -94,6 +124,38 @@ export function Conta({ onClose }: ContaProps) {
             </button>
           </form>
         )}
+        <section className="conta-cartao conta-modo-adulto">
+          <div>
+            <h2>Modo adulto (+18)</h2>
+            <p>{isAdultUnlocked ? 'Desbloqueado neste aparelho.' : 'Desbloqueie o acesso às categorias e aos títulos para maiores de 18 anos.'}</p>
+          </div>
+          {isAdultUnlocked ? (
+            <button className="conta-adulto-botao" type="button" onClick={alternarModoAdulto}>Bloquear modo adulto</button>
+          ) : pedirPinAdulto ? (
+            <form className="conta-form conta-adulto-form" onSubmit={(event) => void submeterPinAdulto(event)}>
+              <label>PIN do modo adulto
+                <input
+                  type="password"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  maxLength={4}
+                  autoComplete="off"
+                  autoFocus
+                  required
+                  value={pinAdulto}
+                  onChange={(event) => { setPinAdulto(event.target.value.replace(/\D/g, '').slice(0, 4)); setErroPinAdulto(''); }}
+                />
+              </label>
+              {erroPinAdulto && <p className="conta-erro" role="alert">{erroPinAdulto}</p>}
+              <div className="conta-acoes">
+                <button className="conta-adulto-botao" type="submit" disabled={pinAdulto.length !== 4}>Desbloquear</button>
+                <button className="conta-adulto-cancelar" type="button" onClick={() => { setPedirPinAdulto(false); setPinAdulto(''); setErroPinAdulto(''); }}>Cancelar</button>
+              </div>
+            </form>
+          ) : (
+            <button className="conta-adulto-botao" type="button" onClick={alternarModoAdulto}>Desbloquear modo adulto</button>
+          )}
+        </section>
         <p className="conta-privacidade">Os dados sincronizados pertencem à sua conta. Listas e vídeos continuam disponíveis sem login.</p>
       </section>
     </div>

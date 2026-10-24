@@ -531,7 +531,6 @@ function TVPage() {
 
 // Componente de Filmes
 function MoviesPage() {
-  const navigate = useNavigate();
   const location = useLocation();
   const { isAdultUnlocked } = useAdultMode();
   const { filmes } = useListas();
@@ -566,10 +565,6 @@ function MoviesPage() {
   // O voltar do celular fecha o player e volta à ficha.
   useVoltarFecha(!!selectedMovie, handleBackFromMovie);
 
-  const handleBackFromCatalog = useCallback(() => {
-    navigate('/');
-  }, [navigate]);
-
   return (
     <div className="page-container movies-page">
       {!selectedMovie && <BarraTopo />}
@@ -581,7 +576,6 @@ function MoviesPage() {
         <div className={`catalog-container ${selectedMovie ? 'hidden-catalog' : ''}`}>
           <VodCatalog
             onSelectMovie={handleSelectMovie}
-            onBack={handleBackFromCatalog}
             isAdultUnlocked={isAdultUnlocked}
             playerOpen={!!selectedMovie}
             activeMovie={selectedMovie}

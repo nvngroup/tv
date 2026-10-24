@@ -143,141 +143,143 @@
   max-height: 3em;
 }
 
-/* ── Barra de Sub-Navegação (Pílulas de Categoria e Busca) ────────────────── */
+/* ── Navegação lateral do catálogo ────────────────────────────────────────── */
+
+.vod-layout {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 232px minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+  margin: 0.8rem clamp(1.2rem, 3.5vw, 3.5rem) 1.6rem;
+}
+
+.vod-sidebar-shell { min-width: 0; }
 
 .vod-sub-barra {
   position: sticky;
-  top: 72px;
-  z-index: 800;
+  top: 76px;
+  z-index: 20;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px 16px;
-  margin: 0.8rem clamp(1.2rem, 3.5vw, 3.5rem) 1.6rem;
-  border-radius: 999px;
+  flex-direction: column;
+  gap: 18px;
+  padding: 14px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
   background: rgba(18, 20, 34, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.14);
   backdrop-filter: blur(28px) saturate(180%);
   -webkit-backdrop-filter: blur(28px) saturate(180%);
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  transition: top 0.28s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: top 0.28s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
 }
 
-/* Quando a BarraTopo oculta por ausência do mouse, encaixa direto no topo da tela */
 body.barra-topo-oculta .vod-sub-barra,
-body:has(.barra-topo.oculta) .vod-sub-barra {
-  top: 12px;
-}
+body:has(.barra-topo.oculta) .vod-sub-barra { top: 12px; }
 
 .vod-sub-barra-pills {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  overflow-x: auto;
-  scrollbar-width: none;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.vod-sub-barra-pills::-webkit-scrollbar {
-  display: none;
+.vod-sidebar-legenda {
+  padding: 0 12px 3px;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
 }
 
-.vod-sub-pill {
-  flex-shrink: 0;
-  padding: 6px 16px;
-  border-radius: 999px;
-  font-size: 0.86rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.75);
-  background: transparent;
-  border: 1px solid transparent;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.15s ease;
-}
-
-.vod-sub-pill:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.vod-sub-pill.ativa {
-  background: #fff;
-  color: #0b0f19;
-  border-color: #fff;
-  font-weight: 700;
-  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.25);
-}
-
-.vod-sub-barra-acoes {
+.vod-sub-pill,
+.vod-sub-pill-voltar {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 11px;
+  width: 100%;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.72);
+  background: transparent;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
 }
+
+.vod-sub-pill svg,
+.vod-sub-pill-voltar svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.vod-sub-pill:hover,
+.vod-sub-pill-voltar:hover { color: #fff; background: rgba(255, 255, 255, 0.08); }
+
+.vod-sub-pill.ativa {
+  color: #4fe3d0;
+  border-color: rgba(79, 227, 208, 0.2);
+  background: rgba(79, 227, 208, 0.12);
+  box-shadow: inset 3px 0 #4fe3d0;
+}
+
+.vod-sub-pill-voltar {
+  min-height: 38px;
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.vod-sub-barra-acoes { display: grid; gap: 9px; }
 
 .vod-sub-busca {
   display: flex;
   align-items: center;
   gap: 8px;
-  height: 36px;
-  padding: 0 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
+  height: 40px;
+  min-width: 0;
+  padding: 0 11px;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.68);
+  background: rgba(255, 255, 255, 0.06);
   transition: border-color 0.15s, background 0.15s;
 }
 
-.vod-sub-busca:focus-within {
-  border-color: #4fe3d0;
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
-}
-
-.vod-sub-busca svg {
-  width: 15px;
-  height: 15px;
-  flex-shrink: 0;
-}
-
-.vod-sub-busca input {
-  font-size: 0.85rem;
-  color: #fff;
-  background: transparent;
-  border: none;
-  outline: none;
-  width: 130px;
-  transition: width 0.2s ease;
-}
-
-.vod-sub-busca input:focus {
-  width: 190px;
-}
+.vod-sub-busca:focus-within { border-color: #4fe3d0; background: rgba(255, 255, 255, 0.1); color: #fff; }
+.vod-sub-busca svg { width: 16px; height: 16px; flex-shrink: 0; }
+.vod-sub-busca input { width: 100%; min-width: 0; font-size: 0.84rem; color: #fff; background: transparent; border: none; outline: none; }
+.vod-sub-busca input::placeholder { color: rgba(255, 255, 255, 0.48); }
 
 .vod-sub-btn-modo {
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 0.84rem;
-  font-weight: 600;
-  color: #4fe3d0;
-  background: rgba(79, 227, 208, 0.12);
+  min-height: 40px;
+  padding: 0 12px;
   border: 1px solid rgba(79, 227, 208, 0.25);
+  border-radius: 12px;
+  color: #4fe3d0;
+  background: rgba(79, 227, 208, 0.09);
+  font-size: 0.84rem;
+  font-weight: 650;
+  text-align: left;
   cursor: pointer;
-  white-space: nowrap;
   transition: all 0.15s ease;
 }
 
-.vod-sub-btn-modo:hover {
-  background: rgba(79, 227, 208, 0.22);
-}
-
-.vod-sub-btn-modo.ativo {
-  background: #4fe3d0;
-  color: #06181f;
-  border-color: #4fe3d0;
-  font-weight: 700;
-}
+.vod-sub-btn-modo:hover { background: rgba(79, 227, 208, 0.18); }
+.vod-sub-btn-modo.ativo { color: #06181f; background: #4fe3d0; border-color: #4fe3d0; }
+.vod-main-content { min-width: 0; }
+.vod-main-content .vod-fileira-header { padding-right: 12px; padding-left: 12px; }
+.vod-main-content .vod-fileira-trilho { padding-right: 12px; padding-left: 12px; }
+.vod-main-content .vod-secoes-grid { padding-right: 12px; padding-left: 12px; }
 
 /* ── Conteúdo em Fileiras ─────────────────────────────────────────────────── */
 
@@ -1573,6 +1575,10 @@ body:has(.barra-topo.oculta) .vod-letras-barra {
   .vod-catalog {
     padding-top: 60px;
   }
+  .vod-layout {
+    display: block;
+    margin: 0.4rem 10px 1.2rem;
+  }
   .vod-ficha-hero-corpo {
     flex-direction: column;
     align-items: center;
@@ -1588,15 +1594,13 @@ body:has(.barra-topo.oculta) .vod-letras-barra {
   }
   .vod-sub-barra {
     top: 8px;
-    margin: 0.4rem 10px 0.8rem;
-    padding: 8px 10px;
+    margin: 0 0 0.8rem;
+    padding: 8px;
     border-radius: 18px;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
+    display: grid;
+    gap: 7px;
     box-sizing: border-box;
-    width: calc(100% - 20px);
+    width: 100%;
   }
   .vod-sub-barra-pills {
     width: 100%;
@@ -1604,21 +1608,32 @@ body:has(.barra-topo.oculta) .vod-letras-barra {
     align-items: center;
     gap: 6px;
     overflow-x: auto;
+    flex-direction: row;
     flex-wrap: nowrap;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
-    padding: 2px 2px 4px;
+    padding: 2px;
     box-sizing: border-box;
   }
+  .vod-sidebar-legenda { display: none; }
   .vod-sub-barra-pills::-webkit-scrollbar {
     display: none;
   }
   .vod-sub-pill {
     flex-shrink: 0 !important;
+    width: auto;
+    min-height: 38px;
     min-width: max-content;
     white-space: nowrap;
     font-size: 0.82rem;
-    padding: 6px 14px;
+    padding: 0 12px;
+    gap: 7px;
+  }
+  .vod-sub-pill-voltar {
+    width: auto;
+    min-height: 38px;
+    flex: 0 0 auto;
+    padding: 0 12px;
   }
   .vod-sub-barra-acoes {
     width: 100%;
@@ -1645,17 +1660,21 @@ body:has(.barra-topo.oculta) .vod-letras-barra {
   }
   .vod-sub-btn-modo {
     flex-shrink: 0;
-    height: 36px;
+    min-height: 36px;
     padding: 0 12px;
     font-size: 0.8rem;
   }
+  .vod-main-content .vod-conteudo-grade { padding: 0; }
+  .vod-main-content .vod-fileira-header,
+  .vod-main-content .vod-fileira-trilho,
+  .vod-main-content .vod-secoes-grid { padding-right: 2px; padding-left: 2px; }
   .vod-letras-barra {
     top: 108px !important;
     overflow-x: auto;
     flex-wrap: nowrap;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
-    margin: 0 10px 0.8rem;
+    margin: 0 0 0.8rem;
     padding: 6px 8px;
   }
   .vod-letras-barra::-webkit-scrollbar {

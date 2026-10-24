@@ -5,8 +5,6 @@ import { Conta } from '../telas/Conta';
  * (Buscar, Favoritos, Início, TV, Rádio, Filmes e Séries, Eventos), a engrenagem
  * dos ajustes e o acesso à conta. A aba aberta é uma cápsula que desliza até a
  * escolhida; Alt+1 a Alt+8 levam às seções e aos ajustes (⌘ não serve: o navegador a usa).
- *
- * Vinte cliques no ícone abrem o PIN do modo adulto, como no site de sempre.
  */
 import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -49,15 +47,11 @@ interface BarraTopoProps {
 }
 
 export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHide }: BarraTopoProps = {}) {
-  const { isAdultUnlocked, unlockAdult, lockAdult } = useAdultMode();
+  const { isAdultUnlocked } = useAdultMode();
   const navigate = useNavigate();
   const radio = useSyncExternalStore(assinar, atualRadio);
   const { pathname } = useLocation();
-  const [cliques, setCliques] = useState(0);
-  const [pedePin, setPedePin] = useState(false);
   const [contaAberta, setContaAberta] = useState(pathname === '/conta' && SUPABASE_URL_CONFIGURADA);
-  const [pin, setPin] = useState('');
-  const zerar = useRef<ReturnType<typeof setTimeout> | null>(null);
   const trilho = useRef<HTMLElement>(null);
   const [capsula, setCapsula] = useState<{ x: number; w: number } | null>(null);
 
@@ -67,7 +61,6 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
   }, [navigate, pathname]);
 
   useEffect(() => {
-    if (pedePin) return;
     const aoAtalho = (e: KeyboardEvent) => {
       if (!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.repeat || e.isComposing || e.defaultPrevented) return;
       const alvo = e.target;
@@ -83,7 +76,7 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
     };
     window.addEventListener('keydown', aoAtalho);
     return () => window.removeEventListener('keydown', aoAtalho);
-  }, [navigate, pedePin]);
+  }, [navigate]);
 
   // O nav bar só auto-esconde quando um player estiver sendo usado (/ao-vivo ou autoHide=true).
   // Fora isso (catálogos, início, busca, eventos, favoritos, rádios, etc.), ele fica fixo e visível na tela.
@@ -154,7 +147,7 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
     }
   }, [pathname, deveAutoEsconder]);
 
-  const isVisivel = visibleProp === false ? false : (deveAutoEsconder ? (pedePin || mouseNoTopo || focoDentro) : true);
+  const isVisivel = visibleProp === false ? false : (deveAutoEsconder ? (mouseNoTopo || focoDentro) : true);
 
   useEffect(() => {
     if (!isVisivel) {
@@ -197,17 +190,6 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
   const aoClicarLogo = (e: React.MouseEvent<HTMLButtonElement>) => {
     (e.currentTarget as HTMLElement)?.blur();
     void navigate('/');
-    if (isAdultUnlocked) { lockAdult(); return; }
-    if (zerar.current) clearTimeout(zerar.current);
-    const n = cliques + 1;
-    setCliques(n);
-    if (n >= 20) { setPedePin(true); setCliques(0); }
-    zerar.current = setTimeout(() => setCliques(0), 3000);
-  };
-
-  const enviarPin = () => {
-    if (pin === '0000') { unlockAdult(); setPedePin(false); }
-    setPin('');
   };
 
   return (
@@ -316,28 +298,6 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
 
       {contaAberta && <Conta onClose={fecharConta} />}
 
-      {pedePin && (
-        <div className="pin-modal-backdrop" onClick={() => setPedePin(false)}>
-          <div className="pin-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="pin-modal-header">
-              <h2>Modo Adulto (+18)</h2>
-              <p>Digite o PIN para desbloquear</p>
-            </div>
-            <div className="pin-modal-content">
-              <input
-                type="password" inputMode="numeric" pattern="[0-9]*" maxLength={4} placeholder="••••"
-                value={pin} className="pin-input" autoFocus
-                onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                onKeyDown={(e) => { if (e.key === 'Enter' && pin.length === 4) enviarPin(); }}
-              />
-            </div>
-            <div className="pin-modal-actions">
-              <button className="cancel-btn" onClick={() => { setPedePin(false); setPin(''); }}>Cancelar</button>
-              <button className="unlock-btn" onClick={enviarPin} disabled={pin.length !== 4}>Desbloquear</button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 });

@@ -74,7 +74,6 @@ export type Secao = 'filmes' | 'series' | 'animes' | 'doramas' | 'extra';
 
 interface VodCatalogProps {
   onSelectMovie: (movie: Movie, seriesInfo?: SeriesEpisodeInfo | null) => void;
-  onBack: () => void;
   playerOpen?: boolean;
   activeMovie?: Movie | null;
   isAdultUnlocked: boolean;
@@ -186,7 +185,6 @@ function agruparEpisodios(lista: Episodio[]): EpisodioAgrupado[] {
 
 export function VodCatalog({
   onSelectMovie,
-  onBack,
   playerOpen = false,
   activeMovie = null,
   isAdultUnlocked,
@@ -641,7 +639,7 @@ export function VodCatalog({
     // Estado Padrão Idle
     if (!secao) {
       return {
-        titulo: 'On Demand',
+        titulo: 'Filmes e Séries',
         selos: [`${contagens.totalGeral.toLocaleString('pt-BR')} títulos`],
         sinopse: 'Filmes, séries, animes e doramas. Lançamentos, clássicos e produções completas.',
       };
@@ -1065,65 +1063,71 @@ export function VodCatalog({
         </p>
       </header>
 
-      {/* ── Barra de Navegação / Sub-Categorias ── */}
+      <div className="vod-layout">
+        <aside className="vod-sidebar-shell">
+      {/* ── Menu Sidebar / Sub-Categorias ── */}
       <nav className="vod-sub-barra" aria-label="Subcategorias do On Demand">
         <div className="vod-sub-barra-pills" ref={subBarraPillsRef}>
-          {(secao !== null || modo === 'explorar') ? (
+          {(secao !== null || modo === 'explorar') && (
             <button
               className="vod-sub-pill vod-sub-pill-voltar"
               onClick={() => {
                 if (modo === 'explorar' && secao === null) setModo('fileiras');
-                else if (secao !== null) { setSecao(null); setModo('fileiras'); }
-                else onBack();
+                else { setSecao(null); setModo('fileiras'); }
               }}
               title="Voltar"
             >
               ‹ Voltar
             </button>
-          ) : (
-            <button
-              className="vod-sub-pill vod-sub-pill-voltar"
-              onClick={onBack}
-              title="Voltar ao início"
-            >
-              ‹ Início
-            </button>
           )}
+          <span className="vod-sidebar-legenda">CATEGORIAS</span>
           <button
             className={`vod-sub-pill${secao === null ? ' ativa' : ''}`}
             onClick={() => { setSecao(null); setModo('fileiras'); }}
+            aria-current={secao === null ? 'page' : undefined}
           >
-            On Demand
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5M5.5 9v11h13V9M9 20v-6h6v6" /></svg>
+            Filmes e Séries
           </button>
           <button
             className={`vod-sub-pill${secao === 'filmes' ? ' ativa' : ''}`}
             onClick={() => { setSecao('filmes'); setModo('fileiras'); }}
+            aria-current={secao === 'filmes' ? 'page' : undefined}
           >
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4" /></svg>
             Filmes
           </button>
           <button
             className={`vod-sub-pill${secao === 'series' ? ' ativa' : ''}`}
             onClick={() => { setSecao('series'); setModo('fileiras'); }}
+            aria-current={secao === 'series' ? 'page' : undefined}
           >
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m9 2 3 3 3-3M8 22l4-3 4 3" /></svg>
             Séries
           </button>
           <button
             className={`vod-sub-pill${secao === 'animes' ? ' ativa' : ''}`}
             onClick={() => { setSecao('animes'); setModo('fileiras'); }}
+            aria-current={secao === 'animes' ? 'page' : undefined}
           >
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v12H4zM8 21h8M12 17v4M8 9h.01M12 9h.01M16 9h.01M8 13h.01M12 13h.01M16 13h.01" /></svg>
             Animes
           </button>
           <button
             className={`vod-sub-pill${secao === 'doramas' ? ' ativa' : ''}`}
             onClick={() => { setSecao('doramas'); setModo('fileiras'); }}
+            aria-current={secao === 'doramas' ? 'page' : undefined}
           >
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM8 8h8M8 12h5M8 16h8" /></svg>
             Doramas
           </button>
           {isAdultUnlocked && (
             <button
               className={`vod-sub-pill${secao === 'extra' ? ' ativa' : ''}`}
               onClick={() => { setSecao('extra'); setModo('explorar'); }}
+              aria-current={secao === 'extra' ? 'page' : undefined}
             >
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 3 20h18L12 3zM12 9v5M12 17h.01" /></svg>
               18+
             </button>
           )}
@@ -1151,10 +1155,13 @@ export function VodCatalog({
             onClick={() => setModo((m) => (m === 'fileiras' ? 'explorar' : 'fileiras'))}
             title={modo === 'fileiras' ? 'Explorar grade A a Z' : 'Ver em fileiras'}
           >
-            {modo === 'fileiras' ? 'A a Z 🔤' : 'Fileiras ▤'}
+            {modo === 'fileiras' ? 'Explorar A a Z' : 'Ver fileiras'}
           </button>
         </div>
       </nav>
+        </aside>
+
+        <main className="vod-main-content">
 
       {/* ── Exibição: FILEIRAS (Modo Principal) ── */}
       {modo === 'fileiras' && (
@@ -1387,6 +1394,9 @@ export function VodCatalog({
           )}
         </div>
       )}
+
+        </main>
+      </div>
 
       {/* ── MODAL FICHA DE FILME OU SÉRIE (FichaTela & SerieTela 100% macOS) ── */}
       {aberto && createPortal(

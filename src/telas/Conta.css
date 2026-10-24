@@ -53,6 +53,21 @@
 .conta-aviso, .conta-erro { padding: 10px 14px; border-radius: 12px; }
 .conta-aviso { border: 1px solid rgba(79,243,224,.4); background: rgba(79,243,224,.08); }
 .conta-erro { border: 1px solid rgba(255,100,100,.45); background: rgba(255,80,80,.1); }
+.conta-modo-adulto { gap: 12px; }
+.conta-modo-adulto h2, .conta-modo-adulto p { margin: 0; }
+.conta-modo-adulto p { margin-top: 5px; color: rgba(255,255,255,.68); line-height: 1.45; }
+.conta-adulto-form { gap: 12px; margin: 0; padding: 0; border: 0; background: none; }
+.conta-adulto-form .conta-erro { margin: 0; }
+.conta-adulto-botao, .conta-adulto-cancelar {
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid rgba(79,243,224,.45);
+  border-radius: 11px;
+  background: rgba(79,243,224,.11);
+  font-weight: 650;
+}
+.conta-adulto-botao:disabled { opacity: .55; }
+.conta-adulto-cancelar { border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.06); }
 
 @keyframes conta-fundo-entra { from { opacity: 0; } to { opacity: 1; } }
 @keyframes conta-dialog-entra { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
