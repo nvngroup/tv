@@ -53,7 +53,6 @@ interface ContaContexto {
   loading: boolean;
   configurado: boolean;
   erroSincronizacao: string;
-  sincronizar: () => Promise<void>;
   entrar: (email: string, senha: string) => Promise<void>;
   cadastrar: (email: string, senha: string) => Promise<boolean>;
   sair: () => Promise<void>;
@@ -180,10 +179,6 @@ function ContaProvider({ children }: Readonly<{ children: ReactNode }>) {
     }
   }, []);
 
-  const sincronizar = useCallback(async () => {
-    if (user?.id) await carregarPerfil(user.id);
-  }, [carregarPerfil, user]);
-
   useEffect(() => {
     if (!supabase) return;
     let ativo = true;
@@ -261,8 +256,8 @@ function ContaProvider({ children }: Readonly<{ children: ReactNode }>) {
     if (error) throw error;
   }, []);
 
-  const valor = useMemo(() => ({ user, loading, configurado: SUPABASE_CONFIGURADO, erroSincronizacao, sincronizar, entrar, cadastrar, sair }),
-    [user, loading, erroSincronizacao, sincronizar, entrar, cadastrar, sair]);
+  const valor = useMemo(() => ({ user, loading, configurado: SUPABASE_CONFIGURADO, erroSincronizacao, entrar, cadastrar, sair }),
+    [user, loading, erroSincronizacao, entrar, cadastrar, sair]);
   return <ContextoConta.Provider value={valor}>{children}</ContextoConta.Provider>;
 }
 

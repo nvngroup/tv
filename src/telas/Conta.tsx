@@ -5,7 +5,7 @@ import { useConta } from '../contexts/ContaContext';
 import './Conta.css';
 
 export function Conta() {
-  const { user, loading, configurado, erroSincronizacao, entrar, cadastrar, sair, sincronizar } = useConta();
+  const { user, loading, configurado, erroSincronizacao, entrar, cadastrar, sair } = useConta();
   const navigate = useNavigate();
   const [modoCadastro, setModoCadastro] = useState(false);
   const [email, setEmail] = useState('');
@@ -64,9 +64,8 @@ export function Conta() {
           <section className="conta-cartao">
             <h2>Conta conectada</h2>
             <p>{user.email}</p>
-            <p>Seus favoritos, o “Continue assistindo” e algumas preferências são sincronizados automaticamente.</p>
+            <p>Favoritos, histórico de filmes, progresso e configurações são sincronizados automaticamente ao entrar e sempre que você fizer alterações.</p>
             <div className="conta-acoes">
-              <button onClick={() => { setErro(''); void sincronizar().then(() => setAviso('Sincronização concluída.')).catch((e) => setErro(e instanceof Error ? e.message : 'Falha na sincronização.')); }}>Sincronizar agora</button>
               <button className="conta-secundario" onClick={() => void sairDaConta()}>Sair da conta</button>
             </div>
           </section>
