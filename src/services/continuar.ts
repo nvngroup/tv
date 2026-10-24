@@ -9,6 +9,7 @@ import type { ItemDestaque } from './vodService';
 import { notificarDadosContaAlterados } from './supabase';
 
 const CHAVE = 'nvnplus-continuar';
+const CHAVE_ATUALIZACAO = 'nvnplus-continuar-updated';
 
 export interface Andamento {
   origem: ItemDestaque;
@@ -26,19 +27,23 @@ function ler(): Andamento[] {
   }
 }
 
+function salvar(lista: Andamento[]): void {
+  localStorage.setItem(CHAVE, JSON.stringify(lista));
+  localStorage.setItem(CHAVE_ATUALIZACAO, String(Date.now()));
+  notificarDadosContaAlterados();
+}
+
 export function registrar(origem: ItemDestaque, rotulo: string, tempo: number, duracao: number) {
   if (!origem?.titulo || !duracao) return;
   const fracao = tempo / duracao;
   const resto = ler().filter((a) => a.origem.titulo !== origem.titulo);
   // Acabou (ou quase): sai da fileira — série fica, no próximo episódio.
   if (fracao >= 0.95 && origem.tipo === 'f') {
-    localStorage.setItem(CHAVE, JSON.stringify(resto));
-    notificarDadosContaAlterados();
+    salvar(resto);
     return;
   }
   const novo: Andamento = { origem, rotulo, fracao: Math.min(fracao, 1), quando: Date.now() };
-  localStorage.setItem(CHAVE, JSON.stringify([novo, ...resto].slice(0, 20)));
-  notificarDadosContaAlterados();
+  salvar([novo, ...resto].slice(0, 20));
 }
 
 export function lista(): Andamento[] {
@@ -46,6 +51,5 @@ export function lista(): Andamento[] {
 }
 
 export function remover(titulo: string) {
-  localStorage.setItem(CHAVE, JSON.stringify(ler().filter((a) => a.origem.titulo !== titulo)));
-  notificarDadosContaAlterados();
+  salvar(ler().filter((a) => a.origem.titulo !== titulo));
 }

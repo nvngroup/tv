@@ -21,6 +21,8 @@ import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, soltarOrien
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { CHAVE_UPSCALING, type ModoUpscaling } from '../telas/Ajustes';
 import { audioInteligenteService } from '../services/audioInteligente';
+import { limparProgressoFilme, salvarProgressoFilme } from '../services/progressoFilmes';
+import { notificarDadosContaAlterados } from '../services/supabase';
 
 export interface MoviePlayerProps {
   movie: Movie | null;
@@ -254,8 +256,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       const duracao = video.duration;
       if (!Number.isFinite(tempo) || !Number.isFinite(duracao) || tempo <= 30 || duracao <= 0) return;
       const progresso = (tempo / duracao) * 100;
-      if (progresso < 95) localStorage.setItem(`movie-progress-${movie.id}`, String(tempo));
-      else localStorage.removeItem(`movie-progress-${movie.id}`);
+      if (progresso < 95) salvarProgressoFilme(movie.id, tempo);
+      else limparProgressoFilme(movie.id);
       if (movie.origem) registrarAndamento(movie.origem, movie.name, tempo, duracao);
     };
 
@@ -552,7 +554,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     const handleEnded = () => {
       setIsPlaying(false);
       if (movie) {
-        localStorage.removeItem(`movie-progress-${movie.id}`);
+        limparProgressoFilme(movie.id);
       }
       // Mostra botão de próximo episódio quando o vídeo termina
       if (nextEpisode) {
@@ -616,6 +618,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       videoRef.current.muted = isMuted;
     }
     localStorage.setItem('movie-volume', volume.toString());
+    notificarDadosContaAlterados(true);
   }, [volume, isMuted]);
 
   // Playback rate
@@ -780,6 +783,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   // Save skip time preference
   useEffect(() => {
     localStorage.setItem('movie-skip-time', skipTime.toString());
+    notificarDadosContaAlterados(true);
   }, [skipTime]);
 
   // Video resolution detection

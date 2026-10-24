@@ -4,6 +4,7 @@ import type { Channel } from '../types/channel';
 import type { Movie, SeriesEpisodeInfo } from '../types/movie';
 import type { Radio } from './radios';
 import { notificarDadosContaAlterados } from './supabase';
+import { limparProgressoFilme, salvarProgressoFilme } from './progressoFilmes';
 import { elementoEmTelaCheia, sairDaTelaCheia } from '../utils/telaCheia';
 
 export const CHAVE_REPRODUCAO = 'nvnplus-reproducao';
@@ -83,7 +84,9 @@ function gravar(lembranca: Lembranca) {
     localStorage.setItem(CHAVE_REPRODUCAO, JSON.stringify(lembranca));
     if (lembranca.tipo === 'canal') localStorage.setItem('tv-last-channel', JSON.stringify(lembranca.canal.id));
     else if (lembranca.tempo > 0 && (!lembranca.duracao || lembranca.tempo / lembranca.duracao < .95)) {
-      localStorage.setItem(`movie-progress-${lembranca.filme.id}`, String(lembranca.tempo));
+      salvarProgressoFilme(lembranca.filme.id, lembranca.tempo);
+    } else if (lembranca.tipo === 'filme' && lembranca.tempo > 0) {
+      limparProgressoFilme(lembranca.filme.id);
     }
     notificarDadosContaAlterados(true);
   } catch { /* A reprodução continua se o armazenamento estiver cheio ou bloqueado. */ }

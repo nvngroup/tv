@@ -7,12 +7,31 @@ import { recarregarListasDoArmazenamento } from '../services/listas';
 
 const CHAVES = [
   'tv-favorites', 'tv-last-channel', 'nvnplus-vod-favoritos', 'nvnplus-radios-favoritas',
-  'nvnplus-continuar', 'nvnplus-reproducao', 'nvnplus-ao-iniciar',
+  'nvnplus-continuar', 'nvnplus-continuar-updated', 'nvnplus-reproducao', 'nvnplus-ao-iniciar',
   'nvnplus-audio-inteligente', 'nvnplus-zero-delay', 'nvnplus-link-canais', 'nvnplus-link-filmes',
+  'nvnplus-upscaling', 'movie-volume', 'movie-skip-time', 'tv-volume', 'radio-volume', 'legenda-idioma',
 ] as const;
 const CHAVES_LISTA = new Set(['tv-favorites', 'nvnplus-radios-favoritas', 'nvnplus-vod-favoritos']);
 const CHAVE_USUARIO = 'nvnplus-perfil-local-uid';
 type Dados = Record<string, string>;
+
+function ehChaveSincronizada(chave: string): boolean {
+  return CHAVES.includes(chave as typeof CHAVES[number]) || /^movie-progress-.+$/.test(chave);
+}
+
+function chavesLocaisSincronizadas(): string[] {
+  const chaves: string[] = [...CHAVES];
+  for (let i = 0; i < localStorage.length; i += 1) {
+    const chave = localStorage.key(i);
+    if (chave && ehChaveSincronizada(chave) && !chaves.includes(chave)) chaves.push(chave);
+  }
+  return chaves;
+}
+
+function chaveDataProgresso(chave: string): string | null {
+  const match = /^movie-progress-(?!updated-)(.+)$/.exec(chave);
+  return match ? `movie-progress-updated-${match[1]}` : null;
+}
 
 interface ContaContexto {
   user: User | null;
@@ -29,14 +48,35 @@ const ContextoConta = createContext<ContaContexto | null>(null);
 
 function lerDadosLocais(): Dados {
   const dados: Dados = {};
-  for (const chave of CHAVES) {
+  for (const chave of chavesLocaisSincronizadas()) {
     const valor = localStorage.getItem(chave);
     if (valor !== null) dados[chave] = valor;
   }
   return dados;
 }
 
-function unirValores(chave: string, local: string | undefined, remoto: string | undefined): string | undefined {
+function unirValores(chave: string, local: string | undefined, remoto: string | undefined, dadosLocais: Dados, dadosRemotos: Dados): string | undefined {
+  if (chave.startsWith('movie-progress-updated-')) {
+    const localTempo = Number(local) || 0;
+    const remotoTempo = Number(remoto) || 0;
+    return String(Math.max(localTempo, remotoTempo));
+  }
+  const chaveData = chaveDataProgresso(chave);
+  if (chaveData && local !== undefined && remoto !== undefined) {
+    const localQuando = Number(dadosLocais[chaveData]) || 0;
+    const remotoQuando = Number(dadosRemotos[chaveData]) || 0;
+    return localQuando >= remotoQuando ? local : remoto;
+  }
+  if (chaveData && local === undefined && remoto !== undefined) {
+    const localQuando = Number(dadosLocais[chaveData]) || 0;
+    const remotoQuando = Number(dadosRemotos[chaveData]) || 0;
+    return localQuando > remotoQuando ? undefined : remoto;
+  }
+  if (chaveData && local !== undefined && remoto === undefined) {
+    const localQuando = Number(dadosLocais[chaveData]) || 0;
+    const remotoQuando = Number(dadosRemotos[chaveData]) || 0;
+    return localQuando > remotoQuando ? local : undefined;
+  }
   if (local === undefined) return remoto;
   if (remoto === undefined) return local;
   if (CHAVES_LISTA.has(chave)) {
@@ -50,6 +90,9 @@ function unirValores(chave: string, local: string | undefined, remoto: string | 
   }
   if (chave === 'nvnplus-continuar') {
     try {
+      const localQuando = Number(dadosLocais['nvnplus-continuar-updated']) || 0;
+      const remotoQuando = Number(dadosRemotos['nvnplus-continuar-updated']) || 0;
+      if (localQuando || remotoQuando) return localQuando >= remotoQuando ? local : remoto;
       const itens = new Map<string, { origem?: { titulo?: string }; quando?: number }>();
       for (const item of [...JSON.parse(remoto), ...JSON.parse(local)]) {
         const id = item?.origem?.titulo;
@@ -72,7 +115,7 @@ function unirValores(chave: string, local: string | undefined, remoto: string | 
 }
 
 function gravarLocal(dados: Dados): void {
-  for (const chave of CHAVES) {
+  for (const chave of new Set([...chavesLocaisSincronizadas(), ...Object.keys(dados).filter(ehChaveSincronizada)])) {
     const valor = dados[chave];
     if (valor === undefined) localStorage.removeItem(chave);
     else localStorage.setItem(chave, valor);
@@ -81,7 +124,7 @@ function gravarLocal(dados: Dados): void {
   window.dispatchEvent(new Event(EVENTO_DADOS_REMOTOS));
 }
 
-function ContaProvider({ children }: { children: ReactNode }) {
+function ContaProvider({ children }: Readonly<{ children: ReactNode }>) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(SUPABASE_CONFIGURADO);
   const [erroSincronizacao, setErroSincronizacao] = useState('');
@@ -101,8 +144,8 @@ function ContaProvider({ children }: { children: ReactNode }) {
       const remoto = (perfil?.data && typeof perfil.data === 'object' && !Array.isArray(perfil.data))
         ? perfil.data as Dados : {};
       const combinado: Dados = {};
-      for (const chave of CHAVES) {
-        const valor = perfil ? unirValores(chave, local[chave], remoto[chave]) : local[chave];
+      for (const chave of new Set([...CHAVES, ...Object.keys(local).filter(ehChaveSincronizada), ...Object.keys(remoto).filter(ehChaveSincronizada)])) {
+        const valor = perfil ? unirValores(chave, local[chave], remoto[chave], local, remoto) : local[chave];
         if (valor !== undefined) combinado[chave] = valor;
       }
 
@@ -153,7 +196,7 @@ function ContaProvider({ children }: { children: ReactNode }) {
     const salvar = (evento: Event) => {
       if (evento.type === 'storage') {
         const chave = (evento as StorageEvent).key;
-        if (!chave || !CHAVES.includes(chave as typeof CHAVES[number])) return;
+        if (!chave || !ehChaveSincronizada(chave)) return;
       }
       const frequente = (evento as CustomEvent<{ frequente?: boolean }>).detail?.frequente;
       const gravar = () => {

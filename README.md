@@ -64,7 +64,7 @@ bun run lint       # Validação de código e tipos
 
 ### Conta e sincronização
 
-O login é opcional e não bloqueia canais, filmes ou séries. Contas sincronizam favoritos, progresso e preferências no projeto Supabase dedicado. A URL e a chave publishable públicas estão configuradas no cliente; `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` podem sobrescrevê-las por ambiente. Nunca use a chave `service_role` no cliente.
+O login é opcional e não bloqueia canais, filmes ou séries. Com a conta conectada, o Supabase sincroniza configurações (incluindo volumes e idioma de legenda), favoritos de canais, filmes e rádios, tempo salvo por filme e histórico “Continue assistindo”. A URL e a chave publishable públicas estão configuradas no cliente; `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` podem sobrescrevê-las por ambiente. Nunca use a chave `service_role` no cliente.
 
 O esquema da tabela `tv_profiles` e suas políticas RLS estão em `supabase/migrations/`. Aplique a migração ao projeto dedicado e permita o domínio do site e `http://localhost:5173` em Auth > URL Configuration do Supabase antes de habilitar cadastro por e-mail.
 

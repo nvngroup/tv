@@ -11,6 +11,7 @@ import { buildAttempts, isDash, isMpegTs, marcarSemCors, type Attempt } from '..
 import { makeNestedPathLoader } from '../utils/hlsLoader';
 import { playDash, type DashHandle } from '../services/dashPlayer';
 import { audioInteligenteService } from '../services/audioInteligente';
+import { notificarDadosContaAlterados } from '../services/supabase';
 import { zeroDelayService, EVENTO_ZERO_DELAY, type ModoZeroDelay } from '../services/zeroDelay';
 import { iniciarVigiaAoVivo, type VigiaAoVivoHandle, type LatenciaInfo } from '../utils/vigiaAoVivo';
 import * as telemetria from '../services/telemetria';
@@ -589,6 +590,7 @@ export const VideoPlayer = memo(function VideoPlayer({
       videoRef.current.muted = forceMuted || isMuted;
     }
     localStorage.setItem('tv-volume', volume.toString());
+    notificarDadosContaAlterados(true);
   }, [volume, isMuted, forceMuted]);
 
   // Video event listeners

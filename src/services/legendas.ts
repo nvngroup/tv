@@ -1,3 +1,5 @@
+import { notificarDadosContaAlterados } from './supabase';
+
 /**
  * Legendas externas de filmes e séries, pelo OpenSubtitles.
  *
@@ -62,7 +64,7 @@ function fragmentoDe(tipo: 'f' | 's', tmdb: number): Promise<Map<number, string>
       })
       .catch(() => new Map<number, string>());
     // Falha de rede não pode ficar guardada: a próxima abertura tenta de novo.
-    pronto.then((m) => { if (!m.size) fragmentos.delete(nome); });
+    void pronto.then((m) => { if (!m.size) fragmentos.delete(nome); });
     fragmentos.set(nome, pronto);
   }
   return pronto;
@@ -100,7 +102,7 @@ export function buscarLegendas(
       return saida;
     })().catch(() => []);
     // Lista vazia por falha não fica guardada; vazia de verdade custa pouco.
-    pronta.then((l) => { if (!l.length) setTimeout(() => listas.delete(chave), 60_000); });
+    void pronta.then((l) => { if (!l.length) setTimeout(() => listas.delete(chave), 60_000); });
     listas.set(chave, pronta);
   }
   return pronta;
@@ -110,7 +112,7 @@ const TEMPO = /(\d+):(\d{2}):(\d{2})[,.](\d{1,3})/;
 
 function segundos(texto: string): number {
   const m = TEMPO.exec(texto);
-  if (!m) return NaN;
+  if (!m) return Number.NaN;
   return Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3]) + Number(m[4].padEnd(3, '0')) / 1000;
 }
 
@@ -155,5 +157,8 @@ export function idiomaGuardado(): string {
 }
 
 export function guardarIdioma(codigo: string): void {
-  try { localStorage.setItem(IDIOMA_GUARDADO, codigo); } catch { /* sem armazenamento: só não lembra */ }
+  try {
+    localStorage.setItem(IDIOMA_GUARDADO, codigo);
+    notificarDadosContaAlterados();
+  } catch { /* sem armazenamento */ }
 }

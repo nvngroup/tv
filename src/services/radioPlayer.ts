@@ -7,6 +7,7 @@ import Hls from 'hls.js';
 import { needsProxy, proxyUrl } from '../utils/streamUrl';
 import { ouviu, type Radio } from './radios';
 import * as reproducao from './reproducao';
+import { notificarDadosContaAlterados } from './supabase';
 
 export type EstadoRadio = 'parado' | 'carregando' | 'tocando' | 'erro';
 
@@ -44,6 +45,7 @@ export function definirVolume(volume: number): void {
   const nivel = Math.max(0, Math.min(1, volume));
   elemento().volume = nivel;
   localStorage.setItem(VOLUME_KEY, String(nivel));
+  notificarDadosContaAlterados(true);
 }
 
 /** Avisa quando muda o que toca. Devolve quem cancela. */
