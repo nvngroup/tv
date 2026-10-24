@@ -7,7 +7,7 @@ interface ContaProps {
 }
 
 export function Conta({ onClose }: ContaProps) {
-  const { user, loading, configurado, erroSincronizacao, entrar, cadastrar, sair } = useConta();
+  const { user, loading, erroSincronizacao, entrar, cadastrar, sair } = useConta();
   const [modoCadastro, setModoCadastro] = useState(false);
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -72,12 +72,7 @@ export function Conta({ onClose }: ContaProps) {
         {erroVisivel && <p className="conta-erro" role="alert">{erroVisivel}</p>}
         {erroSincronizacao && <p className="conta-erro" role="alert">A conta conectou, mas a sincronização falhou: {erroSincronizacao}</p>}
 
-        {!configurado ? (
-          <section className="conta-cartao">
-            <h2>Conta indisponível neste ambiente</h2>
-            <p>Configure <code>VITE_SUPABASE_URL</code> e <code>VITE_SUPABASE_PUBLISHABLE_KEY</code> para habilitar o acesso.</p>
-          </section>
-        ) : loading ? (
+        {loading ? (
           <section className="conta-cartao" aria-live="polite">Carregando sua conta e sincronizando os dados…</section>
         ) : user ? (
           <section className="conta-cartao">

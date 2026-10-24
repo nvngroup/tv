@@ -12,6 +12,7 @@ import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState, useSyn
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAdultMode } from '../contexts/adultoContexto';
 import { assinar, atual as atualRadio, parar as pararRadio } from '../services/radioPlayer';
+import { SUPABASE_URL_CONFIGURADA } from '../services/supabase';
 import './AppHeader.css';
 import './BarraTopo.css';
 
@@ -54,7 +55,7 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
   const { pathname } = useLocation();
   const [cliques, setCliques] = useState(0);
   const [pedePin, setPedePin] = useState(false);
-  const [contaAberta, setContaAberta] = useState(pathname === '/conta');
+  const [contaAberta, setContaAberta] = useState(pathname === '/conta' && SUPABASE_URL_CONFIGURADA);
   const [pin, setPin] = useState('');
   const zerar = useRef<ReturnType<typeof setTimeout> | null>(null);
   const trilho = useRef<HTMLElement>(null);
@@ -292,22 +293,24 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
               <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" />
             </svg>
           </button>
-          <button
-            className={`barra-conta ${contaAberta || pathname === '/conta' ? 'on' : ''}`}
-            onClick={(e) => {
-              (e.currentTarget as HTMLElement)?.blur();
-              setContaAberta(true);
-            }}
-            title="Entrar ou acessar conta"
-            aria-label="Entrar ou acessar conta"
-            aria-haspopup="dialog"
-            aria-expanded={contaAberta}
-          >
-            <svg viewBox="0 0 24 24" {...tr}>
-              <circle cx="12" cy="8" r="4" />
-              <path d="M5 21a7 7 0 0 1 14 0" />
-            </svg>
-          </button>
+          {SUPABASE_URL_CONFIGURADA && (
+            <button
+              className={`barra-conta ${contaAberta || pathname === '/conta' ? 'on' : ''}`}
+              onClick={(e) => {
+                (e.currentTarget as HTMLElement)?.blur();
+                setContaAberta(true);
+              }}
+              title="Entrar ou acessar conta"
+              aria-label="Entrar ou acessar conta"
+              aria-haspopup="dialog"
+              aria-expanded={contaAberta}
+            >
+              <svg viewBox="0 0 24 24" {...tr}>
+                <circle cx="12" cy="8" r="4" />
+                <path d="M5 21a7 7 0 0 1 14 0" />
+              </svg>
+            </button>
+          )}
         </div>
       </header>
 
