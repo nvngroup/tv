@@ -40,21 +40,15 @@ const ativa = (a: Aba, caminho: string) =>
   caminho === a.rota || (a.prefixos?.some((p) => caminho.startsWith(p)) ?? false);
 
 interface BarraTopoProps {
-  /** Se `false`, força a barra a ficar oculta independente do mouse. Se omitido, auto-esconde apenas se estiver em rota com player. */
+  /** Se `false`, força a barra a ficar oculta independente do mouse. */
   visible?: boolean;
-  /** Se `true`, auto-esconde quando o mouse se afasta. Se `false`, fica fixa na tela. Se omitido, auto-esconde apenas se estiver em rota de player (/ao-vivo). */
+  /** Se `true`, auto-esconde quando o mouse se afasta. Se `false`, fica fixa na tela. */
   autoHide?: boolean;
-  /** Abre o guia de programação (EPG) na página TV */
-  onOpenGuide?: () => void;
-  /** Indica se o guia de programação está aberto */
-  isGuideOpen?: boolean;
 }
 
 export const BarraTopo = memo(function BarraTopo({
   visible: visibleProp,
   autoHide,
-  onOpenGuide,
-  isGuideOpen,
 }: BarraTopoProps = {}) {
   const { isAdultUnlocked } = useAdultMode();
   const navigate = useNavigate();
@@ -87,9 +81,8 @@ export const BarraTopo = memo(function BarraTopo({
     return () => window.removeEventListener('keydown', aoAtalho);
   }, [navigate]);
 
-  // O nav bar só auto-esconde quando um player estiver sendo usado (/ao-vivo ou autoHide=true).
-  // Fora isso (catálogos, início, busca, eventos, favoritos, rádios, etc.), ele fica fixo e visível na tela.
-  const deveAutoEsconder = autoHide ?? pathname.startsWith('/ao-vivo');
+  // Auto-hide apenas se habilitado por prop explícita
+  const deveAutoEsconder = autoHide ?? false;
 
   const [mouseNoTopo, setMouseNoTopo] = useState(() => !deveAutoEsconder);
   // Controle remoto (TV): sem mouse para chegar ao topo, a barra aparece quando o foco entra nela.
@@ -268,28 +261,6 @@ export const BarraTopo = memo(function BarraTopo({
               </button>
               <button className="barra-radio-parar" onClick={pararRadio} aria-label="Parar a rádio">■</button>
             </div>
-          )}
-          {onOpenGuide && (
-            <button
-              className={`barra-guia ${isGuideOpen ? 'on' : ''}`}
-              onClick={(e) => {
-                (e.currentTarget as HTMLElement)?.blur();
-                onOpenGuide();
-              }}
-              title="Guia de programação"
-              aria-label="Guia de programação"
-              aria-expanded={isGuideOpen}
-            >
-              <svg viewBox="0 0 24 24" {...tr}>
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
-                <circle cx="8" cy="15" r="1" fill="currentColor" />
-                <circle cx="12" cy="15" r="1" fill="currentColor" />
-                <circle cx="16" cy="15" r="1" fill="currentColor" />
-              </svg>
-            </button>
           )}
           <button
             className={`barra-engrenagem ${pathname === '/ajustes' ? 'on' : ''}`}
