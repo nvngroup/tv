@@ -1143,7 +1143,7 @@ export const VideoPlayer = memo(function VideoPlayer({
           {/* Pilha flutuante de controles com Cartão No Ar e Barra de Vidro */}
           <div
             className={`video-floating-stack ${showControls ? 'visible' : ''}`}
-            style={{ paddingLeft: isChannelsPanelOpen ? '420px' : '0px' }}
+            style={{ paddingLeft: isChannelsPanelOpen ? '420px' : undefined }}
             onMouseMove={resetControlsTimeout}
           >
             {/* Barra de vidro flutuante de controles (ControlBar) */}
