@@ -23,8 +23,8 @@ interface ProgramInfoProps {
   onOpenGuide: () => void;
 }
 
-export const ProgramInfo = memo(function ProgramInfo({ 
-  channel, 
+export const ProgramInfo = memo(function ProgramInfo({
+  channel,
   isVisible,
   onOpenGuide,
 }: ProgramInfoProps) {
@@ -37,10 +37,10 @@ export const ProgramInfo = memo(function ProgramInfo({
   // Atualiza dados quando EPG é carregado
   const updateProgramData = useCallback(() => {
     if (!channel) return;
-    
+
     const program = getCurrentProgram(channel.id);
     setCurrentProgram(program);
-    
+
     if (isExpanded) {
       const epg = getChannelEPG(channel.id);
       const now = new Date();
@@ -51,8 +51,8 @@ export const ProgramInfo = memo(function ProgramInfo({
 
   // Inicializa e registra listener para atualizações de EPG
   useEffect(() => {
-    fetchRealEPG();
-    
+    void fetchRealEPG();
+
     // Listener que atualiza quando EPG de qualquer canal é carregado
     // O aviso traz a chave do guia (nome normalizado), não o id do site.
     const unsubscribe = onEPGUpdate((canais) => {
@@ -62,25 +62,25 @@ export const ProgramInfo = memo(function ProgramInfo({
         forceUpdate(n => n + 1);
       }
     });
-    
+
     return () => unsubscribe();
   }, [channel, updateProgramData]);
 
   // Busca EPG quando canal muda
   useEffect(() => {
     if (!channel) return;
-    
+
     setIsLoading(true);
-    
+
     // Busca assíncrona
-    getCurrentProgramAsync(channel.id).then((program: CurrentProgram | null) => {
+    void getCurrentProgramAsync(channel.id).then((program: CurrentProgram | null) => {
       setCurrentProgram(program);
       setIsLoading(false);
     });
 
     // Também tenta sync caso já esteja em cache
     updateProgramData();
-    
+
     // Atualiza a cada 30 segundos
     const interval = setInterval(updateProgramData, 30000);
     return () => clearInterval(interval);
@@ -115,9 +115,9 @@ export const ProgramInfo = memo(function ProgramInfo({
               </p>
             </div>
           </div>
-          
+
           <div className="program-actions">
-            <button 
+            <button
               className="program-btn guide-btn"
               onClick={onOpenGuide}
               title="Guia de programação"
@@ -150,7 +150,7 @@ export const ProgramInfo = memo(function ProgramInfo({
             <span className="live-dot" />
             AGORA
           </div>
-          
+
           <div className="program-details">
             <h3 className="program-title">{current.title}</h3>
             <div className="program-meta">
@@ -190,7 +190,7 @@ export const ProgramInfo = memo(function ProgramInfo({
 
         {/* Botões de ação */}
         <div className="program-actions">
-          <button 
+          <button
             className="program-btn expand-btn"
             onClick={() => setIsExpanded(!isExpanded)}
             title={isExpanded ? 'Recolher' : 'Ver mais'}
@@ -203,10 +203,10 @@ export const ProgramInfo = memo(function ProgramInfo({
               )}
             </svg>
           </button>
-          
 
-          
-          <button 
+
+
+          <button
             className="program-btn guide-btn"
             onClick={onOpenGuide}
             title="Guia de programação"

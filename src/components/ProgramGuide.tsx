@@ -267,7 +267,7 @@ interface DetalhesProps {
   onFechar: () => void;
 }
 
-function Detalhes({ canal, programa, agora, onAssistir, onFechar }: DetalhesProps) {
+function Detalhes({ canal, programa, agora, onAssistir, onFechar }: Readonly<DetalhesProps>) {
   const [semImagem, setSemImagem] = useState(false);
   const ini = programa.startTime.getTime();
   const fin = programa.endTime.getTime();
@@ -355,7 +355,7 @@ export const ProgramGuide = memo(function ProgramGuide(props: ProgramGuideProps)
   return <GuiaAberto {...props} />;
 });
 
-function GuiaAberto({ channels, currentChannel, onSelectChannel, onClose }: ProgramGuideProps) {
+function GuiaAberto({ channels, currentChannel, onSelectChannel, onClose }: Readonly<ProgramGuideProps>) {
   const [medidas, setMedidas] = useState(medidasDaTela);
   const [agora, setAgora] = useState(() => Date.now());
   // A grade fica fixa enquanto o guia está aberto; abrir de novo recomeça de agora.
