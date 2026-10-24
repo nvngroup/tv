@@ -125,13 +125,12 @@
 .barra-engrenagem svg { width: 18px; height: 18px; }
 .barra-engrenagem:hover { background: rgba(255, 255, 255, 0.1); color: #fff; transform: rotate(40deg); }
 .barra-engrenagem.on { color: #4ff3e0; }
-.barra-relogio {
-  font-variant-numeric: tabular-nums;
-  font-size: 0.86rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.75);
-  padding: 0 8px 0 4px;
+.barra-conta {
+  width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%;
+  color: rgba(255, 255, 255, 0.7); transition: background 0.15s, color 0.15s;
 }
+.barra-conta svg { width: 18px; height: 18px; }
+.barra-conta:hover, .barra-conta.on { background: rgba(255, 255, 255, 0.1); color: #4ff3e0; }
 
 /* Telas largas e estreitas: abas só com ícone quando falta lugar. */
 @media (max-width: 1060px) {

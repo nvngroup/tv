@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarraTopo } from '../components/BarraTopo';
 import { useConta } from '../contexts/ContaContext';
@@ -13,10 +13,7 @@ export function Conta() {
   const [aviso, setAviso] = useState('');
   const [erro, setErro] = useState('');
   const [enviando, setEnviando] = useState(false);
-
-  useEffect(() => {
-    if (user) setErro('');
-  }, [user]);
+  const erroVisivel = user?.email_confirmed_at && /email not confirmed/i.test(erro) ? '' : erro;
 
   const submeter = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -53,7 +50,7 @@ export function Conta() {
         <h1 className="tela-titulo">Conta NvN.Plus</h1>
         <p className="conta-intro">A conta sincroniza favoritos, progresso e preferências entre aparelhos. Assistir aos vídeos continua livre, sem precisar entrar.</p>
         {aviso && <p className="conta-aviso" role="status">{aviso}</p>}
-        {erro && <p className="conta-erro" role="alert">{erro}</p>}
+        {erroVisivel && <p className="conta-erro" role="alert">{erroVisivel}</p>}
         {erroSincronizacao && <p className="conta-erro" role="alert">A conta conectou, mas a sincronização falhou: {erroSincronizacao}</p>}
 
         {!configurado ? (

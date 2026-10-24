@@ -2,7 +2,7 @@ import { SimboloMarca } from './Marca';
 /**
  * A barra do topo, a mesma do app do Mac e da TV Box: o ícone, as abas
  * (Buscar, Favoritos, Início, TV, Rádio, Filmes e Séries, Eventos), a engrenagem
- * dos ajustes e o relógio. A aba aberta é uma cápsula que desliza até a
+ * dos ajustes e o acesso à conta. A aba aberta é uma cápsula que desliza até a
  * escolhida; Alt+1 a Alt+8 levam às seções e aos ajustes (⌘ não serve: o navegador a usa).
  *
  * Vinte cliques no ícone abrem o PIN do modo adulto, como no site de sempre.
@@ -36,8 +36,6 @@ const ABAS: Aba[] = [
   { rota: '/eventos', rotulo: 'Eventos', icone: <svg viewBox="0 0 24 24" {...tr}><circle cx="12" cy="12" r="9" /><path d="m12 7 4 3-1.5 5h-5L8 10z" /></svg> },
 ];
 
-const relogio = () => new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-
 const ativa = (a: Aba, caminho: string) =>
   caminho === a.rota || (a.prefixos?.some((p) => caminho.startsWith(p)) ?? false);
 
@@ -53,7 +51,6 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
   const navigate = useNavigate();
   const radio = useSyncExternalStore(assinar, atualRadio);
   const { pathname } = useLocation();
-  const [hora, setHora] = useState(relogio);
   const [cliques, setCliques] = useState(0);
   const [pedePin, setPedePin] = useState(false);
   const [pin, setPin] = useState('');
@@ -161,11 +158,6 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
       document.body.classList.remove('barra-topo-oculta');
     };
   }, [isVisivel]);
-
-  useEffect(() => {
-    const id = window.setInterval(() => setHora(relogio()), 15_000);
-    return () => window.clearInterval(id);
-  }, []);
 
   // Fontes carregadas depois da primeira renderização também alteram a posição das abas.
   useLayoutEffect(() => {
@@ -293,7 +285,20 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
               <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" />
             </svg>
           </button>
-          <time className="barra-relogio">{hora}</time>
+          <button
+            className={`barra-conta ${pathname === '/conta' ? 'on' : ''}`}
+            onClick={(e) => {
+              (e.currentTarget as HTMLElement)?.blur();
+              void navigate('/conta');
+            }}
+            title="Entrar ou acessar conta"
+            aria-label="Entrar ou acessar conta"
+          >
+            <svg viewBox="0 0 24 24" {...tr}>
+              <circle cx="12" cy="8" r="4" />
+              <path d="M5 21a7 7 0 0 1 14 0" />
+            </svg>
+          </button>
         </div>
       </header>
 
