@@ -340,7 +340,11 @@ export async function todos(serie: boolean): Promise<Achado[]> {
 }
 
 /** Um filme específico, pelo nome, dentro da letra dele. */
-export async function filme(achado: Achado): Promise<Filme | null> {
+export async function filme(achado: Achado, reservados = false): Promise<Filme | null> {
+  if (reservados) {
+    const reservado = await filmes(achado.letra, true);
+    return reservado.find((f) => f.titulo === achado.titulo) ?? null;
+  }
   const lista = await filmes(achado.letra);
   const direto = lista.find((f) => f.titulo === achado.titulo);
   if (direto) return direto;
@@ -633,6 +637,19 @@ export function idDaFicha(g: Generos, titulo: string, serie: boolean): number | 
     if (val) return val;
   }
   return null;
+}
+
+/** Ordena somente filmes por ID do TMDB, preservando as posições dos demais tipos. */
+export function ordenarFilmesPorId<T extends { titulo: string; tipo?: string }>(itens: T[], g: Generos | null): T[] {
+  if (!g || itens.length < 2) return itens;
+  const indices = itens
+    .map((item, indice) => ({ item, indice }))
+    .filter(({ item }) => item.tipo === undefined || item.tipo === 'f')
+    .sort((a, b) => (idDaFicha(g, b.item.titulo, false) ?? 0) - (idDaFicha(g, a.item.titulo, false) ?? 0));
+  if (indices.length < 2) return itens;
+
+  let proximo = 0;
+  return itens.map((item) => (item.tipo === undefined || item.tipo === 'f' ? indices[proximo++].item : item));
 }
 
 /** O título do acervo que corresponde a um id do TMDB, se houver. */

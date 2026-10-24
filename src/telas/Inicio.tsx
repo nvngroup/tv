@@ -13,7 +13,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useListas } from '../services/listas';
 import { lista as listaAndamento } from '../services/continuar';
 import { getCurrentProgram, onEPGUpdate } from '../services/epgService';
-import { destaques, type FilaDestaque, type ItemDestaque } from '../services/vodService';
+import { destaques, generos as lerGeneros, ordenarFilmesPorId, type FilaDestaque, type Generos, type ItemDestaque } from '../services/vodService';
 import { ROTULO_TIPO, useAbrirVod, useHeroiVod } from './compartilhado';
 import { CHAVE_AO_INICIAR } from './Ajustes';
 import { aoMudar as aoMudarVodFav, lista as vodFavoritos } from '../services/vodFavoritos';
@@ -21,6 +21,11 @@ import type { Channel } from '../types/channel';
 
 /** Quantos cartões "Ao vivo agora" cabem numa fileira. */
 const AO_VIVO_MAX = 30;
+const FILEIRAS_ORDEM_FIXA = new Set(['em alta', 'series em alta', 'lancamentos de 2026']);
+
+function preservarOrdemDaFileira(titulo: string): boolean {
+  return FILEIRAS_ORDEM_FIXA.has(titulo.normalize('NFD').replace(/\p{Mn}+/gu, '').toLowerCase().trim());
+}
 
 export function Inicio() {
   const navigate = useNavigate();
@@ -28,6 +33,7 @@ export function Inicio() {
   const canais = useCanais();
   const links = useListas();
   const [filas, setFilas] = useState<FilaDestaque[]>([]);
+  const [fichas, setFichas] = useState<Generos | null>(null);
   const [favoritos] = useLocalStorage<string[]>('tv-favorites', []);
   const [tic, tique] = useState(0);
   const [sob, setSob] = useState<ItemDestaque | null>(null);
@@ -35,6 +41,7 @@ export function Inicio() {
   const [andamento] = useState(listaAndamento);
 
   useEffect(() => { void destaques().then(setFilas); }, []);
+  useEffect(() => { void lerGeneros().then(setFichas).catch(() => {}); }, []);
 
   // Ajustes > Ao iniciar > último canal: só na entrada da visita, para o botão
   // Início continuar levando ao Início.
@@ -136,7 +143,7 @@ export function Inicio() {
 
       {filas.map((fila) => (
         <Fileira key={fila.titulo} titulo={fila.titulo} aoVerTodos={() => navigate('/movies')} rotuloVerTodos="Abrir On Demand">
-          {fila.itens.map((i) => (
+          {(preservarOrdemDaFileira(fila.titulo) ? fila.itens : ordenarFilmesPorId(fila.itens, fichas)).map((i) => (
             <CartaoCapa key={`${i.tipo}${i.titulo}${i.ano}`} titulo={i.titulo} capa={i.capa}
               rotulo={i.ano || ROTULO_TIPO[i.tipo]} aoAbrir={() => abrirVod(i)} aoPassar={() => setSob(i)} />
           ))}

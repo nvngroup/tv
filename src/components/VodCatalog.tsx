@@ -29,6 +29,7 @@ import {
   capaDaFicha,
   semAno,
   idDaFicha,
+  ordenarFilmesPorId,
   tituloDoId,
   colecao,
   destaques,
@@ -36,6 +37,7 @@ import {
   generos as lerGeneros,
   temGenero,
   filme as buscarFilme,
+  filmes as listarFilmes,
   indice,
   serie as buscarSerie,
   type Achado,
@@ -89,6 +91,7 @@ interface Item {
   filme?: Filme;
   dados?: Serie;
   colecao?: SerieColecao;
+  reservado?: boolean;
 }
 
 interface EpisodioAgrupado {
@@ -105,6 +108,12 @@ interface Trabalho {
 }
 
 const PAGINA = 120;
+
+const FILEIRAS_ORDEM_FIXA = new Set(['continue assistindo', 'em alta', 'series em alta', 'lancamentos de 2026']);
+
+function preservarOrdemDaFileira(titulo: string): boolean {
+  return FILEIRAS_ORDEM_FIXA.has(titulo.normalize('NFD').replace(/\p{Mn}+/gu, '').toLowerCase().trim());
+}
 
 const GENEROS_ON_DEMAND = [
   'Ação',
@@ -188,7 +197,7 @@ export function VodCatalog({
   playerOpen = false,
   activeMovie = null,
   isAdultUnlocked,
-}: VodCatalogProps) {
+}: Readonly<VodCatalogProps>) {
   const local = useLocation();
   const navegar = useNavigate();
 
@@ -209,6 +218,8 @@ export function VodCatalog({
   const [generos, setGeneros] = useState<Generos | null>(null);
   const [gavetas, setGavetas] = useState<Gaveta[]>([]);
   const [todosFilmes, setTodosFilmes] = useState<Achado[]>([]);
+  const [filmesAdultos, setFilmesAdultos] = useState<Achado[]>([]);
+  const [carregandoAdultos, setCarregandoAdultos] = useState(false);
   const [todasSeries, setTodasSeries] = useState<Achado[]>([]);
   const [animesColecao, setAnimesColecao] = useState<SerieColecao[]>([]);
   const [doramasColecao, setDoramasColecao] = useState<SerieColecao[]>([]);
@@ -306,7 +317,7 @@ export function VodCatalog({
             letra: item.letra,
             ano: '',
             nomeCompleto: item.titulo,
-          }));
+        }, item.reservado));
         const fontes: MovieSource[] = Object.entries(dados?.fontes ?? {}).flatMap(([versao, urls]) =>
           urls.map((url) => ({ url, versao })),
         );
@@ -409,7 +420,7 @@ export function VodCatalog({
       });
 
     // 2. Metadados de coleções, gêneros e gavetas carregam em segundo plano
-    Promise.all([
+    void Promise.all([
       lerGeneros().catch(() => null),
       indice().catch(() => []),
       colecao('animes').catch(() => []),
@@ -434,6 +445,30 @@ export function VodCatalog({
       clearTimeout(timerBusca);
     };
   }, []);
+
+  // A seção +18 usa exclusivamente os arquivos reservados, nunca o índice geral.
+  useEffect(() => {
+    if (secao !== 'extra' || !isAdultUnlocked || !gavetas.length) return;
+    let vivo = true;
+    setCarregandoAdultos(true);
+    void Promise.all(
+      gavetas.filter((gaveta) => gaveta.reservados > 0).map(async (gaveta) => ({
+        gaveta,
+        filmes: await listarFilmes(gaveta.letra, true),
+      })),
+    ).then((listas) => {
+      if (!vivo) return;
+      setFilmesAdultos(listas.flatMap(({ gaveta, filmes }) => filmes.map((filme) => ({
+        titulo: filme.titulo,
+        serie: false,
+        letra: gaveta.letra,
+        ano: '',
+        nomeCompleto: filme.titulo,
+      }))));
+      setCarregandoAdultos(false);
+    });
+    return () => { vivo = false; };
+  }, [secao, isAdultUnlocked, gavetas]);
 
   // Totais para exibição nos cartões de categoria e Hero
   const contagens = useMemo(() => {
@@ -482,10 +517,10 @@ export function VodCatalog({
 
   // Fileiras de Gênero dinâmicas (100% igual ao macOS TelasDoAcervo.swift:301-325)
   const fileirasDeGenero = useMemo(() => {
-    if (!generos) return [];
+    if (!generos || secao === 'extra') return [];
 
     const ehSerie = secao === 'series';
-    const listaBase = ehSerie ? todasSeries : todosFilmes;
+    const listaBase = ehSerie ? todasSeries : ordenarFilmesPorId(todosFilmes, generos);
 
     const generosAlvo = (secao === null)
       ? GENEROS_ON_DEMAND
@@ -965,6 +1000,24 @@ export function VodCatalog({
 
   // Itens para a Grade Explorar
   const itensGrade = useMemo<Item[]>(() => {
+    if (secao === 'extra') {
+      const termo = normalizar(termoBusca.trim());
+      const reservados = filmesAdultos
+        .filter((item) => !termo || normalizar(item.titulo).includes(termo))
+        .filter((item) => !letraFiltro || item.letra === letraFiltro)
+        .filter((item) => !generoFiltro || !generos || temGenero(generos, item.titulo, false, generoFiltro))
+        .map((item) => ({ ...item, tipo: 'f' }));
+      return ordenarFilmesPorId(reservados, generos).map((item) => ({
+        chave: `adulto:${item.letra}:${item.titulo}`,
+        titulo: item.titulo,
+        rotulo: item.nomeCompleto || item.titulo,
+        serie: false,
+        letra: item.letra,
+        ano: item.ano,
+        reservado: true,
+      }));
+    }
+
     if (buscaAtiva) {
       return buscaAchados
         .filter((a) => {
@@ -1019,6 +1072,7 @@ export function VodCatalog({
     if (generoFiltro && generos) {
       filtrados = filtrados.filter((a) => temGenero(generos, a.titulo, secao === 'series', generoFiltro));
     }
+    if (secao !== 'series') filtrados = ordenarFilmesPorId(filtrados, generos);
     return filtrados.map((a) => ({
       chave: `${a.serie ? 's' : 'f'}:${a.titulo}:${a.ano}`,
       titulo: a.titulo,
@@ -1027,7 +1081,7 @@ export function VodCatalog({
       letra: a.letra,
       ano: a.ano,
     }));
-  }, [buscaAtiva, buscaAchados, secao, animesColecao, doramasColecao, todasSeries, todosFilmes, letraFiltro, generoFiltro, generos]);
+  }, [buscaAtiva, buscaAchados, secao, animesColecao, doramasColecao, todasSeries, todosFilmes, filmesAdultos, termoBusca, letraFiltro, generoFiltro, generos]);
 
   return (
     <div className="vod-catalog">
@@ -1167,7 +1221,7 @@ export function VodCatalog({
       {modo === 'fileiras' && (
         <div className="vod-conteudo-fileiras">
           {/* Continue assistindo */}
-          {itensAndamento.length > 0 && (
+          {secao !== 'extra' && itensAndamento.length > 0 && (
             <CarrosselFileira
               titulo="Continue assistindo"
               itens={itensAndamento}
@@ -1178,9 +1232,14 @@ export function VodCatalog({
 
           {/* Destaques do catálogo (Filtrados por seção ou todos) */}
           {filasDestaque.map((fila, idx) => {
-            const itensDaFila = secao
+            const filtradosDaFila = secao === 'extra'
+              ? []
+              : secao
               ? fila.itens.filter((i) => (secao === 'filmes' ? i.tipo === 'f' : secao === 'series' ? i.tipo === 's' : secao === 'animes' ? i.tipo === 'a' : i.tipo === 'd'))
               : fila.itens;
+            const itensDaFila = preservarOrdemDaFileira(fila.titulo)
+              ? filtradosDaFila
+              : ordenarFilmesPorId(filtradosDaFila, generos);
             if (itensDaFila.length < 3) return null;
             const elemento = (
               <CarrosselFileira
@@ -1227,6 +1286,8 @@ export function VodCatalog({
                   ? 'Explorar Animes de A a Z'
                   : secao === 'doramas'
                   ? 'Explorar Doramas de A a Z'
+                  : secao === 'extra'
+                  ? 'Explorar títulos +18 de A a Z'
                   : 'Explorar de A a Z'}
               </h2>
             </header>
@@ -1389,7 +1450,7 @@ export function VodCatalog({
 
           <div ref={sentinelaRef} className="vod-sentinela" aria-hidden="true" />
 
-          {itensGrade.length === 0 && !carregandoDados && (
+          {itensGrade.length === 0 && !carregandoDados && !(secao === 'extra' && carregandoAdultos) && (
             <p className="vod-aviso">Nenhum título encontrado com os filtros atuais.</p>
           )}
         </div>
